@@ -213,7 +213,7 @@ const HalfTimer: React.FC = () => {
         Live NFL halftime countdowns for all games in just one view.
       </p>
       {lastUpdated && (
-        <div className="absolute top-4 right-4 text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2 sm:static sm:top-auto sm:right-auto sm:mb-4 sm:text-center sm:w-full">
+        <div className="static mt-4 mb-4 text-center w-full sm:absolute sm:top-4 sm:right-4 text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2">
           Last Updated: {lastUpdated}
           {isRefreshing && <Loader2 className="h-4 w-4 animate-spin text-blue-500" />}
         </div>
