@@ -207,13 +207,13 @@ const HalfTimer: React.FC = () => {
   }, [favoriteGameIds]); // Re-run effect if favoriteGameIds changes to re-sort games immediately
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 text-gray-800 relative sm:pt-4 pt-12 sm:justify-start justify-center"> {/* Soft white background */}
+    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 text-gray-800 relative"> {/* Soft white background */}
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1> {/* Dark gray title for contrast */}
       <p className="text-lg text-gray-700 text-center mb-8">
         Live NFL halftime countdowns for all games in just one view.
       </p>
       {lastUpdated && (
-        <div className="static mt-4 mb-4 text-center w-full sm:absolute sm:top-4 sm:right-4 text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2">
+        <div className="absolute top-4 right-4 text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2">
           Last Updated: {lastUpdated}
           {isRefreshing && <Loader2 className="h-4 w-4 animate-spin text-blue-500" />}
         </div>
