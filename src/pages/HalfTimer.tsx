@@ -6,6 +6,8 @@ import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react"; // Import a spinner icon
+import { useIsMobile } from "@/hooks/use-mobile"; // Import the useIsMobile hook
+import { cn } from "@/lib/utils"; // Import cn for conditional class names
 
 // ESPN NFL Scoreboard API endpoint
 // You can change this source if a different API is preferred,
@@ -92,6 +94,8 @@ const HalfTimer: React.FC = () => {
     }
     return new Set();
   });
+
+  const isMobile = useIsMobile(); // Use the hook to detect mobile
 
   // Effect to save favoriteGameIds to localStorage whenever it changes
   useEffect(() => {
@@ -213,7 +217,10 @@ const HalfTimer: React.FC = () => {
         Live NFL halftime countdowns for all games in just one view.
       </p>
       {lastUpdated && (
-        <div className="absolute top-4 right-4 text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2">
+        <div className={cn(
+          "text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2",
+          isMobile ? "relative mt-4 mb-4" : "absolute top-4 right-4"
+        )}>
           Last Updated: {lastUpdated}
           {isRefreshing && <Loader2 className="h-4 w-4 animate-spin text-blue-500" />}
         </div>
