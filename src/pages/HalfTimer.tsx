@@ -207,7 +207,7 @@ const HalfTimer: React.FC = () => {
   }, [favoriteGameIds]); // Re-run effect if favoriteGameIds changes to re-sort games immediately
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 text-gray-800 relative"> {/* Soft white background */}
+    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-16 text-gray-800 relative"> {/* Soft white background */}
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1> {/* Dark gray title for contrast */}
       <p className="text-lg text-gray-700 text-center mb-8">
         Live NFL halftime countdowns for all games in just one view.
