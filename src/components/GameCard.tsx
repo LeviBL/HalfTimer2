@@ -7,6 +7,7 @@ import { getAbbreviatedTeamName } from "@/utils/nflTeamAbbreviations";
 import { ProgressWithIndicator } from "@/components/ProgressWithIndicator";
 import { Star } from "lucide-react";
 import { useHalftimeTimers } from "@/hooks/use-halftime-timers";
+import { showSuccess } from "@/utils/toast"; // Import showSuccess
 
 // Helper function to format time for countdown (MM:SS)
 const formatCountdown = (seconds: number): string => {
@@ -115,6 +116,10 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
             clearInterval(intervalRef.current!);
             intervalRef.current = null;
             clearHalftimeStartTime(gameId);
+            // Show notification if the game is favorited
+            if (isFavorited) {
+              showSuccess(`${getAbbreviatedTeamName(game.competitors.away.displayName)} vs ${getAbbreviatedTeamName(game.competitors.home.displayName)}: Halftime is over!`);
+            }
           }
         }, 1000);
       }
@@ -133,7 +138,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
         clearInterval(intervalRef.current);
       }
     };
-  }, [gameStatusDescription, gameId, getHalftimeStartTime, setHalftimeStartTime, clearHalftimeStartTime, isHalftimeTimersLoading]);
+  }, [gameStatusDescription, gameId, getHalftimeStartTime, setHalftimeStartTime, clearHalftimeStartTime, isHalftimeTimersLoading, isFavorited]); // Added isFavorited to dependencies
 
   // Calculate halftime progress for the progress bar
   const halftimeProgress =
