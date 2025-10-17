@@ -7,6 +7,7 @@ import { getAbbreviatedTeamName } from "@/utils/nflTeamAbbreviations";
 import { ProgressWithIndicator } from "@/components/ProgressWithIndicator";
 import { Star } from "lucide-react";
 import { useHalftimeTimers } from "@/hooks/use-halftime-timers";
+import GameLeaders from "./GameLeaders"; // Import the new GameLeaders component
 
 // Helper function to format time for countdown (MM:SS)
 const formatCountdown = (seconds: number): string => {
@@ -62,6 +63,7 @@ const HALFTIME_DURATION_SECONDS = 12 * 60 + 20; // Adjusted to 12 minutes and 20
 
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite }) => {
   const [halftimeRemainingSeconds, setHalftimeRemainingSeconds] = useState<number | null>(null);
+  const [isExpanded, setIsExpanded] = useState<boolean>(false); // New state for expansion
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const { getHalftimeStartTime, setHalftimeStartTime, clearHalftimeStartTime, isLoading: isHalftimeTimersLoading } = useHalftimeTimers();
 
@@ -146,6 +148,8 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   const isFinal = game.status.type.state === "post";
   const isInProgress = game.status.type.state === "in" && !isHalftime;
 
+  const canExpand = !isScheduled; // Only expand for in-progress or finished games
+
   const borderColorClass = isHalftime
     ? "border-amber-400"
     : game.status.type.state === "in"
@@ -159,10 +163,12 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   return (
     <Card
       className={cn(
-        "w-[320px] text-gray-800 shadow-lg rounded-xl overflow-hidden transform transition-all duration-300 relative mx-auto", // Added mx-auto here
+        "w-[320px] text-gray-800 shadow-lg rounded-xl overflow-hidden transform transition-all duration-300 relative mx-auto",
         "border-[3px]",
-        borderColorClass
+        borderColorClass,
+        canExpand && "cursor-pointer hover:shadow-xl" // Add hover effect for clickable cards
       )}
+      onClick={() => canExpand && setIsExpanded(!isExpanded)} // Toggle expansion on click
     >
       <CardContent className={cn(
         "p-6 flex flex-col justify-between h-full",
@@ -209,7 +215,10 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
           )}
         </div>
         <button
-          onClick={() => onToggleFavorite(game.id)}
+          onClick={(e) => {
+            e.stopPropagation(); // Prevent card expansion when clicking the star
+            onToggleFavorite(game.id);
+          }}
           className="absolute bottom-3 right-3 p-1 rounded-full bg-white/70 backdrop-blur-sm shadow-md hover:scale-110 transition-transform duration-200"
           aria-label={isFavorited ? "Unfavorite game" : "Favorite game"}
         >
@@ -221,6 +230,16 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
           />
         </button>
       </CardContent>
+
+      {isExpanded && canExpand && (
+        <GameLeaders
+          gameId={game.id}
+          homeTeamName={game.competitors.home.displayName}
+          awayTeamName={game.competitors.away.displayName}
+          homeTeamLogo={game.competitors.home.logo}
+          awayTeamLogo={game.competitors.away.logo}
+        />
+      )}
     </Card>
   );
 };
