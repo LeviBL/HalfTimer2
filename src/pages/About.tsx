@@ -10,7 +10,7 @@ const About: React.FC = () => {
         <h1 className="text-4xl font-extrabold text-gray-900 mb-6 text-center">About The Halftimer</h1>
 
         <p className="mb-4 text-lg leading-relaxed">
-          "The Halftimer is a live NFL halftime countdown designed to make watching football more efficient and enjoyable. Every week, fans check scores and highlights, but no platform tells you exactly when the second half starts. The Halftimer solves that.
+          The Halftimer is a live NFL halftime countdown designed to make watching football more efficient and enjoyable. Every week, fans check scores and highlights, but no platform tells you exactly when the second half starts. The Halftimer solves that.
         </p>
         <p className="mb-4 text-lg leading-relaxed">
           By tracking real-time game data, The Halftimer automatically detects when halftime begins, starts a precise countdown, and alerts you when play is about to resume. Whether you’re watching multiple games, taking a break, or managing your time, The Halftimer helps you return to the action at the perfect moment.

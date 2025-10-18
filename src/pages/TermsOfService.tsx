@@ -48,11 +48,6 @@ const TermsOfService: React.FC = () => {
         <p className="mb-4">
           We may update these Terms of Service at any time. Updates will be posted on this page with the revised date.
         </p>
-
-        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Contact</h2>
-        <p className="mb-4">
-          If you have questions about these terms, contact <strong>brouslight3@gmail.com</strong>.
-        </p>
       </div>
       <MadeWithDyad />
     </div>

@@ -1,61 +1,63 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { Menu, X } from "lucide-react";
+import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const MobileNavMenu: React.FC = () => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleLinkClick = () => {
-    setIsOpen(false); // Close the sheet when a link is clicked
-  };
-
   return (
-    <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetTrigger asChild className="fixed top-4 left-4 z-50">
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild className="fixed top-4 left-4 z-50">
         <Button variant="outline" size="icon" className="h-10 w-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md hover:bg-white">
-          {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
-      </SheetTrigger>
-      <SheetContent side="left" className="w-[240px] sm:w-[280px] bg-gradient-to-b from-gray-50 to-gray-100 p-6 flex flex-col">
-        <h2 className="text-2xl font-bold text-gray-900 mb-6">Navigation</h2>
-        <nav className="flex flex-col gap-4 text-lg">
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-[200px] p-2 bg-gradient-to-b from-gray-50 to-gray-100 rounded-lg shadow-lg border border-gray-200 mt-2 ml-2">
+        <DropdownMenuItem asChild>
           <Link
             to="/"
-            className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
-            onClick={handleLinkClick}
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             Home
           </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator className="bg-gray-200 my-1" />
+        <DropdownMenuItem asChild>
           <Link
             to="/about"
-            className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
-            onClick={handleLinkClick}
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             About
           </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link
             to="/privacy"
-            className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
-            onClick={handleLinkClick}
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             Privacy Policy
           </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
           <Link
             to="/terms"
-            className="text-gray-700 hover:text-blue-600 transition-colors duration-200 font-medium"
-            onClick={handleLinkClick}
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             Terms of Service
           </Link>
-        </nav>
-      </SheetContent>
-    </Sheet>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

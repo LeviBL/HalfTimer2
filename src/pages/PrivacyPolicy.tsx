@@ -32,28 +32,8 @@ const PrivacyPolicy: React.FC = () => {
         <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Third-Party Services</h2>
         <p className="mb-4">
           We use Google AdSense to display ads. Google may collect data as described in the 
-          <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Google Ad Policy</a>. 
+          <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline"> Google Ad Policy</a>. 
           We do not control how Google handles your data, but we recommend reviewing their privacy practices.
-        </p>
-
-        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Data Security</h2>
-        <p className="mb-4">
-          We take reasonable steps to protect your information, but since no method of transmission over the internet is 100% secure, we cannot guarantee absolute security.
-        </p>
-
-        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Children’s Privacy</h2>
-        <p className="mb-4">
-          The Halftimer is not directed at children under 13 years old, and we do not knowingly collect personal information from them.
-        </p>
-
-        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Changes to This Policy</h2>
-        <p className="mb-4">
-          We may update this Privacy Policy occasionally. Any changes will be posted on this page with the updated date.
-        </p>
-
-        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Contact</h2>
-        <p className="mb-4">
-          If you have any questions about this Privacy Policy, you can contact us at <strong>brouslight3@gmail.com</strong>.
         </p>
       </div>
       <MadeWithDyad />
