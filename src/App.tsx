@@ -19,9 +19,8 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      {/* MobileNavMenu moved here to ensure it's fixed relative to the viewport */}
-      <MobileNavMenu />
       <BrowserRouter>
+        <MobileNavMenu />
         <Routes>
           <Route path="/" element={<HalfTimer />} />
           <Route path="/about" element={<About />} />
