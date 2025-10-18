@@ -9,8 +9,6 @@ const PrivacyPolicy: React.FC = () => {
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg prose prose-sm sm:prose lg:prose-lg">
         <h1 className="text-4xl font-extrabold text-gray-900 mb-6 text-center">Privacy Policy</h1>
 
-        <p className="text-gray-600 mb-4">Last updated: October 17, 2025</p>
-
         <p className="mb-4">
           At The Halftimer, accessible from <a href="https://thehalftimer.com" className="text-blue-600 hover:underline">thehalftimer.com</a>, your privacy is important to us. 
           This Privacy Policy explains what information we collect, how we use it, and your rights regarding that information.
@@ -35,6 +33,13 @@ const PrivacyPolicy: React.FC = () => {
           <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline"> Google Ad Policy</a>. 
           We do not control how Google handles your data, but we recommend reviewing their privacy practices.
         </p>
+
+        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Changes to This Policy</h2>
+        <p className="mb-4">
+          We may update this Privacy Policy occasionally. Any changes will be posted on this page with the updated date.
+        </p>
+
+        <p className="text-gray-600 mt-8 text-right">Last updated: October 17, 2025</p>
       </div>
       <MadeWithDyad />
     </div>

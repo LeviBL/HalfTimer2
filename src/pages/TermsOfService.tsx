@@ -9,8 +9,6 @@ const TermsOfService: React.FC = () => {
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg prose prose-sm sm:prose lg:prose-lg">
         <h1 className="text-4xl font-extrabold text-gray-900 mb-6 text-center">Terms of Service</h1>
 
-        <p className="text-gray-600 mb-4">Last updated: October 17, 2025</p>
-
         <p className="mb-4">
           Welcome to The Halftimer. By using our website at <a href="https://thehalftimer.com" className="text-blue-600 hover:underline">thehalftimer.com</a>, 
           you agree to these Terms of Service. If you do not agree, please do not use our site.
@@ -48,6 +46,8 @@ const TermsOfService: React.FC = () => {
         <p className="mb-4">
           We may update these Terms of Service at any time. Updates will be posted on this page with the revised date.
         </p>
+
+        <p className="text-gray-600 mt-8 text-right">Last updated: October 17, 2025</p>
       </div>
       <MadeWithDyad />
     </div>
