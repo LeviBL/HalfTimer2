@@ -17,7 +17,7 @@ const MobileNavMenu: React.FC = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="fixed top-4 left-4 z-50">
-        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md hover:bg-white">
+        <Button variant="outline" size="icon" className="h-10 w-10 rounded-full bg-white/80 backdrop-blur-sm shadow-md hover:bg-gray-200">
           <Menu className="h-5 w-5" />
           <span className="sr-only">Toggle navigation menu</span>
         </Button>
