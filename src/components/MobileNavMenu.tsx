@@ -26,7 +26,7 @@ const MobileNavMenu: React.FC = () => {
         <DropdownMenuItem asChild>
           <Link
             to="/"
-            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-200 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             Home
           </Link>
@@ -35,7 +35,7 @@ const MobileNavMenu: React.FC = () => {
         <DropdownMenuItem asChild>
           <Link
             to="/about"
-            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-200 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             About
           </Link>
@@ -43,7 +43,7 @@ const MobileNavMenu: React.FC = () => {
         <DropdownMenuItem asChild>
           <Link
             to="/privacy"
-            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-200 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             Privacy Policy
           </Link>
@@ -51,7 +51,7 @@ const MobileNavMenu: React.FC = () => {
         <DropdownMenuItem asChild>
           <Link
             to="/terms"
-            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-200 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             Terms of Service
           </Link>
@@ -59,7 +59,7 @@ const MobileNavMenu: React.FC = () => {
         <DropdownMenuItem asChild>
           <Link
             to="/contact"
-            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-200 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             Contact
           </Link>
