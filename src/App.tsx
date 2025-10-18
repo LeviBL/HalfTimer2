@@ -6,10 +6,11 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HalfTimer from "./pages/HalfTimer";
 import NotFound from "./pages/NotFound";
 import React from "react";
-import MobileNavMenu from "./components/MobileNavMenu"; // Import the new navigation menu
-import About from "./pages/About"; // Import the About page
-import PrivacyPolicy from "./pages/PrivacyPolicy"; // Import the Privacy Policy page
-import TermsOfService from "./pages/TermsOfService"; // Import the Terms of Service page
+import MobileNavMenu from "./components/MobileNavMenu";
+import About from "./pages/About";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import Contact from "./pages/Contact"; // Import the new Contact page
 
 const queryClient = new QueryClient();
 
@@ -19,12 +20,13 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <MobileNavMenu /> {/* Add the navigation menu here */}
+        <MobileNavMenu />
         <Routes>
           <Route path="/" element={<HalfTimer />} />
-          <Route path="/about" element={<About />} /> {/* New About route */}
-          <Route path="/privacy" element={<PrivacyPolicy />} /> {/* New Privacy Policy route */}
-          <Route path="/terms" element={<TermsOfService />} /> {/* New Terms of Service route */}
+          <Route path="/about" element={<About />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/contact" element={<Contact />} /> {/* New Contact route */}
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

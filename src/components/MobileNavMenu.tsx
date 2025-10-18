@@ -56,6 +56,14 @@ const MobileNavMenu: React.FC = () => {
             Terms of Service
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link
+            to="/contact"
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
+          >
+            Contact
+          </Link>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
