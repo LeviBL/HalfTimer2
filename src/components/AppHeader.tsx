@@ -23,7 +23,7 @@ const AppHeader: React.FC<AppHeaderProps> = ({ lastUpdated, isRefreshing }) => {
       </div>
 
       {/* Centered Title */}
-      <h1 className="text-3xl font-extrabold text-gray-900 drop-shadow-md">HalfTimer</h1>
+      <h1 className="text-4xl font-extrabold text-gray-900 drop-shadow-md">HalfTimer</h1>
 
       {/* Last Updated - positioned absolutely to the right, conditional */}
       {isHomePage && lastUpdated && (
