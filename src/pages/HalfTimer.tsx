@@ -6,6 +6,7 @@ import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react"; // Import a spinner icon
+import MobileNavMenu from "@/components/MobileNavMenu"; // Import MobileNavMenu
 
 // ESPN NFL Scoreboard API endpoint
 // You can change this source if a different API is preferred,
@@ -207,8 +208,9 @@ const HalfTimer: React.FC = () => {
   }, [favoriteGameIds]); // Re-run effect if favoriteGameIds changes to re-sort games immediately
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative"> {/* Adjusted pt-12 to pt-20 for menu */}
-      <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1> {/* Dark gray title for contrast */}
+    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
+      <MobileNavMenu /> {/* Render MobileNavMenu here */}
+      <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
       <p className="text-lg text-gray-700 text-center mb-8">
         Live NFL halftime countdowns for all games in just one view.
       </p>
