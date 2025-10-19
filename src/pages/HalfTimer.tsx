@@ -199,7 +199,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ setLastUpdated, setIsRefreshing }
   }, [favoriteGameIds, setLastUpdated, setIsRefreshing]);
 
   return (
-    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-4 text-gray-800 relative">
+    <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-[72px] text-gray-800 relative"> {/* Added pt-[72px] */}
       <p className="text-lg text-gray-700 text-center mb-8">
         Live NFL halftime countdowns for all games in just one view.
       </p>
