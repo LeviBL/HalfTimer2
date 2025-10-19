@@ -111,10 +111,11 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
           const currentRemaining = calculateCurrentRemaining();
           setHalftimeRemainingSeconds(currentRemaining);
           if (currentRemaining <= 0) {
-            console.log(`[GameCard ${gameId}] Halftime timer ended.`);
+            console.log(`[GameCard ${gameId}] Halftime timer ended locally.`);
             clearInterval(intervalRef.current!);
             intervalRef.current = null;
-            clearHalftimeStartTime(gameId);
+            // IMPORTANT: Do NOT clear from Supabase here.
+            // It will be cleared when gameStatusDescription is no longer "Halftime".
           }
         }, 1000);
       }
@@ -196,7 +197,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
                 <p className="text-gray-700 mb-2">Halftime: {formatCountdown(halftimeRemainingSeconds)}</p>
                 <ProgressWithIndicator value={halftimeProgress} className="w-full max-w-xs h-2 bg-gray-200" indicatorClassName="bg-amber-500" />
               </div>
-            ) : isHalftime && halftimeRemainingSeconds === 0 ? (
+            ) : isHalftime && halftimeRemainingSeconds !== null && halftimeRemainingSeconds <= 0 ? ( // Changed condition to check for <= 0
               <p className="text-red-700 animate-pulse">2nd Half Starting</p>
             ) : isInProgress && game.status.type.shortDetail ? (
               <div className="flex flex-col items-center">
