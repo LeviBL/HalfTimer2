@@ -23,6 +23,10 @@ const Contact: React.FC = () => {
             contacthalftimer@gmail.com
           </a>
         </p>
+
+        <p className="text-md text-gray-600 text-center italic">
+          We aim to respond to all inquiries within 2-3 business days.
+        </p>
       </div>
       <MadeWithDyad />
     </div>
