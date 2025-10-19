@@ -87,42 +87,40 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       return;
     }
 
-    const storedHalftimeStartTime = getHalftimeStartTime(gameId);
-    // The console.log inside getHalftimeStartTime will show what it returns.
+    let currentHalftimeStartTime = getHalftimeStartTime(gameId); // Get the current stored time
 
-    if (isCurrentlyHalftime) {
-      if (storedHalftimeStartTime === undefined) {
-        console.log(`[GameCard ${gameId}] Halftime detected, but no stored start time in hook's map. Attempting to set new timestamp.`);
-        // This is the "first to detect" logic.
-        // It will set Date.now() and then the real-time subscription will update the hook's map,
-        // causing this effect to re-run with storedHalftimeStartTime defined.
-        setHalftimeStartTime(gameId, Date.now());
-        setHalftimeRemainingSeconds(null); // Keep null until the real-time update confirms the timestamp
-      } else {
-        console.log(`[GameCard ${gameId}] Halftime detected, using stored start time: ${storedHalftimeStartTime}`);
-        const calculateCurrentRemaining = () => {
-          const elapsed = Math.floor((Date.now() - storedHalftimeStartTime!) / 1000);
-          return Math.max(0, HALFTIME_DURATION_SECONDS - elapsed);
-        };
+    // If halftime is detected and no start time is stored, set it immediately.
+    // This will trigger a Supabase upsert and a real-time update.
+    if (isCurrentlyHalftime && currentHalftimeStartTime === undefined) {
+      const now = Date.now();
+      setHalftimeStartTime(gameId, now); // This is async
+      currentHalftimeStartTime = now; // Use this local time for immediate display
+      console.log(`[GameCard ${gameId}] Halftime detected, no stored time. Setting new local and remote timestamp: ${now}`);
+    }
 
-        setHalftimeRemainingSeconds(calculateCurrentRemaining());
+    if (isCurrentlyHalftime && currentHalftimeStartTime !== undefined) {
+      console.log(`[GameCard ${gameId}] Halftime detected, using start time: ${currentHalftimeStartTime}`);
+      const calculateCurrentRemaining = () => {
+        const elapsed = Math.floor((Date.now() - currentHalftimeStartTime!) / 1000);
+        return Math.max(0, HALFTIME_DURATION_SECONDS - elapsed);
+      };
 
-        intervalRef.current = setInterval(() => {
-          const currentRemaining = calculateCurrentRemaining();
-          setHalftimeRemainingSeconds(currentRemaining);
-          if (currentRemaining <= 0) {
-            console.log(`[GameCard ${gameId}] Halftime timer ended locally.`);
-            clearInterval(intervalRef.current!);
-            intervalRef.current = null;
-            // IMPORTANT: Do NOT clear from Supabase here.
-            // It will be cleared when gameStatusDescription is no longer "Halftime".
-          }
-        }, 1000);
-      }
+      setHalftimeRemainingSeconds(calculateCurrentRemaining());
+
+      intervalRef.current = setInterval(() => {
+        const currentRemaining = calculateCurrentRemaining();
+        setHalftimeRemainingSeconds(currentRemaining);
+        if (currentRemaining <= 0) {
+          console.log(`[GameCard ${gameId}] Halftime timer ended locally.`);
+          clearInterval(intervalRef.current!);
+          intervalRef.current = null;
+        }
+      }, 1000);
     } else {
-      console.log(`[GameCard ${gameId}] Not in halftime. Clearing local timer.`);
+      console.log(`[GameCard ${gameId}] Not in halftime or no valid start time. Clearing local timer.`);
       setHalftimeRemainingSeconds(null);
-      if (storedHalftimeStartTime !== undefined) {
+      // Only clear from Supabase if it was previously set and now the game is no longer halftime
+      if (!isCurrentlyHalftime && currentHalftimeStartTime !== undefined) {
         console.log(`[GameCard ${gameId}] Clearing stored halftime start time from Supabase.`);
         clearHalftimeStartTime(gameId);
       }
