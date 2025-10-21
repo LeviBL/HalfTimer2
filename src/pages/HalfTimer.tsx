@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
-import { useIsMobile } from "@/hooks/use-mobile"; // Import useIsMobile hook
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // ESPN NFL Scoreboard API endpoint
 const NFL_SCOREBOARD_API = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard";
@@ -91,8 +91,19 @@ const HalfTimer: React.FC = () => {
     }
     return new Set();
   });
+  const [showSidebarAds, setShowSidebarAds] = useState<boolean>(false);
 
-  const isMobile = useIsMobile(); // Use the hook to determine mobile state
+  const isMobileNav = useIsMobile(); // Retain for MobileNavMenu
+
+  useEffect(() => {
+    const handleResize = () => {
+      setShowSidebarAds(window.innerWidth >= 1024); // Tailwind's 'lg' breakpoint
+    };
+
+    window.addEventListener('resize', handleResize);
+    handleResize(); // Set initial state
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -200,7 +211,7 @@ const HalfTimer: React.FC = () => {
 
   // Adsterra Ad Integration
   useEffect(() => {
-    const adsterraKey = '0ebbc6f709416d99ee85a5fff6d5f1f8'; // New key
+    const adsterraKey = '0ebbc6f709416d99ee85a5fff6d5f1f8';
     const adsterraInvokeSrc = `//www.highperformanceformat.com/${adsterraKey}/invoke.js`;
 
     const loadAd = (id: string) => {
@@ -214,8 +225,8 @@ const HalfTimer: React.FC = () => {
           var atOptions = {
             'key' : '${adsterraKey}',
             'format' : 'iframe',
-            'height' : 300, // New height
-            'width' : 160,  // New width
+            'height' : 300,
+            'width' : 160,
             'params' : {}
           };
         `;
@@ -229,24 +240,33 @@ const HalfTimer: React.FC = () => {
       }
     };
 
-    // Define which ad IDs to load based on mobile state
     const desktopAdIds = ["ad-desktop-left-1", "ad-desktop-left-2", "ad-desktop-right-1", "ad-desktop-right-2"];
-    const mobileAdIds = ["ad-mobile-bottom-1", "ad-mobile-bottom-2", "ad-mobile-bottom-3", "ad-mobile-bottom-4"];
+    const mobileBottomAdIds = ["ad-mobile-bottom-1", "ad-mobile-bottom-2", "ad-mobile-bottom-3", "ad-mobile-bottom-4"];
 
-    const adIdsToLoad = isMobile ? mobileAdIds : desktopAdIds;
+    // Clear all potential ad containers first to prevent duplicates on resize
+    [...desktopAdIds, ...mobileBottomAdIds].forEach(id => {
+      const adContainer = document.getElementById(id);
+      if (adContainer) {
+        adContainer.innerHTML = '';
+      }
+    });
 
-    adIdsToLoad.forEach(loadAd);
+    if (showSidebarAds) {
+      desktopAdIds.forEach(loadAd);
+    } else {
+      mobileBottomAdIds.forEach(loadAd);
+    }
 
     return () => {
       // Cleanup: remove the scripts when the component unmounts or dependencies change
-      [...desktopAdIds, ...mobileAdIds].forEach(id => { // Clear all possible ad containers
+      [...desktopAdIds, ...mobileBottomAdIds].forEach(id => {
         const adContainer = document.getElementById(id);
         if (adContainer) {
           adContainer.innerHTML = '';
         }
       });
     };
-  }, [isMobile]); // Re-run if isMobile changes
+  }, [showSidebarAds]);
 
 
   return (
@@ -267,7 +287,7 @@ const HalfTimer: React.FC = () => {
       <div className="w-full flex justify-center lg:grid lg:grid-cols-[1fr_minmax(auto,664px)_1fr] lg:gap-8 max-w-[1400px] mx-auto">
 
         {/* Left Sidebar Ads (Desktop Only) */}
-        {!isMobile && (
+        {showSidebarAds && (
           <div className="hidden lg:flex flex-col items-center gap-8 py-8">
             <div id="ad-desktop-left-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
             <div id="ad-desktop-left-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
@@ -321,13 +341,15 @@ const HalfTimer: React.FC = () => {
             </div>
           )}
 
-          {/* Mobile Ads at the very end (Conditional) */}
-          {isMobile && (
-            <div className="flex flex-col items-center gap-4 my-8 w-full">
-              <div id="ad-mobile-bottom-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-              <div id="ad-mobile-bottom-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-              <div id="ad-mobile-bottom-3" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-              <div id="ad-mobile-bottom-4" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+          {/* Bottom Ads (Visible on smaller screens, hidden on large screens) */}
+          {!showSidebarAds && (
+            <div className="mt-8 w-full flex justify-center">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-items-center max-w-[664px]">
+                <div id="ad-mobile-bottom-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                <div id="ad-mobile-bottom-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                <div id="ad-mobile-bottom-3" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                <div id="ad-mobile-bottom-4" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+              </div>
             </div>
           )}
 
@@ -345,7 +367,7 @@ const HalfTimer: React.FC = () => {
         </div>
 
         {/* Right Sidebar Ads (Desktop Only) */}
-        {!isMobile && (
+        {showSidebarAds && (
           <div className="hidden lg:flex flex-col items-center gap-8 py-8">
             <div id="ad-desktop-right-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
             <div id="ad-desktop-right-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
