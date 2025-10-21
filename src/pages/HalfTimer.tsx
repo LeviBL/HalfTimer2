@@ -97,12 +97,13 @@ const HalfTimer: React.FC = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      setShowSidebarAds(window.innerWidth >= 1024); // Tailwind's 'lg' breakpoint
+      // Set sidebar ads to show only when window width is 1400px or greater (2xl breakpoint)
+      setShowSidebarAds(window.innerWidth >= 1400);
     };
 
     window.addEventListener('resize', handleResize);
     handleResize(); // Set initial state
-    return () => window.removeEventListener('change', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   useEffect(() => {
@@ -341,7 +342,7 @@ const HalfTimer: React.FC = () => {
             </div>
           )}
 
-          {/* Bottom Ads (Visible on smaller screens, hidden on large screens) */}
+          {/* Bottom Ads (Visible when sidebars are not shown) */}
           {!showSidebarAds && (
             <div className="mt-8 w-full flex justify-center">
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-items-center max-w-[664px]">
