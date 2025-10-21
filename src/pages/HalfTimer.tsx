@@ -102,7 +102,7 @@ const HalfTimer: React.FC = () => {
 
     window.addEventListener('resize', handleResize);
     handleResize(); // Set initial state
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener('change', handleResize);
   }, []);
 
   useEffect(() => {
@@ -344,7 +344,7 @@ const HalfTimer: React.FC = () => {
           {/* Bottom Ads (Visible on smaller screens, hidden on large screens) */}
           {!showSidebarAds && (
             <div className="mt-8 w-full flex justify-center">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-items-center max-w-[664px]">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-items-center max-w-[664px]">
                 <div id="ad-mobile-bottom-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
                 <div id="ad-mobile-bottom-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
                 <div id="ad-mobile-bottom-3" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
