@@ -200,7 +200,7 @@ const HalfTimer: React.FC = () => {
 
   // Adsterra Ad Integration
   useEffect(() => {
-    const adsterraKey = 'b02a97061cd7a78c056c438b534498c9';
+    const adsterraKey = '0ebbc6f709416d99ee85a5fff6d5f1f8'; // New key
     const adsterraInvokeSrc = `//www.highperformanceformat.com/${adsterraKey}/invoke.js`;
 
     const loadAd = (id: string) => {
@@ -214,8 +214,8 @@ const HalfTimer: React.FC = () => {
           var atOptions = {
             'key' : '${adsterraKey}',
             'format' : 'iframe',
-            'height' : 250,
-            'width' : 300,
+            'height' : 300, // New height
+            'width' : 160,  // New width
             'params' : {}
           };
         `;
@@ -230,22 +230,23 @@ const HalfTimer: React.FC = () => {
     };
 
     // Define which ad IDs to load based on mobile state
-    const adIdsToLoad = isMobile
-      ? ["ad-mobile-1a", "ad-mobile-1b", "ad-mobile-2a", "ad-mobile-2b", "ad-mobile-3a", "ad-mobile-3b"]
-      : ["ad-left-top", "ad-left-bottom", "ad-right-top", "ad-right-bottom"];
+    const desktopAdIds = ["ad-desktop-left-1", "ad-desktop-left-2", "ad-desktop-right-1", "ad-desktop-right-2"];
+    const mobileAdIds = ["ad-mobile-bottom-1", "ad-mobile-bottom-2", "ad-mobile-bottom-3", "ad-mobile-bottom-4"];
+
+    const adIdsToLoad = isMobile ? mobileAdIds : desktopAdIds;
 
     adIdsToLoad.forEach(loadAd);
 
     return () => {
       // Cleanup: remove the scripts when the component unmounts or dependencies change
-      adIdsToLoad.forEach(id => {
+      [...desktopAdIds, ...mobileAdIds].forEach(id => { // Clear all possible ad containers
         const adContainer = document.getElementById(id);
         if (adContainer) {
           adContainer.innerHTML = '';
         }
       });
     };
-  }, [isMobile, games]); // Re-run if isMobile changes or games array changes (as ad containers might be re-rendered)
+  }, [isMobile]); // Re-run if isMobile changes
 
 
   return (
@@ -268,8 +269,8 @@ const HalfTimer: React.FC = () => {
         {/* Left Sidebar Ads (Desktop Only) */}
         {!isMobile && (
           <div className="hidden lg:flex flex-col items-center gap-8 py-8">
-            <div id="ad-left-top" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-            <div id="ad-left-bottom" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+            <div id="ad-desktop-left-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+            <div id="ad-desktop-left-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
           </div>
         )}
 
@@ -306,27 +307,13 @@ const HalfTimer: React.FC = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
               {games.length > 0 ? (
-                games.map((game, index) => (
-                  <React.Fragment key={game.id}>
-                    <GameCard
-                      game={game}
-                      isFavorited={favoriteGameIds.has(game.id)}
-                      onToggleFavorite={toggleFavorite}
-                    />
-                    {/* Mobile Ads (Conditional) */}
-                    {isMobile && index === 1 && (
-                      <div className="col-span-full flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
-                        <div id="ad-mobile-1a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                        <div id="ad-mobile-1b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                      </div>
-                    )}
-                    {isMobile && index === 4 && (
-                      <div className="col-span-full flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
-                        <div id="ad-mobile-2a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                        <div id="ad-mobile-2b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                      </div>
-                    )}
-                  </React.Fragment>
+                games.map((game) => (
+                  <GameCard
+                    key={game.id}
+                    game={game}
+                    isFavorited={favoriteGameIds.has(game.id)}
+                    onToggleFavorite={toggleFavorite}
+                  />
                 ))
               ) : (
                 <p className="col-span-full text-center text-gray-600 text-2xl">No NFL games currently available.</p>
@@ -336,9 +323,11 @@ const HalfTimer: React.FC = () => {
 
           {/* Mobile Ads at the very end (Conditional) */}
           {isMobile && (
-            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
-              <div id="ad-mobile-3a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-              <div id="ad-mobile-3b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+            <div className="flex flex-col items-center gap-4 my-8 w-full">
+              <div id="ad-mobile-bottom-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+              <div id="ad-mobile-bottom-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+              <div id="ad-mobile-bottom-3" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+              <div id="ad-mobile-bottom-4" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
             </div>
           )}
 
@@ -358,8 +347,8 @@ const HalfTimer: React.FC = () => {
         {/* Right Sidebar Ads (Desktop Only) */}
         {!isMobile && (
           <div className="hidden lg:flex flex-col items-center gap-8 py-8">
-            <div id="ad-right-top" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-            <div id="ad-right-bottom" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+            <div id="ad-desktop-right-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+            <div id="ad-desktop-right-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
           </div>
         )}
       </div> {/* End of main layout container */}
