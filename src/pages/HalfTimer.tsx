@@ -197,43 +197,50 @@ const HalfTimer: React.FC = () => {
 
   // Adsterra Ad Integration
   useEffect(() => {
-    const adContainer = document.getElementById("adsterra-ad-container");
-    if (adContainer) {
-      // Clear existing content to prevent duplicates on re-render
-      adContainer.innerHTML = '';
+    const adContainerIds = [
+      "adsterra-ad-container-1a", "adsterra-ad-container-1b",
+      "adsterra-ad-container-2a", "adsterra-ad-container-2b",
+      "adsterra-ad-container-3a", "adsterra-ad-container-3b",
+    ];
 
-      // Define atOptions globally or within the script's scope
-      // For dynamic loading, it's often best to define it before the script is appended
-      // or ensure the script itself handles its options.
-      // Given the Adsterra snippet, it expects `atOptions` to be available.
-      // We'll create a temporary script to define it.
-      const optionsScript = document.createElement("script");
-      optionsScript.type = "text/javascript";
-      optionsScript.innerHTML = `
-        var atOptions = {
-          'key' : 'b02a97061cd7a78c056c438b534498c9',
-          'format' : 'iframe',
-          'height' : 250,
-          'width' : 300,
-          'params' : {}
-        };
-      `;
-      adContainer.appendChild(optionsScript);
+    adContainerIds.forEach(id => {
+      const adContainer = document.getElementById(id);
+      if (adContainer) {
+        // Clear existing content to prevent duplicates on re-render
+        adContainer.innerHTML = '';
 
-      const invokeScript = document.createElement("script");
-      invokeScript.type = "text/javascript";
-      invokeScript.src = "//www.highperformanceformat.com/b02a97061cd7a78c056c438b534498c9/invoke.js";
-      invokeScript.async = true;
-      adContainer.appendChild(invokeScript);
+        // Define atOptions globally or within the script's scope
+        const optionsScript = document.createElement("script");
+        optionsScript.type = "text/javascript";
+        optionsScript.innerHTML = `
+          var atOptions = {
+            'key' : 'b02a97061cd7a78c056c438b534498c9',
+            'format' : 'iframe',
+            'height' : 250,
+            'width' : 300,
+            'params' : {}
+          };
+        `;
+        adContainer.appendChild(optionsScript);
 
-      return () => {
-        // Cleanup: remove the scripts when the component unmounts
+        const invokeScript = document.createElement("script");
+        invokeScript.type = "text/javascript";
+        invokeScript.src = "//www.highperformanceformat.com/b02a97061cd7a78c056c438b534498c9/invoke.js";
+        invokeScript.async = true;
+        adContainer.appendChild(invokeScript);
+      }
+    });
+
+    return () => {
+      // Cleanup: remove the scripts when the component unmounts or games change
+      adContainerIds.forEach(id => {
+        const adContainer = document.getElementById(id);
         if (adContainer) {
           adContainer.innerHTML = ''; // Clear all children
         }
-      };
-    }
-  }, []); // Empty dependency array means this runs once on mount and cleans up on unmount
+      });
+    };
+  }, [games]); // Re-run if games array changes, ensuring new placeholders get ads
 
 
   return (
@@ -280,13 +287,28 @@ const HalfTimer: React.FC = () => {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
           {games.length > 0 ? (
-            games.map((game) => (
-              <GameCard
-                key={game.id}
-                game={game}
-                isFavorited={favoriteGameIds.has(game.id)}
-                onToggleFavorite={toggleFavorite}
-              />
+            games.map((game, index) => (
+              <React.Fragment key={game.id}>
+                <GameCard
+                  game={game}
+                  isFavorited={favoriteGameIds.has(game.id)}
+                  onToggleFavorite={toggleFavorite}
+                />
+                {/* Ad after the 2nd game card */}
+                {index === 1 && (
+                  <div className="col-span-full flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
+                    <div id="adsterra-ad-container-1a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                    <div id="adsterra-ad-container-1b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                  </div>
+                )}
+                {/* Ad after the 5th game card */}
+                {index === 4 && (
+                  <div className="col-span-full flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
+                    <div id="adsterra-ad-container-2a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                    <div id="adsterra-ad-container-2b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                  </div>
+                )}
+              </React.Fragment>
             ))
           ) : (
             <p className="col-span-full text-center text-gray-600 text-2xl">No NFL games currently available.</p>
@@ -294,11 +316,10 @@ const HalfTimer: React.FC = () => {
         </div>
       )}
 
-      {/* Adsterra Ad Placeholder */}
-      <div className="flex justify-center my-8">
-        <div id="adsterra-ad-container" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300">
-          {/* Ad will be injected here */}
-        </div>
+      {/* Adsterra Ad Placeholder at the very end */}
+      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
+        <div id="adsterra-ad-container-3a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+        <div id="adsterra-ad-container-3b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
       </div>
 
       {/* Legend for color outlines */}
