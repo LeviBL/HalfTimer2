@@ -5,12 +5,10 @@ import GameCard from "@/components/GameCard";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2 } from "lucide-react"; // Import a spinner icon
-import MobileNavMenu from "@/components/MobileNavMenu"; // Import MobileNavMenu
+import { Loader2 } from "lucide-react";
+import MobileNavMenu from "@/components/MobileNavMenu";
 
 // ESPN NFL Scoreboard API endpoint
-// You can change this source if a different API is preferred,
-// but ensure the data structure matches what GameCard expects.
 const NFL_SCOREBOARD_API = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard";
 
 // Data refresh interval in milliseconds (20 seconds)
@@ -30,8 +28,8 @@ interface CompetitionData {
     type: {
       description: string;
       state: "pre" | "in" | "post";
-      detail: string; // Added
-      shortDetail: string; // Added
+      detail: string;
+      shortDetail: string;
     };
   };
   competitors: Array<{
@@ -53,8 +51,8 @@ interface EventData {
     type: {
       description: string;
       state: "pre" | "in" | "post";
-      detail: string; // Added
-      shortDetail: string; // Added
+      detail: string;
+      shortDetail: string;
     };
   };
   competitions: CompetitionData[];
@@ -81,12 +79,11 @@ interface Game {
 
 const HalfTimer: React.FC = () => {
   const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Only for initial load
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false); // For subsequent background refreshes
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [favoriteGameIds, setFavoriteGameIds] = useState<Set<string>>(() => {
-    // Initialize favorite games from localStorage
     if (typeof window !== "undefined") {
       const storedFavorites = localStorage.getItem(FAVORITE_GAMES_STORAGE_KEY);
       return storedFavorites ? new Set(JSON.parse(storedFavorites)) : new Set();
@@ -94,14 +91,12 @@ const HalfTimer: React.FC = () => {
     return new Set();
   });
 
-  // Effect to save favoriteGameIds to localStorage whenever it changes
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem(FAVORITE_GAMES_STORAGE_KEY, JSON.stringify(Array.from(favoriteGameIds)));
     }
   }, [favoriteGameIds]);
 
-  // Function to toggle a game's favorite status
   const toggleFavorite = (gameId: string) => {
     setFavoriteGameIds(prevFavorites => {
       const newFavorites = new Set(prevFavorites);
@@ -114,7 +109,6 @@ const HalfTimer: React.FC = () => {
     });
   };
 
-  // Function to fetch NFL game data
   const fetchNFLGames = async (initialLoad: boolean = false) => {
     if (initialLoad) {
       setLoading(true);
@@ -129,9 +123,8 @@ const HalfTimer: React.FC = () => {
       }
       const data = await response.json();
 
-      // Process the raw API data into a more usable format for our GameCard component
       const processedGames: Game[] = data.events.map((event: EventData) => {
-        const competition = event.competitions[0]; // Assuming one competition per event
+        const competition = event.competitions[0];
         const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
         const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
@@ -144,45 +137,43 @@ const HalfTimer: React.FC = () => {
             type: {
               description: event.status.type.description,
               state: event.status.type.state,
-              detail: event.status.type.detail, // Pass detail
-              shortDetail: event.status.type.shortDetail, // Pass shortDetail
+              detail: event.status.type.detail,
+              shortDetail: event.status.type.shortDetail,
             },
           },
           competitors: {
             home: {
               displayName: homeCompetitor?.team.displayName || "N/A",
-              logo: homeCompetitor?.team.logo || "/placeholder.svg", // Use a placeholder if no logo
+              logo: homeCompetitor?.team.logo || "/placeholder.svg",
               score: homeCompetitor?.score || "0",
             },
             away: {
               displayName: awayCompetitor?.team.displayName || "N/A",
-              logo: awayCompetitor?.team.logo || "/placeholder.svg", // Use a placeholder if no logo
+              logo: awayCompetitor?.team.logo || "/placeholder.svg",
               score: awayCompetitor?.score || "0",
             },
           },
         };
       });
 
-      // Sort games: Favorited games first, then 'pre' and 'in' status games, 'post' status games last
       const sortedGames = [...processedGames].sort((a, b) => {
         const aIsFavorited = favoriteGameIds.has(a.id);
         const bIsFavorited = favoriteGameIds.has(b.id);
 
-        if (aIsFavorited && !bIsFavorited) return -1; // a comes before b
-        if (!aIsFavorited && bIsFavorited) return 1; // a comes after b
+        if (aIsFavorited && !bIsFavorited) return -1;
+        if (!aIsFavorited && bIsFavorited) return 1;
 
-        // If both are favorited or neither are, apply existing sorting logic
         if (a.status.type.state === "post" && b.status.type.state !== "post") {
-          return 1; // a comes after b
+          return 1;
         }
         if (a.status.type.state !== "post" && b.status.type.state === "post") {
-          return -1; // a comes before b
+          return -1;
         }
-        return 0; // maintain original order for same status types
+        return 0;
       });
 
       setGames(sortedGames);
-      setLastUpdated(new Date().toLocaleTimeString()); // Update timestamp on successful fetch
+      setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
     } catch (err) {
       console.error("Failed to fetch NFL game data:", err);
@@ -197,19 +188,57 @@ const HalfTimer: React.FC = () => {
   };
 
   useEffect(() => {
-    // Fetch data immediately on component mount (initial load)
     fetchNFLGames(true);
 
-    // Set up interval to refresh data every 20 seconds (background refresh)
     const intervalId = setInterval(() => fetchNFLGames(false), REFRESH_INTERVAL);
 
-    // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [favoriteGameIds]); // Re-run effect if favoriteGameIds changes to re-sort games immediately
+  }, [favoriteGameIds]);
+
+  // Adsterra Ad Integration
+  useEffect(() => {
+    const adContainer = document.getElementById("adsterra-ad-container");
+    if (adContainer) {
+      // Clear existing content to prevent duplicates on re-render
+      adContainer.innerHTML = '';
+
+      // Define atOptions globally or within the script's scope
+      // For dynamic loading, it's often best to define it before the script is appended
+      // or ensure the script itself handles its options.
+      // Given the Adsterra snippet, it expects `atOptions` to be available.
+      // We'll create a temporary script to define it.
+      const optionsScript = document.createElement("script");
+      optionsScript.type = "text/javascript";
+      optionsScript.innerHTML = `
+        var atOptions = {
+          'key' : 'b02a97061cd7a78c056c438b534498c9',
+          'format' : 'iframe',
+          'height' : 250,
+          'width' : 300,
+          'params' : {}
+        };
+      `;
+      adContainer.appendChild(optionsScript);
+
+      const invokeScript = document.createElement("script");
+      invokeScript.type = "text/javascript";
+      invokeScript.src = "//www.highperformanceformat.com/b02a97061cd7a78c056c438b534498c9/invoke.js";
+      invokeScript.async = true;
+      adContainer.appendChild(invokeScript);
+
+      return () => {
+        // Cleanup: remove the scripts when the component unmounts
+        if (adContainer) {
+          adContainer.innerHTML = ''; // Clear all children
+        }
+      };
+    }
+  }, []); // Empty dependency array means this runs once on mount and cleans up on unmount
+
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
-      <MobileNavMenu /> {/* Render MobileNavMenu here */}
+      <MobileNavMenu />
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
       <p className="text-lg text-gray-700 text-center mb-8">
         Live NFL halftime countdowns for all games in just one view.
@@ -264,6 +293,13 @@ const HalfTimer: React.FC = () => {
           )}
         </div>
       )}
+
+      {/* Adsterra Ad Placeholder */}
+      <div className="flex justify-center my-8">
+        <div id="adsterra-ad-container" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300">
+          {/* Ad will be injected here */}
+        </div>
+      </div>
 
       {/* Legend for color outlines */}
       <div className="mt-12 p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md text-gray-800 text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center">
