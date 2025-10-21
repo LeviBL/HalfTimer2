@@ -7,6 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
+import { useIsMobile } from "@/hooks/use-mobile"; // Import useIsMobile hook
 
 // ESPN NFL Scoreboard API endpoint
 const NFL_SCOREBOARD_API = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard";
@@ -90,6 +91,8 @@ const HalfTimer: React.FC = () => {
     }
     return new Set();
   });
+
+  const isMobile = useIsMobile(); // Use the hook to determine mobile state
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -197,24 +200,19 @@ const HalfTimer: React.FC = () => {
 
   // Adsterra Ad Integration
   useEffect(() => {
-    const adContainerIds = [
-      "adsterra-ad-container-1a", "adsterra-ad-container-1b",
-      "adsterra-ad-container-2a", "adsterra-ad-container-2b",
-      "adsterra-ad-container-3a", "adsterra-ad-container-3b",
-    ];
+    const adsterraKey = 'b02a97061cd7a78c056c438b534498c9';
+    const adsterraInvokeSrc = `//www.highperformanceformat.com/${adsterraKey}/invoke.js`;
 
-    adContainerIds.forEach(id => {
+    const loadAd = (id: string) => {
       const adContainer = document.getElementById(id);
       if (adContainer) {
-        // Clear existing content to prevent duplicates on re-render
-        adContainer.innerHTML = '';
+        adContainer.innerHTML = ''; // Clear existing content
 
-        // Define atOptions globally or within the script's scope
         const optionsScript = document.createElement("script");
         optionsScript.type = "text/javascript";
         optionsScript.innerHTML = `
           var atOptions = {
-            'key' : 'b02a97061cd7a78c056c438b534498c9',
+            'key' : '${adsterraKey}',
             'format' : 'iframe',
             'height' : 250,
             'width' : 300,
@@ -225,22 +223,29 @@ const HalfTimer: React.FC = () => {
 
         const invokeScript = document.createElement("script");
         invokeScript.type = "text/javascript";
-        invokeScript.src = "//www.highperformanceformat.com/b02a97061cd7a78c056c438b534498c9/invoke.js";
+        invokeScript.src = adsterraInvokeSrc;
         invokeScript.async = true;
         adContainer.appendChild(invokeScript);
       }
-    });
+    };
+
+    // Define which ad IDs to load based on mobile state
+    const adIdsToLoad = isMobile
+      ? ["ad-mobile-1a", "ad-mobile-1b", "ad-mobile-2a", "ad-mobile-2b", "ad-mobile-3a", "ad-mobile-3b"]
+      : ["ad-left-top", "ad-left-bottom", "ad-right-top", "ad-right-bottom"];
+
+    adIdsToLoad.forEach(loadAd);
 
     return () => {
-      // Cleanup: remove the scripts when the component unmounts or games change
-      adContainerIds.forEach(id => {
+      // Cleanup: remove the scripts when the component unmounts or dependencies change
+      adIdsToLoad.forEach(id => {
         const adContainer = document.getElementById(id);
         if (adContainer) {
-          adContainer.innerHTML = ''; // Clear all children
+          adContainer.innerHTML = '';
         }
       });
     };
-  }, [games]); // Re-run if games array changes, ensuring new placeholders get ads
+  }, [isMobile, games]); // Re-run if isMobile changes or games array changes (as ad containers might be re-rendered)
 
 
   return (
@@ -256,83 +261,108 @@ const HalfTimer: React.FC = () => {
           {isRefreshing && <Loader2 className="h-4 w-4 animate-spin text-blue-500" />}
         </div>
       )}
-      {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
-          {[...Array(6)].map((_, i) => (
-            <Card key={i} className="w-[320px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden">
-              <CardContent className="p-6 flex flex-col justify-between h-full">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center space-x-3">
-                    <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
-                    <Skeleton className="h-6 w-24 bg-gray-400" />
-                  </div>
-                  <Skeleton className="h-8 w-12 bg-gray-400" />
-                </div>
-                <div className="flex justify-between items-center mb-6">
-                  <div className="flex items-center space-x-3">
-                    <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
-                    <Skeleton className="h-6 w-24 bg-gray-400" />
-                  </div>
-                  <Skeleton className="h-8 w-12 bg-gray-400" />
-                </div>
-                <Skeleton className="h-6 w-40 mx-auto bg-gray-400" />
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : error ? (
-        <div className="text-red-600 text-xl p-4 bg-red-100 rounded-lg shadow-md">
-          <p>{error}</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
-          {games.length > 0 ? (
-            games.map((game, index) => (
-              <React.Fragment key={game.id}>
-                <GameCard
-                  game={game}
-                  isFavorited={favoriteGameIds.has(game.id)}
-                  onToggleFavorite={toggleFavorite}
-                />
-                {/* Ad after the 2nd game card */}
-                {index === 1 && (
-                  <div className="col-span-full flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
-                    <div id="adsterra-ad-container-1a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                    <div id="adsterra-ad-container-1b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                  </div>
-                )}
-                {/* Ad after the 5th game card */}
-                {index === 4 && (
-                  <div className="col-span-full flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
-                    <div id="adsterra-ad-container-2a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                    <div id="adsterra-ad-container-2b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                  </div>
-                )}
-              </React.Fragment>
-            ))
+
+      {/* Main layout container for desktop sidebars and central content */}
+      <div className="w-full flex justify-center lg:grid lg:grid-cols-[1fr_minmax(auto,664px)_1fr] lg:gap-8 max-w-[1400px] mx-auto">
+
+        {/* Left Sidebar Ads (Desktop Only) */}
+        {!isMobile && (
+          <div className="hidden lg:flex flex-col items-center gap-8 py-8">
+            <div id="ad-left-top" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+            <div id="ad-left-bottom" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+          </div>
+        )}
+
+        {/* Central Content Area */}
+        <div className="flex flex-col items-center w-full">
+          {loading ? (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
+              {[...Array(6)].map((_, i) => (
+                <Card key={i} className="w-[320px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden">
+                  <CardContent className="p-6 flex flex-col justify-between h-full">
+                    <div className="flex justify-between items-center mb-4">
+                      <div className="flex items-center space-x-3">
+                        <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
+                        <Skeleton className="h-6 w-24 bg-gray-400" />
+                      </div>
+                      <Skeleton className="h-8 w-12 bg-gray-400" />
+                    </div>
+                    <div className="flex justify-between items-center mb-6">
+                      <div className="flex items-center space-x-3">
+                        <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
+                        <Skeleton className="h-6 w-24 bg-gray-400" />
+                      </div>
+                      <Skeleton className="h-8 w-12 bg-gray-400" />
+                    </div>
+                    <Skeleton className="h-6 w-40 mx-auto bg-gray-400" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : error ? (
+            <div className="text-red-600 text-xl p-4 bg-red-100 rounded-lg shadow-md">
+              <p>{error}</p>
+            </div>
           ) : (
-            <p className="col-span-full text-center text-gray-600 text-2xl">No NFL games currently available.</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
+              {games.length > 0 ? (
+                games.map((game, index) => (
+                  <React.Fragment key={game.id}>
+                    <GameCard
+                      game={game}
+                      isFavorited={favoriteGameIds.has(game.id)}
+                      onToggleFavorite={toggleFavorite}
+                    />
+                    {/* Mobile Ads (Conditional) */}
+                    {isMobile && index === 1 && (
+                      <div className="col-span-full flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
+                        <div id="ad-mobile-1a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                        <div id="ad-mobile-1b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                      </div>
+                    )}
+                    {isMobile && index === 4 && (
+                      <div className="col-span-full flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
+                        <div id="ad-mobile-2a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                        <div id="ad-mobile-2b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+                      </div>
+                    )}
+                  </React.Fragment>
+                ))
+              ) : (
+                <p className="col-span-full text-center text-gray-600 text-2xl">No NFL games currently available.</p>
+              )}
+            </div>
           )}
+
+          {/* Mobile Ads at the very end (Conditional) */}
+          {isMobile && (
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
+              <div id="ad-mobile-3a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+              <div id="ad-mobile-3b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+            </div>
+          )}
+
+          {/* Legend for color outlines */}
+          <div className="mt-12 p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md text-gray-800 text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center">
+            <p className="flex items-center gap-2">
+              <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full"></span>
+              <span>= Live Game</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="inline-block w-5 h-5 bg-amber-400 rounded-full"></span>
+              <span>= Halftime</span>
+            </p>
+          </div>
         </div>
-      )}
 
-      {/* Adsterra Ad Placeholder at the very end */}
-      <div className="flex flex-col sm:flex-row justify-center items-center gap-4 my-8">
-        <div id="adsterra-ad-container-3a" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-        <div id="adsterra-ad-container-3b" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-      </div>
-
-      {/* Legend for color outlines */}
-      <div className="mt-12 p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md text-gray-800 text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center">
-        <p className="flex items-center gap-2">
-          <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full"></span>
-          <span>= Live Game</span>
-        </p>
-        <p className="flex items-center gap-2">
-          <span className="inline-block w-5 h-5 bg-amber-400 rounded-full"></span>
-          <span>= Halftime</span>
-        </p>
-      </div>
+        {/* Right Sidebar Ads (Desktop Only) */}
+        {!isMobile && (
+          <div className="hidden lg:flex flex-col items-center gap-8 py-8">
+            <div id="ad-right-top" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+            <div id="ad-right-bottom" className="w-[300px] h-[250px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
+          </div>
+        )}
+      </div> {/* End of main layout container */}
 
       <MadeWithDyad />
     </div>
