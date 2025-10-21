@@ -5,11 +5,12 @@ import GameCard from "@/components/GameCard";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
-import MobileNavMenu from "@/components/MobileNavMenu";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { Loader2 } from "lucide-react"; // Import a spinner icon
+import MobileNavMenu from "@/components/MobileNavMenu"; // Import MobileNavMenu
 
 // ESPN NFL Scoreboard API endpoint
+// You can change this source if a different API is preferred,
+// but ensure the data structure matches what GameCard expects.
 const NFL_SCOREBOARD_API = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard";
 
 // Data refresh interval in milliseconds (20 seconds)
@@ -29,8 +30,8 @@ interface CompetitionData {
     type: {
       description: string;
       state: "pre" | "in" | "post";
-      detail: string;
-      shortDetail: string;
+      detail: string; // Added
+      shortDetail: string; // Added
     };
   };
   competitors: Array<{
@@ -52,8 +53,8 @@ interface EventData {
     type: {
       description: string;
       state: "pre" | "in" | "post";
-      detail: string;
-      shortDetail: string;
+      detail: string; // Added
+      shortDetail: string; // Added
     };
   };
   competitions: CompetitionData[];
@@ -80,38 +81,27 @@ interface Game {
 
 const HalfTimer: React.FC = () => {
   const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true); // Only for initial load
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false); // For subsequent background refreshes
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
   const [favoriteGameIds, setFavoriteGameIds] = useState<Set<string>>(() => {
+    // Initialize favorite games from localStorage
     if (typeof window !== "undefined") {
       const storedFavorites = localStorage.getItem(FAVORITE_GAMES_STORAGE_KEY);
       return storedFavorites ? new Set(JSON.parse(storedFavorites)) : new Set();
     }
     return new Set();
   });
-  const [showSidebarAds, setShowSidebarAds] = useState<boolean>(false);
 
-  const isMobileNav = useIsMobile(); // Retain for MobileNavMenu
-
-  useEffect(() => {
-    const handleResize = () => {
-      // Set sidebar ads to show only when window width is 1400px or greater (2xl breakpoint)
-      setShowSidebarAds(window.innerWidth >= 1400);
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Set initial state
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
+  // Effect to save favoriteGameIds to localStorage whenever it changes
   useEffect(() => {
     if (typeof window !== "undefined") {
       localStorage.setItem(FAVORITE_GAMES_STORAGE_KEY, JSON.stringify(Array.from(favoriteGameIds)));
     }
   }, [favoriteGameIds]);
 
+  // Function to toggle a game's favorite status
   const toggleFavorite = (gameId: string) => {
     setFavoriteGameIds(prevFavorites => {
       const newFavorites = new Set(prevFavorites);
@@ -124,6 +114,7 @@ const HalfTimer: React.FC = () => {
     });
   };
 
+  // Function to fetch NFL game data
   const fetchNFLGames = async (initialLoad: boolean = false) => {
     if (initialLoad) {
       setLoading(true);
@@ -138,8 +129,9 @@ const HalfTimer: React.FC = () => {
       }
       const data = await response.json();
 
+      // Process the raw API data into a more usable format for our GameCard component
       const processedGames: Game[] = data.events.map((event: EventData) => {
-        const competition = event.competitions[0];
+        const competition = event.competitions[0]; // Assuming one competition per event
         const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
         const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
@@ -152,43 +144,45 @@ const HalfTimer: React.FC = () => {
             type: {
               description: event.status.type.description,
               state: event.status.type.state,
-              detail: event.status.type.detail,
-              shortDetail: event.status.type.shortDetail,
+              detail: event.status.type.detail, // Pass detail
+              shortDetail: event.status.type.shortDetail, // Pass shortDetail
             },
           },
           competitors: {
             home: {
               displayName: homeCompetitor?.team.displayName || "N/A",
-              logo: homeCompetitor?.team.logo || "/placeholder.svg",
+              logo: homeCompetitor?.team.logo || "/placeholder.svg", // Use a placeholder if no logo
               score: homeCompetitor?.score || "0",
             },
             away: {
               displayName: awayCompetitor?.team.displayName || "N/A",
-              logo: awayCompetitor?.team.logo || "/placeholder.svg",
+              logo: awayCompetitor?.team.logo || "/placeholder.svg", // Use a placeholder if no logo
               score: awayCompetitor?.score || "0",
             },
           },
         };
       });
 
+      // Sort games: Favorited games first, then 'pre' and 'in' status games, 'post' status games last
       const sortedGames = [...processedGames].sort((a, b) => {
         const aIsFavorited = favoriteGameIds.has(a.id);
         const bIsFavorited = favoriteGameIds.has(b.id);
 
-        if (aIsFavorited && !bIsFavorited) return -1;
-        if (!aIsFavorited && bIsFavorited) return 1;
+        if (aIsFavorited && !bIsFavorited) return -1; // a comes before b
+        if (!aIsFavorited && bIsFavorited) return 1; // a comes after b
 
+        // If both are favorited or neither are, apply existing sorting logic
         if (a.status.type.state === "post" && b.status.type.state !== "post") {
-          return 1;
+          return 1; // a comes after b
         }
         if (a.status.type.state !== "post" && b.status.type.state === "post") {
-          return -1;
+          return -1; // a comes before b
         }
-        return 0;
+        return 0; // maintain original order for same status types
       });
 
       setGames(sortedGames);
-      setLastUpdated(new Date().toLocaleTimeString());
+      setLastUpdated(new Date().toLocaleTimeString()); // Update timestamp on successful fetch
       setError(null);
     } catch (err) {
       console.error("Failed to fetch NFL game data:", err);
@@ -203,76 +197,19 @@ const HalfTimer: React.FC = () => {
   };
 
   useEffect(() => {
+    // Fetch data immediately on component mount (initial load)
     fetchNFLGames(true);
 
+    // Set up interval to refresh data every 20 seconds (background refresh)
     const intervalId = setInterval(() => fetchNFLGames(false), REFRESH_INTERVAL);
 
+    // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [favoriteGameIds]);
-
-  // Adsterra Ad Integration
-  useEffect(() => {
-    const adsterraKey = '0ebbc6f709416d99ee85a5fff6d5f1f8';
-    const adsterraInvokeSrc = `//www.highperformanceformat.com/${adsterraKey}/invoke.js`;
-
-    const loadAd = (id: string) => {
-      const adContainer = document.getElementById(id);
-      if (adContainer) {
-        adContainer.innerHTML = ''; // Clear existing content
-
-        const optionsScript = document.createElement("script");
-        optionsScript.type = "text/javascript";
-        optionsScript.innerHTML = `
-          var atOptions = {
-            'key' : '${adsterraKey}',
-            'format' : 'iframe',
-            'height' : 300,
-            'width' : 160,
-            'params' : {}
-          };
-        `;
-        adContainer.appendChild(optionsScript);
-
-        const invokeScript = document.createElement("script");
-        invokeScript.type = "text/javascript";
-        invokeScript.src = adsterraInvokeSrc;
-        invokeScript.async = true;
-        adContainer.appendChild(invokeScript);
-      }
-    };
-
-    const desktopAdIds = ["ad-desktop-left-1", "ad-desktop-left-2", "ad-desktop-right-1", "ad-desktop-right-2"];
-    const mobileBottomAdIds = ["ad-mobile-bottom-1", "ad-mobile-bottom-2", "ad-mobile-bottom-3", "ad-mobile-bottom-4"];
-
-    // Clear all potential ad containers first to prevent duplicates on resize
-    [...desktopAdIds, ...mobileBottomAdIds].forEach(id => {
-      const adContainer = document.getElementById(id);
-      if (adContainer) {
-        adContainer.innerHTML = '';
-      }
-    });
-
-    if (showSidebarAds) {
-      desktopAdIds.forEach(loadAd);
-    } else {
-      mobileBottomAdIds.forEach(loadAd);
-    }
-
-    return () => {
-      // Cleanup: remove the scripts when the component unmounts or dependencies change
-      [...desktopAdIds, ...mobileBottomAdIds].forEach(id => {
-        const adContainer = document.getElementById(id);
-        if (adContainer) {
-          adContainer.innerHTML = '';
-        }
-      });
-    };
-  }, [showSidebarAds]);
-
+  }, [favoriteGameIds]); // Re-run effect if favoriteGameIds changes to re-sort games immediately
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
-      <MobileNavMenu />
+      <MobileNavMenu /> {/* Render MobileNavMenu here */}
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
       <p className="text-lg text-gray-700 text-center mb-8">
         Live NFL halftime countdowns for all games in just one view.
@@ -283,98 +220,62 @@ const HalfTimer: React.FC = () => {
           {isRefreshing && <Loader2 className="h-4 w-4 animate-spin text-blue-500" />}
         </div>
       )}
-
-      {/* Main layout container for desktop sidebars and central content */}
-      <div className="w-full flex justify-center lg:grid lg:grid-cols-[1fr_minmax(auto,664px)_1fr] lg:gap-8 max-w-[1400px] mx-auto">
-
-        {/* Left Sidebar Ads (Desktop Only) */}
-        {showSidebarAds && (
-          <div className="hidden lg:flex flex-col items-center gap-8 py-8">
-            <div id="ad-desktop-left-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-            <div id="ad-desktop-left-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-          </div>
-        )}
-
-        {/* Central Content Area */}
-        <div className="flex flex-col items-center w-full">
-          {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
-              {[...Array(6)].map((_, i) => (
-                <Card key={i} className="w-[320px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden">
-                  <CardContent className="p-6 flex flex-col justify-between h-full">
-                    <div className="flex justify-between items-center mb-4">
-                      <div className="flex items-center space-x-3">
-                        <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
-                        <Skeleton className="h-6 w-24 bg-gray-400" />
-                      </div>
-                      <Skeleton className="h-8 w-12 bg-gray-400" />
-                    </div>
-                    <div className="flex justify-between items-center mb-6">
-                      <div className="flex items-center space-x-3">
-                        <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
-                        <Skeleton className="h-6 w-24 bg-gray-400" />
-                      </div>
-                      <Skeleton className="h-8 w-12 bg-gray-400" />
-                    </div>
-                    <Skeleton className="h-6 w-40 mx-auto bg-gray-400" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : error ? (
-            <div className="text-red-600 text-xl p-4 bg-red-100 rounded-lg shadow-md">
-              <p>{error}</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
-              {games.length > 0 ? (
-                games.map((game) => (
-                  <GameCard
-                    key={game.id}
-                    game={game}
-                    isFavorited={favoriteGameIds.has(game.id)}
-                    onToggleFavorite={toggleFavorite}
-                  />
-                ))
-              ) : (
-                <p className="col-span-full text-center text-gray-600 text-2xl">No NFL games currently available.</p>
-              )}
-            </div>
-          )}
-
-          {/* Bottom Ads (Visible when sidebars are not shown) */}
-          {!showSidebarAds && (
-            <div className="mt-8 w-full flex justify-center">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-items-center max-w-[664px]">
-                <div id="ad-mobile-bottom-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                <div id="ad-mobile-bottom-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                <div id="ad-mobile-bottom-3" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-                <div id="ad-mobile-bottom-4" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-              </div>
-            </div>
-          )}
-
-          {/* Legend for color outlines */}
-          <div className="mt-12 p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md text-gray-800 text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center">
-            <p className="flex items-center gap-2">
-              <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full"></span>
-              <span>= Live Game</span>
-            </p>
-            <p className="flex items-center gap-2">
-              <span className="inline-block w-5 h-5 bg-amber-400 rounded-full"></span>
-              <span>= Halftime</span>
-            </p>
-          </div>
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
+          {[...Array(6)].map((_, i) => (
+            <Card key={i} className="w-[320px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden">
+              <CardContent className="p-6 flex flex-col justify-between h-full">
+                <div className="flex justify-between items-center mb-4">
+                  <div className="flex items-center space-x-3">
+                    <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
+                    <Skeleton className="h-6 w-24 bg-gray-400" />
+                  </div>
+                  <Skeleton className="h-8 w-12 bg-gray-400" />
+                </div>
+                <div className="flex justify-between items-center mb-6">
+                  <div className="flex items-center space-x-3">
+                    <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
+                    <Skeleton className="h-6 w-24 bg-gray-400" />
+                  </div>
+                  <Skeleton className="h-8 w-12 bg-gray-400" />
+                </div>
+                <Skeleton className="h-6 w-40 mx-auto bg-gray-400" />
+              </CardContent>
+            </Card>
+          ))}
         </div>
+      ) : error ? (
+        <div className="text-red-600 text-xl p-4 bg-red-100 rounded-lg shadow-md">
+          <p>{error}</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[664px] mx-auto">
+          {games.length > 0 ? (
+            games.map((game) => (
+              <GameCard
+                key={game.id}
+                game={game}
+                isFavorited={favoriteGameIds.has(game.id)}
+                onToggleFavorite={toggleFavorite}
+              />
+            ))
+          ) : (
+            <p className="col-span-full text-center text-gray-600 text-2xl">No NFL games currently available.</p>
+          )}
+        </div>
+      )}
 
-        {/* Right Sidebar Ads (Desktop Only) */}
-        {showSidebarAds && (
-          <div className="hidden lg:flex flex-col items-center gap-8 py-8">
-            <div id="ad-desktop-right-1" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-            <div id="ad-desktop-right-2" className="w-[160px] h-[300px] bg-gray-100 flex items-center justify-center text-gray-500 text-sm border border-dashed border-gray-300"></div>
-          </div>
-        )}
-      </div> {/* End of main layout container */}
+      {/* Legend for color outlines */}
+      <div className="mt-12 p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md text-gray-800 text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center">
+        <p className="flex items-center gap-2">
+          <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full"></span>
+          <span>= Live Game</span>
+        </p>
+        <p className="flex items-center gap-2">
+          <span className="inline-block w-5 h-5 bg-amber-400 rounded-full"></span>
+          <span>= Halftime</span>
+        </p>
+      </div>
 
       <MadeWithDyad />
     </div>
