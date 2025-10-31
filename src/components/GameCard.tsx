@@ -5,7 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { getAbbreviatedTeamName } from "@/utils/nflTeamAbbreviations";
 import { ProgressWithIndicator } from "@/components/ProgressWithIndicator";
-import { Star } from "lucide-react";
+import { Star, Loader2 } from "lucide-react"; // Import Loader2 for the spinner
 import { useHalftimeTimers } from "@/hooks/use-halftime-timers";
 
 // Helper function to format time for countdown (MM:SS)
@@ -178,13 +178,21 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
               <p className="text-sm text-gray-500">{formatScheduledDate(game.date)}</p>
             </>
           ) : (
-            isHalftime && halftimeRemainingSeconds !== null && halftimeRemainingSeconds > 0 ? (
-              <div className="flex flex-col items-center">
-                <p className="text-gray-700 mb-2">Halftime: {formatCountdown(halftimeRemainingSeconds)}</p>
-                <ProgressWithIndicator value={halftimeProgress} className="w-full max-w-xs h-2 bg-gray-200" indicatorClassName="bg-amber-500" />
-              </div>
-            ) : isHalftime && halftimeRemainingSeconds !== null && halftimeRemainingSeconds <= 0 ? ( // Changed condition to check for <= 0
-              <p className="text-red-700 animate-pulse">2nd Half Starting</p>
+            isHalftime ? ( // Check if it's halftime
+              halftimeRemainingSeconds !== null && halftimeRemainingSeconds > 0 ? (
+                <div className="flex flex-col items-center">
+                  <p className="text-gray-700 mb-2">Halftime: {formatCountdown(halftimeRemainingSeconds)}</p>
+                  <ProgressWithIndicator value={halftimeProgress} className="w-full max-w-xs h-2 bg-gray-200" indicatorClassName="bg-amber-500" />
+                </div>
+              ) : (halftimeRemainingSeconds !== null && halftimeRemainingSeconds <= 0) ? (
+                <p className="text-red-700 animate-pulse">2nd Half Starting Soon</p> {/* Updated text */}
+              ) : (
+                // New: Halftime, but timer data is loading/not yet available
+                <div className="flex items-center justify-center text-gray-700">
+                  <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                  <span>Halftime (Loading Timer...)</span>
+                </div>
+              )
             ) : isInProgress && game.status.type.shortDetail ? (
               <div className="flex flex-col items-center">
                 <p className="text-green-700 mb-1 text-base">In Progress</p>
