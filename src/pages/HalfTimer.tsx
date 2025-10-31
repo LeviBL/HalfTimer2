@@ -80,7 +80,7 @@ interface Game {
 }
 
 const HalfTimer: React.FC = () => {
-  const [games, setGames] = useState<Game[]>(([]);
+  const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // Only for initial load
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false); // For subsequent background refreshes
   const [error, setError] = useState<string | null>(null);
@@ -221,7 +221,7 @@ const HalfTimer: React.FC = () => {
         </div>
       )}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-[720px] mx-auto"> {/* Adjusted max-w and gap */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[728px] mx-auto"> {/* Adjusted max-w */}
           {[...Array(6)].map((_, i) => (
             <Card key={i} className="w-[352px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden"> {/* Adjusted width */}
               <CardContent className="p-6 flex flex-col justify-between h-full">
@@ -249,7 +249,7 @@ const HalfTimer: React.FC = () => {
           <p>{error}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-[720px] mx-auto"> {/* Adjusted max-w and gap */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[728px] mx-auto"> {/* Adjusted max-w */}
           {games.length > 0 ? (
             games.map((game) => (
               <GameCard
