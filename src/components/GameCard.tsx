@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card"; // Added this import
 import { cn } from "@/lib/utils";
 import { getAbbreviatedTeamName } from "@/utils/nflTeamAbbreviations";
 import { ProgressWithIndicator } from "@/components/ProgressWithIndicator";
