@@ -146,7 +146,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   return (
     <Card
       className={cn(
-        "w-[352px] text-gray-800 shadow-lg rounded-xl overflow-hidden transform transition-all duration-300 relative mx-auto", // Increased width to 352px
+        "w-[340px] text-gray-800 shadow-lg rounded-xl overflow-hidden transform transition-all duration-300 relative mx-auto", // Adjusted width to 340px
         "border-[3px]",
         borderColorClass
       )}
