@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import { Card, CardContent } from "@/components/ui/card"; // Added this import
+import { Card, CardContent } from "@/components/ui/card"; // Ensure Card and CardContent are imported
 import { cn } from "@/lib/utils";
 import { getAbbreviatedTeamName } from "@/utils/nflTeamAbbreviations";
 import { ProgressWithIndicator } from "@/components/ProgressWithIndicator";
@@ -146,7 +146,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   return (
     <Card
       className={cn(
-        "w-[320px] text-gray-800 shadow-lg rounded-xl overflow-hidden transform transition-all duration-300 relative mx-auto", // Added mx-auto here
+        "w-[320px] text-gray-800 shadow-lg rounded-xl overflow-hidden transform transition-all duration-300 relative mx-auto",
         "border-[3px]",
         borderColorClass
       )}
@@ -185,9 +185,9 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
                   <ProgressWithIndicator value={halftimeProgress} className="w-full max-w-xs h-2 bg-gray-200" indicatorClassName="bg-amber-500" />
                 </div>
               ) : (halftimeRemainingSeconds !== null && halftimeRemainingSeconds <= 0) ? (
-                <p className="text-red-700 animate-pulse">2nd Half Starting Soon</p> {/* Updated text */}
+                <p className="text-red-700 animate-pulse">2nd Half Starting Soon</p>
               ) : (
-                // New: Halftime, but timer data is loading/not yet available
+                // Halftime, but timer data is loading/not yet available
                 <div className="flex items-center justify-center text-gray-700">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
                   <span>Halftime (Loading Timer...)</span>
