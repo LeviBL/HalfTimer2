@@ -32,7 +32,7 @@ const nflTeamAbbreviations: { [key: string]: string } = {
   "Seattle Seahawks": "SEA Seahawks",
   "Tampa Bay Buccaneers": "TB Buccaneers",
   "Tennessee Titans": "TEN Titans",
-  "Washington Commanders": "WAS Commanders",
+  "Washington Commanders": "WAS", // Shortened to 'WAS'
 };
 
 export const getAbbreviatedTeamName = (fullName: string): string => {
