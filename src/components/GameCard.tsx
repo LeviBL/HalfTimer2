@@ -152,7 +152,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       )}
     >
       <CardContent className={cn(
-        "p-6 flex flex-col justify-between h-full",
+        "p-6 flex flex-col justify-between h-[250px]", // Fixed height for uniform cards
         isFinal ? "bg-gray-200" : "bg-gray-100"
       )}>
         <div className="flex justify-between items-center mb-4">

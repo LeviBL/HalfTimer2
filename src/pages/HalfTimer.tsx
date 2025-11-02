@@ -224,7 +224,7 @@ const HalfTimer: React.FC = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[704px] mx-auto"> {/* Adjusted max-w to 704px */}
           {[...Array(6)].map((_, i) => (
             <Card key={i} className="w-[340px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden"> {/* Adjusted width */}
-              <CardContent className="p-6 flex flex-col justify-between h-full">
+              <CardContent className="p-6 flex flex-col justify-between h-[250px]"> {/* Fixed height for skeleton */}
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center space-x-3">
                     <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
