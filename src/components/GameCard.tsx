@@ -59,46 +59,14 @@ interface GameCardProps {
 }
 
 const HALFTIME_DURATION_SECONDS = 12 * 60 + 20; // Adjusted to 12 minutes and 20 seconds (740 seconds)
-const SCORE_ANIMATION_DURATION = 1000; // 1 second, matches CSS animation duration
 
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite }) => {
   const [halftimeRemainingSeconds, setHalftimeRemainingSeconds] = useState<number | null>(null);
-  const [homeScoreAnimation, setHomeScoreAnimation] = useState<{ points: number; key: number } | null>(null);
-  const [awayScoreAnimation, setAwayScoreAnimation] = useState<{ points: number; key: number } | null>(null);
-
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const prevHomeScoreRef = useRef<number>(parseInt(game.competitors.home.score));
-  const prevAwayScoreRef = useRef<number>(parseInt(game.competitors.away.score));
-
   const { getHalftimeStartTime, isLoading: isHalftimeTimersLoading } = useHalftimeTimers();
 
   const gameStatusDescription = game.status.type.description;
   const gameId = game.id;
-
-  // Effect for score animations
-  useEffect(() => {
-    const currentHomeScore = parseInt(game.competitors.home.score);
-    const currentAwayScore = parseInt(game.competitors.away.score);
-
-    const prevHomeScore = prevHomeScoreRef.current;
-    const prevAwayScore = prevAwayScoreRef.current;
-
-    if (currentHomeScore > prevHomeScore) {
-      const pointsScored = currentHomeScore - prevHomeScore;
-      setHomeScoreAnimation({ points: pointsScored, key: Date.now() });
-      setTimeout(() => setHomeScoreAnimation(null), SCORE_ANIMATION_DURATION);
-    }
-
-    if (currentAwayScore > prevAwayScore) {
-      const pointsScored = currentAwayScore - prevAwayScore;
-      setAwayScoreAnimation({ points: pointsScored, key: Date.now() });
-      setTimeout(() => setAwayScoreAnimation(null), SCORE_ANIMATION_DURATION);
-    }
-
-    prevHomeScoreRef.current = currentHomeScore;
-    prevAwayScoreRef.current = currentAwayScore;
-  }, [game.competitors.home.score, game.competitors.away.score]);
-
 
   useEffect(() => {
     console.log(`[GameCard ${gameId}] Effect re-run. isHalftimeTimersLoading: ${isHalftimeTimersLoading}, gameStatusDescription: ${gameStatusDescription}`);
@@ -198,17 +166,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
             <img src={game.competitors.away.logo} alt={game.competitors.away.displayName} className="w-10 h-10 object-contain" />
             <span className="text-xl font-bold">{getAbbreviatedTeamName(game.competitors.away.displayName)}</span>
           </div>
-          <span className="text-3xl font-extrabold relative"> {/* Make this span relative */}
-            {game.competitors.away.score}
-            {awayScoreAnimation && (
-              <span
-                key={awayScoreAnimation.key}
-                className="absolute left-full top-1/2 -translate-y-1/2 ml-2 text-green-500 text-lg font-bold animate-fade-out-up pointer-events-none whitespace-nowrap"
-              >
-                +{awayScoreAnimation.points}
-              </span>
-            )}
-          </span>
+          <span className="text-3xl font-extrabold">{game.competitors.away.score}</span>
         </div>
 
         <div className="flex justify-between items-center mb-6">
@@ -216,17 +174,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
             <img src={game.competitors.home.logo} alt={game.competitors.home.displayName} className="w-10 h-10 object-contain" />
             <span className="text-xl font-bold">{getAbbreviatedTeamName(game.competitors.home.displayName)}</span>
           </div>
-          <span className="text-3xl font-extrabold relative"> {/* Make this span relative */}
-            {game.competitors.home.score}
-            {homeScoreAnimation && (
-              <span
-                key={homeScoreAnimation.key}
-                className="absolute left-full top-1/2 -translate-y-1/2 ml-2 text-green-500 text-lg font-bold animate-fade-out-up pointer-events-none whitespace-nowrap"
-              >
-                +{homeScoreAnimation.points}
-              </span>
-            )}
-          </span>
+          <span className="text-3xl font-extrabold">{game.competitors.home.score}</span>
         </div>
 
         <div className="text-center text-lg font-semibold mb-4">
