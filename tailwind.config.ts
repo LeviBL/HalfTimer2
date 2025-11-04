@@ -89,11 +89,16 @@ export default {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '.5' },
         },
+        "fade-out-up": { // New keyframe for score animation
+          '0%': { opacity: '1', transform: 'translateY(0)' },
+          '100%': { opacity: '0', transform: 'translateY(-20px)' },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
         pulse: 'pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite', // Add pulse animation
+        "fade-out-up": "fade-out-up 1s ease-out forwards", // New animation for score
       },
     },
   },
