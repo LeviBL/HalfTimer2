@@ -63,7 +63,6 @@ const HALFTIME_DURATION_SECONDS = 12 * 60 + 20; // Adjusted to 12 minutes and 20
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite }) => {
   const [halftimeRemainingSeconds, setHalftimeRemainingSeconds] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  // GameCard now only reads from useHalftimeTimers, the Edge Function handles writes
   const { getHalftimeStartTime, isLoading: isHalftimeTimersLoading } = useHalftimeTimers();
 
   const gameStatusDescription = game.status.type.description;
@@ -74,7 +73,6 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
 
     const isCurrentlyHalftime = gameStatusDescription === "Halftime";
 
-    // Always clear any existing interval when the effect re-runs
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -88,12 +86,21 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       return;
     }
 
-    const currentHalftimeStartTime = getHalftimeStartTime(gameId); // Get the current stored time from the hook
+    if (isCurrentlyHalftime) {
+      let effectiveHalftimeStartTime = getHalftimeStartTime(gameId);
 
-    if (isCurrentlyHalftime && currentHalftimeStartTime !== undefined) {
-      console.log(`[GameCard ${gameId}] Halftime detected, using stored start time: ${currentHalftimeStartTime}`);
+      if (effectiveHalftimeStartTime === undefined) {
+        // Fallback: If game is in halftime but no start time from Supabase yet,
+        // assume it just started now for immediate display.
+        // This is a temporary client-side estimate.
+        console.log(`[GameCard ${gameId}] Halftime detected, but no stored start time. Estimating start time as now.`);
+        effectiveHalftimeStartTime = Date.now();
+      } else {
+        console.log(`[GameCard ${gameId}] Halftime detected, using stored start time: ${effectiveHalftimeStartTime}`);
+      }
+
       const calculateCurrentRemaining = () => {
-        const elapsed = Math.floor((Date.now() - currentHalftimeStartTime!) / 1000);
+        const elapsed = Math.floor((Date.now() - effectiveHalftimeStartTime!) / 1000);
         return Math.max(0, HALFTIME_DURATION_SECONDS - elapsed);
       };
 
@@ -109,9 +116,8 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
         }
       }, 1000);
     } else {
-      console.log(`[GameCard ${gameId}] Not in halftime or no valid stored start time. Clearing local timer.`);
+      console.log(`[GameCard ${gameId}] Not in halftime. Clearing local timer.`);
       setHalftimeRemainingSeconds(null);
-      // The edge function will handle clearing the Supabase record, so no client-side delete needed here.
     }
 
     return () => {
@@ -187,10 +193,10 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
               ) : (halftimeRemainingSeconds !== null && halftimeRemainingSeconds <= 0) ? (
                 <p className="text-red-700 animate-pulse">2nd Half Starting Soon</p>
               ) : (
-                // Halftime, but timer data is loading/not yet available
+                // This state should now be rarely, if ever, reached for actual halftime games
                 <div className="flex items-center justify-center text-gray-700">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span>Halftime (Loading Timer...)</span>
+                  <span>Halftime (Initializing Timer...)</span>
                 </div>
               )
             ) : isInProgress && game.status.type.shortDetail ? (
