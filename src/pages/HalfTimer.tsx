@@ -212,7 +212,7 @@ const HalfTimer: React.FC = () => {
       <MobileNavMenu /> {/* Render MobileNavMenu here */}
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
       <p className="text-lg text-gray-700 text-center mb-8">
-        Track live NFL scores and see exactly how much halftime is left, so you can skip the ads.
+        Track live NFL scores and see exactly how much halftime is left, so you can skip ads.
       </p>
       {lastUpdated && (
         <div className="absolute top-4 right-4 text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2">
