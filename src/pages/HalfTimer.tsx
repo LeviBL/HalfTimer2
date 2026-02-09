@@ -224,7 +224,7 @@ const HalfTimer: React.FC = () => {
       )}
 
       {loading ? (
-        <div className="grid grid-cols-1 min-[740px]:grid-cols-2 gap-6 w-full max-w-[720px] mx-auto">
+        <div className="grid grid-cols-1 min-[720px]:grid-cols-2 gap-2 w-full max-w-[720px] mx-auto">
           {[...Array(6)].map((_, i) => (
             <Card key={i} className="w-[340px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden mx-auto">
               <CardContent className="p-6 flex flex-col justify-between h-[250px]">
@@ -254,7 +254,7 @@ const HalfTimer: React.FC = () => {
       ) : (
         <div className={cn(
           "w-full max-w-[720px] mx-auto",
-          games.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[740px]:grid-cols-2 gap-6"
+          games.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
         )}>
           {games.length > 0 ? (
             games.map((game) => (
