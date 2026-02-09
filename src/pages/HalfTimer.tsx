@@ -206,7 +206,7 @@ const HalfTimer: React.FC = () => {
       <MobileNavMenu />
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
       <p className="text-lg text-gray-700 text-center mb-6">
-        Track live scores and see exactly how much halftime is left, so you can skip ads.
+        Track live scores and see exactly how much halftime is left so you can skip ads.
       </p>
 
       <Tabs defaultValue="nfl" className="w-full max-w-[400px] mb-8" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba')}>
