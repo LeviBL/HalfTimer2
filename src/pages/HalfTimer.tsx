@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
@@ -251,7 +252,10 @@ const HalfTimer: React.FC = () => {
           <p>{error}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[704px] mx-auto">
+        <div className={cn(
+          "w-full max-w-[704px] mx-auto",
+          games.length === 1 ? "flex justify-center" : "grid grid-cols-1 sm:grid-cols-2 gap-6"
+        )}>
           {games.length > 0 ? (
             games.map((game) => (
               <GameCard
