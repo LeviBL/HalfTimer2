@@ -41,7 +41,7 @@ const PrivacyPolicy: React.FC = () => {
           We may update this Privacy Policy occasionally. Any changes will be posted on this page with the updated date.
         </p>
 
-        <p className="text-gray-600 mt-8 text-right">Last updated: October 17, 2025</p>
+        <p className="text-gray-600 mt-8 text-right">Last updated: February 8th, 2026</p>
       </div>
       <MadeWithDyad />
     </div>

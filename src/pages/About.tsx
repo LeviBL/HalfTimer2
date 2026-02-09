@@ -21,7 +21,7 @@ const About: React.FC = () => {
           The goal is simple: optimize time, reduce guesswork, and create a smoother viewing experience for fans. Built with clarity and speed in mind, The Halftimer avoids distractions and endless ads, all for love of the game.
         </p>
         <p className="text-md text-gray-600 text-right italic">
-          Created and developed by Levi Brous-Light. Last updated February 8th, 2026.
+          Created and developed by Levi Brous-Light.
         </p>
       </div>
       <MadeWithDyad />
