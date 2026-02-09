@@ -1,21 +1,21 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import GameCard from "@/components/GameCard";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2 } from "lucide-react"; // Import a spinner icon
-import MobileNavMenu from "@/components/MobileNavMenu"; // Import MobileNavMenu
+import { Loader2 } from "lucide-react";
+import MobileNavMenu from "@/components/MobileNavMenu";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-// ESPN NFL Scoreboard API endpoint
-// You can change this source if a different API is preferred,
-// but ensure the data structure matches what GameCard expects.
-const NFL_SCOREBOARD_API = "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard";
+const API_ENDPOINTS = {
+  nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+  nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
+};
 
-// Data refresh interval in milliseconds (20 seconds)
 const REFRESH_INTERVAL = 20 * 1000;
-const FAVORITE_GAMES_STORAGE_KEY = "favoriteNflGameIds";
+const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
 
 interface TeamData {
   displayName: string;
@@ -30,8 +30,8 @@ interface CompetitionData {
     type: {
       description: string;
       state: "pre" | "in" | "post";
-      detail: string; // Added
-      shortDetail: string; // Added
+      detail: string;
+      shortDetail: string;
     };
   };
   competitors: Array<{
@@ -53,8 +53,8 @@ interface EventData {
     type: {
       description: string;
       state: "pre" | "in" | "post";
-      detail: string; // Added
-      shortDetail: string; // Added
+      detail: string;
+      shortDetail: string;
     };
   };
   competitions: CompetitionData[];
@@ -80,28 +80,35 @@ interface Game {
 }
 
 const HalfTimer: React.FC = () => {
+  const [activeSport, setActiveSport] = useState<'nfl' | 'nba'>('nfl');
   const [games, setGames] = useState<Game[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); // Only for initial load
-  const [isRefreshing, setIsRefreshing] = useState<boolean>(false); // For subsequent background refreshes
+  const [loading, setLoading] = useState<boolean>(true);
+  const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  
   const [favoriteGameIds, setFavoriteGameIds] = useState<Set<string>>(() => {
-    // Initialize favorite games from localStorage
     if (typeof window !== "undefined") {
-      const storedFavorites = localStorage.getItem(FAVORITE_GAMES_STORAGE_KEY);
+      const storedFavorites = localStorage.getItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`);
       return storedFavorites ? new Set(JSON.parse(storedFavorites)) : new Set();
     }
     return new Set();
   });
 
-  // Effect to save favoriteGameIds to localStorage whenever it changes
   useEffect(() => {
     if (typeof window !== "undefined") {
-      localStorage.setItem(FAVORITE_GAMES_STORAGE_KEY, JSON.stringify(Array.from(favoriteGameIds)));
+      const storedFavorites = localStorage.getItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`);
+      setFavoriteGameIds(storedFavorites ? new Set(JSON.parse(storedFavorites)) : new Set());
     }
-  }, [favoriteGameIds]);
+    fetchNFLGames(true);
+  }, [activeSport]);
 
-  // Function to toggle a game's favorite status
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`, JSON.stringify(Array.from(favoriteGameIds)));
+    }
+  }, [favoriteGameIds, activeSport]);
+
   const toggleFavorite = (gameId: string) => {
     setFavoriteGameIds(prevFavorites => {
       const newFavorites = new Set(prevFavorites);
@@ -114,7 +121,6 @@ const HalfTimer: React.FC = () => {
     });
   };
 
-  // Function to fetch NFL game data
   const fetchNFLGames = async (initialLoad: boolean = false) => {
     if (initialLoad) {
       setLoading(true);
@@ -123,15 +129,14 @@ const HalfTimer: React.FC = () => {
     }
 
     try {
-      const response = await fetch(NFL_SCOREBOARD_API);
+      const response = await fetch(API_ENDPOINTS[activeSport]);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
 
-      // Process the raw API data into a more usable format for our GameCard component
       const processedGames: Game[] = data.events.map((event: EventData) => {
-        const competition = event.competitions[0]; // Assuming one competition per event
+        const competition = event.competitions[0];
         const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
         const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
@@ -144,49 +149,43 @@ const HalfTimer: React.FC = () => {
             type: {
               description: event.status.type.description,
               state: event.status.type.state,
-              detail: event.status.type.detail, // Pass detail
-              shortDetail: event.status.type.shortDetail, // Pass shortDetail
+              detail: event.status.type.detail,
+              shortDetail: event.status.type.shortDetail,
             },
           },
           competitors: {
             home: {
               displayName: homeCompetitor?.team.displayName || "N/A",
-              logo: homeCompetitor?.team.logo || "/placeholder.svg", // Use a placeholder if no logo
+              logo: homeCompetitor?.team.logo || "/placeholder.svg",
               score: homeCompetitor?.score || "0",
             },
             away: {
               displayName: awayCompetitor?.team.displayName || "N/A",
-              logo: awayCompetitor?.team.logo || "/placeholder.svg", // Use a placeholder if no logo
+              logo: awayCompetitor?.team.logo || "/placeholder.svg",
               score: awayCompetitor?.score || "0",
             },
           },
         };
       });
 
-      // Sort games: Favorited games first, then 'pre' and 'in' status games, 'post' status games last
       const sortedGames = [...processedGames].sort((a, b) => {
         const aIsFavorited = favoriteGameIds.has(a.id);
         const bIsFavorited = favoriteGameIds.has(b.id);
 
-        if (aIsFavorited && !bIsFavorited) return -1; // a comes before b
-        if (!aIsFavorited && bIsFavorited) return 1; // a comes after b
+        if (aIsFavorited && !bIsFavorited) return -1;
+        if (!aIsFavorited && bIsFavorited) return 1;
 
-        // If both are favorited or neither are, apply existing sorting logic
-        if (a.status.type.state === "post" && b.status.type.state !== "post") {
-          return 1; // a comes after b
-        }
-        if (a.status.type.state !== "post" && b.status.type.state === "post") {
-          return -1; // a comes before b
-        }
-        return 0; // maintain original order for same status types
+        if (a.status.type.state === "post" && b.status.type.state !== "post") return 1;
+        if (a.status.type.state !== "post" && b.status.type.state === "post") return -1;
+        return 0;
       });
 
       setGames(sortedGames);
-      setLastUpdated(new Date().toLocaleTimeString()); // Update timestamp on successful fetch
+      setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
     } catch (err) {
-      console.error("Failed to fetch NFL game data:", err);
-      setError("Failed to load NFL game data. Please try again later.");
+      console.error(`Failed to fetch ${activeSport} game data:`, err);
+      setError(`Failed to load ${activeSport.toUpperCase()} game data. Please try again later.`);
     } finally {
       if (initialLoad) {
         setLoading(false);
@@ -197,34 +196,37 @@ const HalfTimer: React.FC = () => {
   };
 
   useEffect(() => {
-    // Fetch data immediately on component mount (initial load)
-    fetchNFLGames(true);
-
-    // Set up interval to refresh data every 20 seconds (background refresh)
     const intervalId = setInterval(() => fetchNFLGames(false), REFRESH_INTERVAL);
-
-    // Cleanup function to clear the interval when the component unmounts
     return () => clearInterval(intervalId);
-  }, [favoriteGameIds]); // Re-run effect if favoriteGameIds changes to re-sort games immediately
+  }, [favoriteGameIds, activeSport]);
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
-      <MobileNavMenu /> {/* Render MobileNavMenu here */}
+      <MobileNavMenu />
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
-      <p className="text-lg text-gray-700 text-center mb-8">
-        Track live NFL scores and see exactly how much halftime is left, so you can skip ads.
+      <p className="text-lg text-gray-700 text-center mb-6">
+        Track live scores and see exactly how much halftime is left, so you can skip ads.
       </p>
+
+      <Tabs defaultValue="nfl" className="w-full max-w-[400px] mb-8" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba')}>
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="nfl" className="text-lg font-bold">NFL</TabsTrigger>
+          <TabsTrigger value="nba" className="text-lg font-bold">NBA</TabsTrigger>
+        </TabsList>
+      </Tabs>
+
       {lastUpdated && (
         <div className="absolute top-4 right-4 text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2">
           Last Updated: {lastUpdated}
           {isRefreshing && <Loader2 className="h-4 w-4 animate-spin text-blue-500" />}
         </div>
       )}
+
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[704px] mx-auto"> {/* Adjusted max-w to 704px */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[704px] mx-auto">
           {[...Array(6)].map((_, i) => (
-            <Card key={i} className="w-[340px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden"> {/* Adjusted width */}
-              <CardContent className="p-6 flex flex-col justify-between h-[250px]"> {/* Fixed height for skeleton */}
+            <Card key={i} className="w-[340px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden">
+              <CardContent className="p-6 flex flex-col justify-between h-[250px]">
                 <div className="flex justify-between items-center mb-4">
                   <div className="flex items-center space-x-3">
                     <Skeleton className="w-10 h-10 rounded-full bg-gray-400" />
@@ -249,7 +251,7 @@ const HalfTimer: React.FC = () => {
           <p>{error}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[704px] mx-auto"> {/* Adjusted max-w to 704px */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full max-w-[704px] mx-auto">
           {games.length > 0 ? (
             games.map((game) => (
               <GameCard
@@ -257,15 +259,15 @@ const HalfTimer: React.FC = () => {
                 game={game}
                 isFavorited={favoriteGameIds.has(game.id)}
                 onToggleFavorite={toggleFavorite}
+                sport={activeSport}
               />
             ))
           ) : (
-            <p className="col-span-full text-center text-gray-600 text-2xl">No NFL games currently available.</p>
+            <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
           )}
         </div>
       )}
 
-      {/* Legend for color outlines */}
       <div className="mt-12 p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md text-gray-800 text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center">
         <p className="flex items-center gap-2">
           <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full"></span>
