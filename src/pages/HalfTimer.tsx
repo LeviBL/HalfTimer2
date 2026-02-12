@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import GameCard from "@/components/GameCard";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -81,7 +81,7 @@ interface Game {
 }
 
 const HalfTimer: React.FC = () => {
-  const [activeSport, setActiveSport] = useState<'nfl' | 'nba'>('nfl');
+  const [activeSport, setActiveSport] = useState<'nfl' | 'nba'>('nba');
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -101,7 +101,7 @@ const HalfTimer: React.FC = () => {
       const storedFavorites = localStorage.getItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`);
       setFavoriteGameIds(storedFavorites ? new Set(JSON.parse(storedFavorites)) : new Set());
     }
-    fetchNFLGames(true);
+    fetchGames(true);
   }, [activeSport]);
 
   useEffect(() => {
@@ -122,7 +122,7 @@ const HalfTimer: React.FC = () => {
     });
   };
 
-  const fetchNFLGames = async (initialLoad: boolean = false) => {
+  const fetchGames = async (initialLoad: boolean = false) => {
     if (initialLoad) {
       setLoading(true);
     } else {
@@ -169,19 +169,7 @@ const HalfTimer: React.FC = () => {
         };
       });
 
-      const sortedGames = [...processedGames].sort((a, b) => {
-        const aIsFavorited = favoriteGameIds.has(a.id);
-        const bIsFavorited = favoriteGameIds.has(b.id);
-
-        if (aIsFavorited && !bIsFavorited) return -1;
-        if (!aIsFavorited && bIsFavorited) return 1;
-
-        if (a.status.type.state === "post" && b.status.type.state !== "post") return 1;
-        if (a.status.type.state !== "post" && b.status.type.state === "post") return -1;
-        return 0;
-      });
-
-      setGames(sortedGames);
+      setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
     } catch (err) {
@@ -196,10 +184,24 @@ const HalfTimer: React.FC = () => {
     }
   };
 
+  const sortedGames = useMemo(() => {
+    return [...games].sort((a, b) => {
+      const aIsFavorited = favoriteGameIds.has(a.id);
+      const bIsFavorited = favoriteGameIds.has(b.id);
+
+      if (aIsFavorited && !bIsFavorited) return -1;
+      if (!aIsFavorited && bIsFavorited) return 1;
+
+      if (a.status.type.state === "post" && b.status.type.state !== "post") return 1;
+      if (a.status.type.state !== "post" && b.status.type.state === "post") return -1;
+      return 0;
+    });
+  }, [games, favoriteGameIds]);
+
   useEffect(() => {
-    const intervalId = setInterval(() => fetchNFLGames(false), REFRESH_INTERVAL);
+    const intervalId = setInterval(() => fetchGames(false), REFRESH_INTERVAL);
     return () => clearInterval(intervalId);
-  }, [favoriteGameIds, activeSport]);
+  }, [activeSport]);
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
@@ -209,7 +211,7 @@ const HalfTimer: React.FC = () => {
         Track live scores and see exactly how much halftime is left so you can skip ads.
       </p>
 
-      <Tabs defaultValue="nfl" className="w-full max-w-[400px] mb-8" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba')}>
+      <Tabs value={activeSport} className="w-full max-w-[400px] mb-8" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba')}>
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="nfl" className="text-lg font-bold">NFL</TabsTrigger>
           <TabsTrigger value="nba" className="text-lg font-bold">NBA</TabsTrigger>
@@ -254,10 +256,10 @@ const HalfTimer: React.FC = () => {
       ) : (
         <div className={cn(
           "w-full max-w-[720px] mx-auto",
-          games.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
+          sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
         )}>
-          {games.length > 0 ? (
-            games.map((game) => (
+          {sortedGames.length > 0 ? (
+            sortedGames.map((game) => (
               <GameCard
                 key={game.id}
                 game={game}
