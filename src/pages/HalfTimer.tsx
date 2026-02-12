@@ -218,6 +218,14 @@ const HalfTimer: React.FC = () => {
         </TabsList>
       </Tabs>
 
+      {activeSport === 'nfl' && (
+        <div className="w-full max-w-[600px] mb-8 p-6 bg-blue-50 border border-blue-200 rounded-xl text-center shadow-sm">
+          <p className="text-xl font-semibold text-blue-900">
+            NFL season is over - thanks for being here, and we’ll see you back on September 10th for kickoff.
+          </p>
+        </div>
+      )}
+
       {lastUpdated && (
         <div className="absolute top-4 right-4 text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2">
           Last Updated: {lastUpdated}
