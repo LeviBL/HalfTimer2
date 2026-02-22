@@ -244,13 +244,15 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         Track live scores and see exactly how much halftime is left so you can skip ads.
       </p>
 
-      <Tabs value={activeSport} className="w-full max-w-[500px] mb-8" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba' | 'ncaa')}>
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="nfl" className="text-sm sm:text-lg font-bold">NFL</TabsTrigger>
-          <TabsTrigger value="nba" className="text-sm sm:text-lg font-bold">NBA</TabsTrigger>
-          <TabsTrigger value="ncaa" className="text-sm sm:text-lg font-bold">March Madness</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      <div className="w-full max-w-[500px] mb-8 px-2">
+        <Tabs value={activeSport} className="w-full" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba' | 'ncaa')}>
+          <TabsList className="grid w-full grid-cols-3 h-12 p-1 bg-gray-200/50 backdrop-blur-sm rounded-xl">
+            <TabsTrigger value="nfl" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all">NFL</TabsTrigger>
+            <TabsTrigger value="nba" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all">NBA</TabsTrigger>
+            <TabsTrigger value="ncaa" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all whitespace-nowrap">March Madness</TabsTrigger>
+          </TabsList>
+        </Tabs>
+      </div>
 
       {activeSport === 'nfl' && (
         <div className="w-full max-w-[600px] mb-8 p-6 bg-blue-50 border border-blue-200 rounded-xl text-center shadow-sm">
@@ -269,22 +271,22 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           </p>
           
           {countdown && (
-            <div className="grid grid-cols-4 gap-2 mb-6">
-              <div className="bg-white p-3 rounded-lg shadow-sm">
+            <div className="grid grid-cols-4 gap-2 mb-6 max-w-sm mx-auto">
+              <div className="bg-white p-3 rounded-lg shadow-sm border border-orange-100">
                 <div className="text-2xl font-bold text-orange-600">{countdown.days}</div>
-                <div className="text-xs uppercase text-gray-500">Days</div>
+                <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Days</div>
               </div>
-              <div className="bg-white p-3 rounded-lg shadow-sm">
+              <div className="bg-white p-3 rounded-lg shadow-sm border border-orange-100">
                 <div className="text-2xl font-bold text-orange-600">{countdown.hours}</div>
-                <div className="text-xs uppercase text-gray-500">Hours</div>
+                <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Hours</div>
               </div>
-              <div className="bg-white p-3 rounded-lg shadow-sm">
+              <div className="bg-white p-3 rounded-lg shadow-sm border border-orange-100">
                 <div className="text-2xl font-bold text-orange-600">{countdown.minutes}</div>
-                <div className="text-xs uppercase text-gray-500">Mins</div>
+                <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Mins</div>
               </div>
-              <div className="bg-white p-3 rounded-lg shadow-sm">
+              <div className="bg-white p-3 rounded-lg shadow-sm border border-orange-100">
                 <div className="text-2xl font-bold text-orange-600">{countdown.seconds}</div>
-                <div className="text-xs uppercase text-gray-500">Secs</div>
+                <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Secs</div>
               </div>
             </div>
           )}
