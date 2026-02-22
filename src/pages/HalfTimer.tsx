@@ -236,6 +236,9 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     return () => clearInterval(intervalId);
   }, [activeSport]);
 
+  // Determine if we should show the countdown instead of games
+  const showNcaaCountdown = activeSport === 'ncaa' && (Date.now() < MARCH_MADNESS_START);
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <MobileNavMenu />
@@ -262,7 +265,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         </div>
       )}
 
-      {activeSport === 'ncaa' && games.length === 0 && !loading && (
+      {showNcaaCountdown && !loading && (
         <div className="w-full max-w-[600px] mb-8 p-8 bg-orange-50 border border-orange-200 rounded-2xl text-center shadow-lg">
           <Calendar className="h-12 w-12 text-orange-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-orange-900 mb-2">No tournament games yet</h2>
@@ -333,24 +336,26 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           <p>{error}</p>
         </div>
       ) : (
-        <div className={cn(
-          "w-full max-w-[720px] mx-auto",
-          sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
-        )}>
-          {sortedGames.length > 0 ? (
-            sortedGames.map((game) => (
-              <GameCard
-                key={game.id}
-                game={game}
-                isFavorited={favoriteGameIds.has(game.id)}
-                onToggleFavorite={toggleFavorite}
-                sport={activeSport}
-              />
-            ))
-          ) : (
-            activeSport !== 'ncaa' && <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
-          )}
-        </div>
+        !showNcaaCountdown && (
+          <div className={cn(
+            "w-full max-w-[720px] mx-auto",
+            sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
+          )}>
+            {sortedGames.length > 0 ? (
+              sortedGames.map((game) => (
+                <GameCard
+                  key={game.id}
+                  game={game}
+                  isFavorited={favoriteGameIds.has(game.id)}
+                  onToggleFavorite={toggleFavorite}
+                  sport={activeSport}
+                />
+              ))
+            ) : (
+              activeSport !== 'ncaa' && <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
+            )}
+          </div>
+        )
       )}
 
       <div className="mt-12 p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md text-gray-800 text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center">
