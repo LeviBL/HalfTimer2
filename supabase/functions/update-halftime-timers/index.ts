@@ -9,6 +9,7 @@ const corsHeaders = {
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
+  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100",
 };
 
 serve(async (req) => {
@@ -32,6 +33,8 @@ serve(async (req) => {
         continue;
       }
       const data = await response.json();
+
+      if (!data.events) continue;
 
       for (const event of data.events) {
         const gameId = event.id;

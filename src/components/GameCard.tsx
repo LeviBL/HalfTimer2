@@ -54,13 +54,14 @@ interface GameCardProps {
   game: Game;
   isFavorited: boolean;
   onToggleFavorite: (gameId: string) => void;
-  sport: 'nfl' | 'nba';
+  sport: 'nfl' | 'nba' | 'ncaa';
 }
 
-// Durations in seconds
+// DurATIONS in seconds
 const DURATIONS = {
   nfl: 12 * 60 + 20, // 12:20
   nba: 14 * 60 + 30, // 14:30
+  ncaa: 14 * 60 + 30, // 14:30 (User requested same as NBA)
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
@@ -139,7 +140,9 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
     : "border-transparent";
 
   const getTeamName = (name: string) => {
-    return sport === 'nfl' ? getNflAbbreviation(name) : getNbaAbbreviation(name);
+    if (sport === 'nfl') return getNflAbbreviation(name);
+    if (sport === 'nba') return getNbaAbbreviation(name);
+    return name; // NCAA uses full names for now
   };
 
   return (

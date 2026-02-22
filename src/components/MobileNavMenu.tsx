@@ -31,6 +31,14 @@ const MobileNavMenu: React.FC = () => {
             Home
           </Link>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link
+            to="/march-madness-halftime-timer"
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-300 hover:text-orange-600 transition-colors duration-200 rounded-md font-medium"
+          >
+            March Madness
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuSeparator className="bg-gray-200 my-1" />
         <DropdownMenuItem asChild>
           <Link

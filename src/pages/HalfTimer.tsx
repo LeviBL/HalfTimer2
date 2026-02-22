@@ -5,7 +5,7 @@ import GameCard from "@/components/GameCard";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
+import { Loader2, Calendar } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -13,10 +13,12 @@ import { cn } from "@/lib/utils";
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
+  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100"
 };
 
 const REFRESH_INTERVAL = 20 * 1000;
 const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
+const MARCH_MADNESS_START = new Date("2025-03-17T18:00:00Z").getTime();
 
 interface TeamData {
   displayName: string;
@@ -80,13 +82,18 @@ interface Game {
   };
 }
 
-const HalfTimer: React.FC = () => {
-  const [activeSport, setActiveSport] = useState<'nfl' | 'nba'>('nba');
+interface HalfTimerProps {
+  defaultSport?: 'nfl' | 'nba' | 'ncaa';
+}
+
+const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
+  const [activeSport, setActiveSport] = useState<'nfl' | 'nba' | 'ncaa'>(defaultSport);
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [countdown, setCountdown] = useState<{ days: number, hours: number, minutes: number, seconds: number } | null>(null);
   
   const [favoriteGameIds, setFavoriteGameIds] = useState<Set<string>>(() => {
     if (typeof window !== "undefined") {
@@ -109,6 +116,32 @@ const HalfTimer: React.FC = () => {
       localStorage.setItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`, JSON.stringify(Array.from(favoriteGameIds)));
     }
   }, [favoriteGameIds, activeSport]);
+
+  // Countdown logic for March Madness
+  useEffect(() => {
+    if (activeSport !== 'ncaa') return;
+
+    const updateCountdown = () => {
+      const now = Date.now();
+      const diff = MARCH_MADNESS_START - now;
+
+      if (diff <= 0) {
+        setCountdown(null);
+        return;
+      }
+
+      setCountdown({
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000)
+      });
+    };
+
+    updateCountdown();
+    const interval = setInterval(updateCountdown, 1000);
+    return () => clearInterval(interval);
+  }, [activeSport]);
 
   const toggleFavorite = (gameId: string) => {
     setFavoriteGameIds(prevFavorites => {
@@ -136,7 +169,7 @@ const HalfTimer: React.FC = () => {
       }
       const data = await response.json();
 
-      const processedGames: Game[] = data.events.map((event: EventData) => {
+      const processedGames: Game[] = (data.events || []).map((event: EventData) => {
         const competition = event.competitions[0];
         const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
         const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
@@ -211,10 +244,11 @@ const HalfTimer: React.FC = () => {
         Track live scores and see exactly how much halftime is left so you can skip ads.
       </p>
 
-      <Tabs value={activeSport} className="w-full max-w-[400px] mb-8" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba')}>
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="nfl" className="text-lg font-bold">NFL</TabsTrigger>
-          <TabsTrigger value="nba" className="text-lg font-bold">NBA</TabsTrigger>
+      <Tabs value={activeSport} className="w-full max-w-[500px] mb-8" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba' | 'ncaa')}>
+        <TabsList className="grid w-full grid-cols-3">
+          <TabsTrigger value="nfl" className="text-sm sm:text-lg font-bold">NFL</TabsTrigger>
+          <TabsTrigger value="nba" className="text-sm sm:text-lg font-bold">NBA</TabsTrigger>
+          <TabsTrigger value="ncaa" className="text-sm sm:text-lg font-bold">March Madness</TabsTrigger>
         </TabsList>
       </Tabs>
 
@@ -222,6 +256,41 @@ const HalfTimer: React.FC = () => {
         <div className="w-full max-w-[600px] mb-8 p-6 bg-blue-50 border border-blue-200 rounded-xl text-center shadow-sm">
           <p className="text-xl font-semibold text-blue-900">
             NFL season is over - thanks for being here, and we’ll see you back on September 10th for kickoff.
+          </p>
+        </div>
+      )}
+
+      {activeSport === 'ncaa' && games.length === 0 && !loading && (
+        <div className="w-full max-w-[600px] mb-8 p-8 bg-orange-50 border border-orange-200 rounded-2xl text-center shadow-lg">
+          <Calendar className="h-12 w-12 text-orange-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-orange-900 mb-2">No tournament games yet</h2>
+          <p className="text-lg text-orange-800 mb-6">
+            Get ready for March Madness, optimized by the HalfTimer.
+          </p>
+          
+          {countdown && (
+            <div className="grid grid-cols-4 gap-2 mb-6">
+              <div className="bg-white p-3 rounded-lg shadow-sm">
+                <div className="text-2xl font-bold text-orange-600">{countdown.days}</div>
+                <div className="text-xs uppercase text-gray-500">Days</div>
+              </div>
+              <div className="bg-white p-3 rounded-lg shadow-sm">
+                <div className="text-2xl font-bold text-orange-600">{countdown.hours}</div>
+                <div className="text-xs uppercase text-gray-500">Hours</div>
+              </div>
+              <div className="bg-white p-3 rounded-lg shadow-sm">
+                <div className="text-2xl font-bold text-orange-600">{countdown.minutes}</div>
+                <div className="text-xs uppercase text-gray-500">Mins</div>
+              </div>
+              <div className="bg-white p-3 rounded-lg shadow-sm">
+                <div className="text-2xl font-bold text-orange-600">{countdown.seconds}</div>
+                <div className="text-xs uppercase text-gray-500">Secs</div>
+              </div>
+            </div>
+          )}
+          
+          <p className="text-orange-700 font-medium italic">
+            "Bookmark this page and come back during the tournament."
           </p>
         </div>
       )}
@@ -277,7 +346,7 @@ const HalfTimer: React.FC = () => {
               />
             ))
           ) : (
-            <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
+            activeSport !== 'ncaa' && <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
           )}
         </div>
       )}
