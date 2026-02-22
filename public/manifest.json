@@ -1,0 +1,18 @@
+{
+  "name": "HalfTimer",
+  "short_name": "HalfTimer",
+  "description": "Live NFL and NBA halftime countdown",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

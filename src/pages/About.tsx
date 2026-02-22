@@ -1,10 +1,54 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import MobileNavMenu from "@/components/MobileNavMenu";
+import { toast } from "sonner";
 
 const About: React.FC = () => {
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+
+  useEffect(() => {
+    const handler = (e: Event) => {
+      // Prevent the mini-infobar from appearing on mobile
+      e.preventDefault();
+      // Stash the event so it can be triggered later.
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handler);
+    };
+  }, []);
+
+  const handleInstallClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    if (deferredPrompt) {
+      // Show the install prompt
+      deferredPrompt.prompt();
+      // Wait for the user to respond to the prompt
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`User response to the install prompt: ${outcome}`);
+      // We've used the prompt, and can't use it again
+      setDeferredPrompt(null);
+    } else {
+      // Fallback for iOS or browsers that don't support beforeinstallprompt
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+      if (isIOS) {
+        toast.info("To install: tap the 'Share' icon in your browser and select 'Add to Home Screen'.", {
+          duration: 5000,
+        });
+      } else {
+        toast.info("Your browser may not support direct installation. Try adding this page to your home screen manually.", {
+          duration: 5000,
+        });
+      }
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <MobileNavMenu />
@@ -24,6 +68,16 @@ const About: React.FC = () => {
           Created and developed by Levi Brous-Light.
         </p>
       </div>
+      
+      <div className="mt-8 mb-4">
+        <button 
+          onClick={handleInstallClick}
+          className="text-xs text-gray-400 hover:text-gray-600 transition-colors underline underline-offset-2"
+        >
+          Install App to Home Screen
+        </button>
+      </div>
+      
       <MadeWithDyad />
     </div>
   );
