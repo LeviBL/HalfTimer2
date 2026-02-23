@@ -296,7 +296,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           )}
           
           <p className="text-orange-700 font-medium italic">
-            "Bookmark this page and come back during the tournament."
+            Bookmark this page and come back during the tournament.
           </p>
         </div>
       )}
