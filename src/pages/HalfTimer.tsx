@@ -18,7 +18,8 @@ const API_ENDPOINTS = {
 
 const REFRESH_INTERVAL = 20 * 1000;
 const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
-const MARCH_MADNESS_START = new Date("2025-03-17T18:00:00Z").getTime();
+// Updated to 2026 as requested for the upcoming tournament
+const MARCH_MADNESS_START = new Date("2026-03-17T18:00:00Z").getTime();
 
 interface TeamData {
   displayName: string;
