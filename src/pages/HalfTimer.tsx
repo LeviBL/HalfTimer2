@@ -7,7 +7,7 @@ import GameCardModal from "@/components/GameCardModal";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, Calendar, Trophy } from "lucide-react";
+import { Loader2, Trophy } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -20,7 +20,6 @@ const API_ENDPOINTS = {
 
 const REFRESH_INTERVAL = 20 * 1000;
 const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
-const MARCH_MADNESS_START = new Date("2026-03-17T18:00:00Z").getTime();
 
 interface TeamData {
   displayName: string;
@@ -269,7 +268,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           
           <div className="flex items-center justify-center gap-3 pt-8">
             <div className="h-px bg-gray-200 flex-grow max-w-[100px]"></div>
-            <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Live Tournament Games</h2>
+            <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Standard View</h2>
             <div className="h-px bg-gray-200 flex-grow max-w-[100px]"></div>
           </div>
         </div>

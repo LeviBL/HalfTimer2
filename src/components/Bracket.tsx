@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React from "react";
 import BracketGameCard from "./BracketGameCard";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
@@ -37,27 +37,30 @@ const ROUND_NAMES = [
 
 const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
   // Group games by round
-  // In a real scenario, we'd use the ESPN tournament structure.
-  // For now, we'll simulate rounds based on the data provided.
-  const rounds = [1, 2, 3, 4, 5, 6].map(r => games.filter(g => g.round === r || (!g.round && r === 1)));
+  const rounds = [1, 2, 3, 4, 5, 6].map(r => games.filter(g => g.round === r));
 
   return (
-    <div className="w-full bg-white rounded-xl shadow-inner border border-gray-200 overflow-hidden">
+    <div className="w-full bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
       <ScrollArea className="w-full whitespace-nowrap">
-        <div className="flex p-6 gap-8 min-w-max">
+        <div className="flex p-8 gap-12 min-w-max bg-gradient-to-b from-gray-50/50 to-white">
           {ROUND_NAMES.map((name, i) => (
-            <div key={name} className="flex flex-col gap-4">
-              <div className="sticky top-0 bg-white/90 backdrop-blur-sm py-2 px-4 rounded-full border border-gray-100 text-center shadow-sm z-10">
-                <span className="text-sm font-extrabold text-gray-900 uppercase tracking-wider">{name}</span>
+            <div key={name} className="flex flex-col gap-6">
+              <div className="sticky top-0 bg-orange-500 text-white py-2 px-6 rounded-full text-center shadow-md z-10">
+                <span className="text-xs font-black uppercase tracking-widest">{name}</span>
               </div>
-              <div className="flex flex-col justify-around flex-grow gap-6 pt-4">
+              <div className="flex flex-col justify-around flex-grow gap-8 pt-4">
                 {rounds[i].length > 0 ? (
                   rounds[i].map(game => (
                     <BracketGameCard key={game.id} game={game} onClick={onGameClick} />
                   ))
                 ) : (
-                  <div className="w-48 h-24 flex items-center justify-center border-2 border-dashed border-gray-100 rounded-xl">
-                    <span className="text-xs text-gray-300 font-medium italic">TBD</span>
+                  // Enhanced TBD Placeholder
+                  <div className="w-48 h-20 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/50 group hover:border-orange-200 transition-colors">
+                    <div className="w-full px-3 space-y-2 opacity-30">
+                      <div className="h-2 w-2/3 bg-gray-300 rounded"></div>
+                      <div className="h-2 w-1/2 bg-gray-300 rounded"></div>
+                    </div>
+                    <span className="absolute text-[10px] font-bold text-gray-400 uppercase tracking-tighter group-hover:text-orange-400 transition-colors">Matchup TBD</span>
                   </div>
                 )}
               </div>
