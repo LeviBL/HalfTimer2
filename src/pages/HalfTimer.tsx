@@ -2,10 +2,12 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import GameCard from "@/components/GameCard";
+import Bracket from "@/components/Bracket";
+import GameCardModal from "@/components/GameCardModal";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, Calendar } from "lucide-react";
+import { Loader2, Calendar, Trophy } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -18,13 +20,13 @@ const API_ENDPOINTS = {
 
 const REFRESH_INTERVAL = 20 * 1000;
 const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
-// Updated to 2026 as requested for the upcoming tournament
 const MARCH_MADNESS_START = new Date("2026-03-17T18:00:00Z").getTime();
 
 interface TeamData {
   displayName: string;
   logo: string;
   score: string;
+  seed?: string;
 }
 
 interface CompetitionData {
@@ -41,11 +43,13 @@ interface CompetitionData {
   competitors: Array<{
     homeAway: "home" | "away";
     score: string;
+    curatedRank?: { current: number };
     team: {
       displayName: string;
       logo: string;
     };
   }>;
+  notes?: Array<{ text: string }>;
 }
 
 interface EventData {
@@ -81,6 +85,7 @@ interface Game {
     home: TeamData;
     away: TeamData;
   };
+  round?: number;
 }
 
 interface HalfTimerProps {
@@ -94,7 +99,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-  const [countdown, setCountdown] = useState<{ days: number, hours: number, minutes: number, seconds: number } | null>(null);
+  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   
   const [favoriteGameIds, setFavoriteGameIds] = useState<Set<string>>(() => {
     if (typeof window !== "undefined") {
@@ -117,32 +122,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       localStorage.setItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`, JSON.stringify(Array.from(favoriteGameIds)));
     }
   }, [favoriteGameIds, activeSport]);
-
-  // Countdown logic for March Madness
-  useEffect(() => {
-    if (activeSport !== 'ncaa') return;
-
-    const updateCountdown = () => {
-      const now = Date.now();
-      const diff = MARCH_MADNESS_START - now;
-
-      if (diff <= 0) {
-        setCountdown(null);
-        return;
-      }
-
-      setCountdown({
-        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
-        seconds: Math.floor((diff % (1000 * 60)) / 1000)
-      });
-    };
-
-    updateCountdown();
-    const interval = setInterval(updateCountdown, 1000);
-    return () => clearInterval(interval);
-  }, [activeSport]);
 
   const toggleFavorite = (gameId: string) => {
     setFavoriteGameIds(prevFavorites => {
@@ -175,11 +154,24 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
         const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
+        // Determine round for NCAA
+        let round = 1;
+        if (activeSport === 'ncaa' && competition.notes) {
+          const note = competition.notes[0]?.text.toUpperCase() || "";
+          if (note.includes("1ST ROUND")) round = 1;
+          else if (note.includes("2ND ROUND")) round = 2;
+          else if (note.includes("SWEET 16")) round = 3;
+          else if (note.includes("ELITE 8")) round = 4;
+          else if (note.includes("FINAL FOUR")) round = 5;
+          else if (note.includes("CHAMPIONSHIP")) round = 6;
+        }
+
         return {
           id: event.id,
           name: event.name,
           shortName: event.shortName,
           date: event.date,
+          round,
           status: {
             type: {
               description: event.status.type.description,
@@ -193,11 +185,13 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
               displayName: homeCompetitor?.team.displayName || "N/A",
               logo: homeCompetitor?.team.logo || "/placeholder.svg",
               score: homeCompetitor?.score || "0",
+              seed: homeCompetitor?.curatedRank?.current?.toString() || "16",
             },
             away: {
               displayName: awayCompetitor?.team.displayName || "N/A",
               logo: awayCompetitor?.team.logo || "/placeholder.svg",
               score: awayCompetitor?.score || "0",
+              seed: awayCompetitor?.curatedRank?.current?.toString() || "16",
             },
           },
         };
@@ -237,8 +231,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     return () => clearInterval(intervalId);
   }, [activeSport]);
 
-  // Determine if we should show the countdown instead of games
-  const showNcaaCountdown = activeSport === 'ncaa' && (Date.now() < MARCH_MADNESS_START);
+  const isNcaa = activeSport === 'ncaa';
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
@@ -266,38 +259,19 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         </div>
       )}
 
-      {showNcaaCountdown && !loading && (
-        <div className="w-full max-w-[600px] mb-8 p-8 bg-orange-50 border border-orange-200 rounded-2xl text-center shadow-lg">
-          <Calendar className="h-12 w-12 text-orange-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-orange-900 mb-2">No tournament games yet</h2>
-          <p className="text-lg text-orange-800 mb-6">
-            Get ready for March Madness, optimized by the HalfTimer.
-          </p>
+      {isNcaa && !loading && (
+        <div className="w-full max-w-6xl mb-12 space-y-8">
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <Trophy className="h-8 w-8 text-orange-500" />
+            <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tighter">March Madness Bracket</h2>
+          </div>
+          <Bracket games={games} onGameClick={setSelectedGame} />
           
-          {countdown && (
-            <div className="grid grid-cols-4 gap-2 mb-6 max-w-sm mx-auto">
-              <div className="bg-white p-3 rounded-lg shadow-sm border border-orange-100">
-                <div className="text-2xl font-bold text-orange-600">{countdown.days}</div>
-                <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Days</div>
-              </div>
-              <div className="bg-white p-3 rounded-lg shadow-sm border border-orange-100">
-                <div className="text-2xl font-bold text-orange-600">{countdown.hours}</div>
-                <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Hours</div>
-              </div>
-              <div className="bg-white p-3 rounded-lg shadow-sm border border-orange-100">
-                <div className="text-2xl font-bold text-orange-600">{countdown.minutes}</div>
-                <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Mins</div>
-              </div>
-              <div className="bg-white p-3 rounded-lg shadow-sm border border-orange-100">
-                <div className="text-2xl font-bold text-orange-600">{countdown.seconds}</div>
-                <div className="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Secs</div>
-              </div>
-            </div>
-          )}
-          
-          <p className="text-orange-700 font-medium italic">
-            Bookmark this page and come back during the tournament.
-          </p>
+          <div className="flex items-center justify-center gap-3 pt-8">
+            <div className="h-px bg-gray-200 flex-grow max-w-[100px]"></div>
+            <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Live Tournament Games</h2>
+            <div className="h-px bg-gray-200 flex-grow max-w-[100px]"></div>
+          </div>
         </div>
       )}
 
@@ -337,26 +311,24 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           <p>{error}</p>
         </div>
       ) : (
-        !showNcaaCountdown && (
-          <div className={cn(
-            "w-full max-w-[720px] mx-auto",
-            sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
-          )}>
-            {sortedGames.length > 0 ? (
-              sortedGames.map((game) => (
-                <GameCard
-                  key={game.id}
-                  game={game}
-                  isFavorited={favoriteGameIds.has(game.id)}
-                  onToggleFavorite={toggleFavorite}
-                  sport={activeSport}
-                />
-              ))
-            ) : (
-              activeSport !== 'ncaa' && <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
-            )}
-          </div>
-        )
+        <div className={cn(
+          "w-full max-w-[720px] mx-auto",
+          sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
+        )}>
+          {sortedGames.length > 0 ? (
+            sortedGames.map((game) => (
+              <GameCard
+                key={game.id}
+                game={game}
+                isFavorited={favoriteGameIds.has(game.id)}
+                onToggleFavorite={toggleFavorite}
+                sport={activeSport}
+              />
+            ))
+          ) : (
+            <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
+          )}
+        </div>
       )}
 
       <div className="mt-12 p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md text-gray-800 text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center">
@@ -369,6 +341,14 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           <span>= Halftime</span>
         </p>
       </div>
+
+      <GameCardModal 
+        game={selectedGame} 
+        isOpen={!!selectedGame} 
+        onClose={() => setSelectedGame(null)}
+        isFavorited={selectedGame ? favoriteGameIds.has(selectedGame.id) : false}
+        onToggleFavorite={toggleFavorite}
+      />
 
       <MadeWithDyad />
     </div>

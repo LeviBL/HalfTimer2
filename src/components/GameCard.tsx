@@ -61,7 +61,7 @@ interface GameCardProps {
 const DURATIONS = {
   nfl: 12 * 60 + 20, // 12:20
   nba: 14 * 60 + 30, // 14:30
-  ncaa: 14 * 60 + 30, // 14:30 (User requested same as NBA)
+  ncaa: 14 * 60 + 25, // 14:25 (Updated as requested)
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
