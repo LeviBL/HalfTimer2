@@ -15,61 +15,208 @@ import { cn } from "@/lib/utils";
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  // Removed groups=100 to show all NCAA games (Conference Tournaments) during the lead-up to March Madness
   ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard"
 };
 
-// Updated Fallback Bracket Data (2025 Tournament Results)
+// Official 2025-26 NCAA Tournament Bracket Data from Image
 const FALLBACK_NCAA_GAMES: Game[] = [
-  // Championship
+  // --- EAST REGION ---
   {
-    id: "ncaa-2025-final",
-    name: "UConn vs Houston",
-    shortName: "UCONN @ HOU",
-    date: "2025-04-07T21:20:00Z",
-    round: 6,
-    status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
+    id: "ncaa-26-e1",
+    name: "Duke vs Siena",
+    shortName: "SIENA @ DUKE",
+    date: "2026-03-19T15:50:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 11:50 AM" } },
     competitors: {
-      home: { displayName: "Houston", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png", score: "65", seed: "1" },
-      away: { displayName: "UConn", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/41.png", score: "72", seed: "1" }
-    }
-  },
-  // Final Four
-  {
-    id: "ncaa-2025-ff-1",
-    name: "UConn vs Alabama",
-    shortName: "UCONN @ ALA",
-    date: "2025-04-05T18:09:00Z",
-    round: 5,
-    status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
-    competitors: {
-      home: { displayName: "Alabama", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/333.png", score: "72", seed: "4" },
-      away: { displayName: "UConn", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/41.png", score: "86", seed: "1" }
+      home: { displayName: "Duke", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/150.png", score: "0", seed: "1" },
+      away: { displayName: "Siena", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2546.png", score: "0", seed: "16" }
     }
   },
   {
-    id: "ncaa-2025-ff-2",
-    name: "Houston vs Kansas",
-    shortName: "HOU @ KU",
-    date: "2025-04-05T20:49:00Z",
-    round: 5,
-    status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
+    id: "ncaa-26-e2",
+    name: "Ohio State vs TCU",
+    shortName: "TCU @ OSU",
+    date: "2026-03-19T13:15:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 9:15 AM" } },
     competitors: {
-      home: { displayName: "Kansas", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2305.png", score: "68", seed: "2" },
-      away: { displayName: "Houston", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png", score: "74", seed: "1" }
+      home: { displayName: "Ohio State", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/194.png", score: "0", seed: "8" },
+      away: { displayName: "TCU", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2628.png", score: "0", seed: "9" }
     }
   },
-  // Elite 8 (Sample)
   {
-    id: "ncaa-2025-e8-1",
-    name: "Duke vs Houston",
-    shortName: "DUKE @ HOU",
-    date: "2025-03-30T18:09:00Z",
-    round: 4,
-    status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
+    id: "ncaa-26-e3",
+    name: "St John's vs Northern Iowa",
+    shortName: "UNI @ STJ",
+    date: "2026-03-20T20:30:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 4:30 PM" } },
     competitors: {
-      home: { displayName: "Houston", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png", score: "78", seed: "1" },
-      away: { displayName: "Duke", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/150.png", score: "71", seed: "3" }
+      home: { displayName: "St John's", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2550.png", score: "0", seed: "5" },
+      away: { displayName: "Northern Iowa", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2460.png", score: "0", seed: "12" }
+    }
+  },
+  {
+    id: "ncaa-26-e4",
+    name: "Kansas vs CA Baptist",
+    shortName: "CBU @ KU",
+    date: "2026-03-20T22:45:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 6:45 PM" } },
+    competitors: {
+      home: { displayName: "Kansas", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2305.png", score: "0", seed: "4" },
+      away: { displayName: "CA Baptist", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2110.png", score: "0", seed: "13" }
+    }
+  },
+  {
+    id: "ncaa-26-e5",
+    name: "Louisville vs South Florida",
+    shortName: "USF @ LOU",
+    date: "2026-03-19T14:30:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 10:30 AM" } },
+    competitors: {
+      home: { displayName: "Louisville", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/97.png", score: "0", seed: "6" },
+      away: { displayName: "South Florida", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/58.png", score: "0", seed: "11" }
+    }
+  },
+  {
+    id: "ncaa-26-e6",
+    name: "Michigan St vs N Dakota St",
+    shortName: "NDSU @ MSU",
+    date: "2026-03-19T17:05:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 1:05 PM" } },
+    competitors: {
+      home: { displayName: "Michigan St", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/127.png", score: "0", seed: "3" },
+      away: { displayName: "N Dakota St", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2449.png", score: "0", seed: "14" }
+    }
+  },
+  {
+    id: "ncaa-26-e7",
+    name: "UCLA vs UCF",
+    shortName: "UCF @ UCLA",
+    date: "2026-03-20T20:25:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 4:25 PM" } },
+    competitors: {
+      home: { displayName: "UCLA", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/26.png", score: "0", seed: "7" },
+      away: { displayName: "UCF", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2116.png", score: "0", seed: "10" }
+    }
+  },
+  {
+    id: "ncaa-26-e8",
+    name: "UConn vs Furman",
+    shortName: "FUR @ UCONN",
+    date: "2026-03-20T23:00:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 7:00 PM" } },
+    competitors: {
+      home: { displayName: "UConn", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/41.png", score: "0", seed: "2" },
+      away: { displayName: "Furman", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/231.png", score: "0", seed: "15" }
+    }
+  },
+
+  // --- WEST REGION ---
+  {
+    id: "ncaa-26-w1",
+    name: "Arizona vs Long Island",
+    shortName: "LIU @ ARIZ",
+    date: "2026-03-20T14:35:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 10:35 AM" } },
+    competitors: {
+      home: { displayName: "Arizona", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/12.png", score: "0", seed: "1" },
+      away: { displayName: "Long Island", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/112.png", score: "0", seed: "16" }
+    }
+  },
+  {
+    id: "ncaa-26-w2",
+    name: "Villanova vs Utah State",
+    shortName: "USU @ VILLA",
+    date: "2026-03-20T17:10:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 1:10 PM" } },
+    competitors: {
+      home: { displayName: "Villanova", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/222.png", score: "0", seed: "8" },
+      away: { displayName: "Utah State", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/328.png", score: "0", seed: "9" }
+    }
+  },
+  {
+    id: "ncaa-26-w3",
+    name: "Wisconsin vs High Point",
+    shortName: "HPU @ WIS",
+    date: "2026-03-19T14:50:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 10:50 AM" } },
+    competitors: {
+      home: { displayName: "Wisconsin", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/275.png", score: "0", seed: "5" },
+      away: { displayName: "High Point", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2272.png", score: "0", seed: "12" }
+    }
+  },
+  {
+    id: "ncaa-26-w4",
+    name: "Arkansas vs Hawai'i",
+    shortName: "HAW @ ARK",
+    date: "2026-03-19T17:25:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 1:25 PM" } },
+    competitors: {
+      home: { displayName: "Arkansas", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/8.png", score: "0", seed: "4" },
+      away: { displayName: "Hawai'i", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/62.png", score: "0", seed: "13" }
+    }
+  },
+
+  // --- SOUTH REGION ---
+  {
+    id: "ncaa-26-s1",
+    name: "Florida vs TBD",
+    shortName: "TBD @ FLA",
+    date: "2026-03-20T22:25:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 6:25 PM" } },
+    competitors: {
+      home: { displayName: "Florida", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/57.png", score: "0", seed: "1" },
+      away: { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: "16" }
+    }
+  },
+  {
+    id: "ncaa-26-s2",
+    name: "Clemson vs Iowa",
+    shortName: "IOWA @ CLEM",
+    date: "2026-03-20T19:50:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 3:50 PM" } },
+    competitors: {
+      home: { displayName: "Clemson", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/228.png", score: "0", seed: "8" },
+      away: { displayName: "Iowa", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2294.png", score: "0", seed: "9" }
+    }
+  },
+
+  // --- MIDWEST REGION ---
+  {
+    id: "ncaa-26-m1",
+    name: "Michigan vs TBD",
+    shortName: "TBD @ MICH",
+    date: "2026-03-19T20:30:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 4:30 PM" } },
+    competitors: {
+      home: { displayName: "Michigan", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/130.png", score: "0", seed: "1" },
+      away: { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: "16" }
+    }
+  },
+  {
+    id: "ncaa-26-m2",
+    name: "Georgia vs Saint Louis",
+    shortName: "SLU @ UGA",
+    date: "2026-03-19T22:45:00Z",
+    round: 1,
+    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 6:45 PM" } },
+    competitors: {
+      home: { displayName: "Georgia", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/61.png", score: "0", seed: "8" },
+      away: { displayName: "Saint Louis", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2534.png", score: "0", seed: "9" }
     }
   }
 ];
