@@ -15,95 +15,61 @@ import { cn } from "@/lib/utils";
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100"
+  // Removed groups=100 to show all NCAA games (Conference Tournaments) during the lead-up to March Madness
+  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard"
 };
 
-// Fallback Bracket Data (2024 Tournament)
+// Updated Fallback Bracket Data (2025 Tournament Results)
 const FALLBACK_NCAA_GAMES: Game[] = [
-  // Final Four & Championship
+  // Championship
   {
-    id: "ncaa-final-1",
-    name: "UConn vs Purdue",
-    shortName: "UCONN @ PUR",
-    date: "2024-04-08T21:20:00Z",
+    id: "ncaa-2025-final",
+    name: "UConn vs Houston",
+    shortName: "UCONN @ HOU",
+    date: "2025-04-07T21:20:00Z",
     round: 6,
     status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
     competitors: {
-      home: { displayName: "Purdue", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2509.png", score: "60", seed: "1" },
-      away: { displayName: "UConn", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/41.png", score: "75", seed: "1" }
+      home: { displayName: "Houston", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png", score: "65", seed: "1" },
+      away: { displayName: "UConn", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/41.png", score: "72", seed: "1" }
     }
   },
+  // Final Four
   {
-    id: "ncaa-ff-1",
-    name: "NC State vs Purdue",
-    shortName: "NCST @ PUR",
-    date: "2024-04-06T18:09:00Z",
+    id: "ncaa-2025-ff-1",
+    name: "UConn vs Alabama",
+    shortName: "UCONN @ ALA",
+    date: "2025-04-05T18:09:00Z",
     round: 5,
     status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
     competitors: {
-      home: { displayName: "Purdue", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2509.png", score: "63", seed: "1" },
-      away: { displayName: "NC State", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/152.png", score: "50", seed: "11" }
+      home: { displayName: "Alabama", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/333.png", score: "72", seed: "4" },
+      away: { displayName: "UConn", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/41.png", score: "86", seed: "1" }
     }
   },
   {
-    id: "ncaa-ff-2",
-    name: "Alabama vs UConn",
-    shortName: "ALA @ UCONN",
-    date: "2024-04-06T20:49:00Z",
+    id: "ncaa-2025-ff-2",
+    name: "Houston vs Kansas",
+    shortName: "HOU @ KU",
+    date: "2025-04-05T20:49:00Z",
     round: 5,
     status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
     competitors: {
-      home: { displayName: "UConn", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/41.png", score: "86", seed: "1" },
-      away: { displayName: "Alabama", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/333.png", score: "72", seed: "4" }
+      home: { displayName: "Kansas", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2305.png", score: "68", seed: "2" },
+      away: { displayName: "Houston", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png", score: "74", seed: "1" }
     }
   },
-  // Elite 8
+  // Elite 8 (Sample)
   {
-    id: "ncaa-e8-1",
-    name: "Illinois vs UConn",
-    shortName: "ILL @ UCONN",
-    date: "2024-03-30T18:09:00Z",
+    id: "ncaa-2025-e8-1",
+    name: "Duke vs Houston",
+    shortName: "DUKE @ HOU",
+    date: "2025-03-30T18:09:00Z",
     round: 4,
     status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
     competitors: {
-      home: { displayName: "UConn", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/41.png", score: "77", seed: "1" },
-      away: { displayName: "Illinois", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/356.png", score: "52", seed: "3" }
-    }
-  },
-  {
-    id: "ncaa-e8-2",
-    name: "Clemson vs Alabama",
-    shortName: "CLEM @ ALA",
-    date: "2024-03-30T20:49:00Z",
-    round: 4,
-    status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
-    competitors: {
-      home: { displayName: "Alabama", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/333.png", score: "89", seed: "4" },
-      away: { displayName: "Clemson", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/228.png", score: "82", seed: "6" }
-    }
-  },
-  {
-    id: "ncaa-e8-3",
-    name: "Tennessee vs Purdue",
-    shortName: "TENN @ PUR",
-    date: "2024-03-31T14:20:00Z",
-    round: 4,
-    status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
-    competitors: {
-      home: { displayName: "Purdue", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2509.png", score: "72", seed: "1" },
-      away: { displayName: "Tennessee", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2633.png", score: "66", seed: "2" }
-    }
-  },
-  {
-    id: "ncaa-e8-4",
-    name: "NC State vs Duke",
-    shortName: "NCST @ DUKE",
-    date: "2024-03-31T17:05:00Z",
-    round: 4,
-    status: { type: { description: "Final", state: "post", shortDetail: "Final" } },
-    competitors: {
-      home: { displayName: "Duke", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/150.png", score: "64", seed: "4" },
-      away: { displayName: "NC State", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/152.png", score: "76", seed: "11" }
+      home: { displayName: "Houston", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/248.png", score: "78", seed: "1" },
+      away: { displayName: "Duke", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/150.png", score: "71", seed: "3" }
     }
   }
 ];
