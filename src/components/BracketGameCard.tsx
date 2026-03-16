@@ -88,13 +88,13 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
     <Card 
       onClick={() => onClick(game)}
       className={cn(
-        "w-52 p-2 cursor-pointer hover:shadow-sm transition-all border-2 bg-white rounded-xl relative",
-        isHalftime ? "border-blue-500 ring-1 ring-blue-100" : "border-gray-100 shadow-[0_2px_4px_rgba(0,0,0,0.05)]"
+        "w-56 p-0 cursor-pointer hover:bg-gray-50 transition-colors border border-gray-200 bg-white rounded-lg overflow-hidden shadow-none",
+        isHalftime ? "ring-2 ring-blue-500 border-blue-500" : ""
       )}
     >
-      <div className="space-y-2">
+      <div className="divide-y divide-gray-100">
         {/* Away Team */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center px-3 py-2 h-10">
           <div className="flex items-center gap-2 overflow-hidden flex-1">
             {isTbd ? (
               <Shield className="w-4 h-4 text-gray-300" />
@@ -106,8 +106,8 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
                 onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
               />
             )}
-            <div className="flex items-baseline gap-1 truncate">
-              <span className="text-gray-400 font-bold text-[10px]">({game.competitors.away.seed})</span>
+            <div className="flex items-center gap-1.5 truncate">
+              <span className="text-gray-400 font-bold text-[10px] w-4 text-center">{game.competitors.away.seed}</span>
               <span className="font-bold text-gray-900 text-xs truncate">{game.competitors.away.displayName}</span>
             </div>
           </div>
@@ -115,7 +115,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
         </div>
 
         {/* Home Team */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center px-3 py-2 h-10">
           <div className="flex items-center gap-2 overflow-hidden flex-1">
             {isTbd ? (
               <Shield className="w-4 h-4 text-gray-300" />
@@ -127,8 +127,8 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
                 onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
               />
             )}
-            <div className="flex items-baseline gap-1 truncate">
-              <span className="text-gray-400 font-bold text-[10px]">({game.competitors.home.seed})</span>
+            <div className="flex items-center gap-1.5 truncate">
+              <span className="text-gray-400 font-bold text-[10px] w-4 text-center">{game.competitors.home.seed}</span>
               <span className="font-bold text-gray-900 text-xs truncate">{game.competitors.home.displayName}</span>
             </div>
           </div>
@@ -136,7 +136,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
         </div>
 
         {/* Footer Info */}
-        <div className="pt-1.5 border-t border-gray-50 flex justify-center items-center text-[9px] font-bold text-gray-400 uppercase tracking-wider">
+        <div className="bg-gray-50/50 px-3 py-1.5 flex justify-center items-center text-[9px] font-bold text-gray-400 uppercase tracking-wider">
           {isHalftime ? (
             <span className="text-blue-600 animate-pulse">Halftime: {halftimeRemaining !== null ? formatCountdown(halftimeRemaining) : "..."}</span>
           ) : isScheduled ? (

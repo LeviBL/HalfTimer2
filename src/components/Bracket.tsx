@@ -39,14 +39,14 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
   const rounds = [1, 2, 3, 4, 5, 6].map(r => games.filter(g => g.round === r));
 
   return (
-    <div className="w-full bg-white rounded-3xl shadow-2xl border border-gray-100 overflow-hidden">
+    <div className="w-full bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
       <ScrollArea className="w-full whitespace-nowrap">
-        <div className="flex p-12 gap-0 min-w-max bg-gray-50/20">
+        <div className="flex p-12 gap-0 min-w-max bg-white">
           {ROUND_NAMES.map((name, roundIdx) => (
-            <div key={name} className="flex flex-col w-64 relative">
+            <div key={name} className="flex flex-col w-72 relative">
               {/* Round Header */}
-              <div className="sticky top-0 mb-8 px-4 z-20">
-                <div className="bg-white/80 backdrop-blur-md text-gray-400 py-2 px-4 rounded-xl text-center border border-gray-100 shadow-sm">
+              <div className="sticky top-0 mb-12 px-4 z-20">
+                <div className="text-gray-400 py-2 px-4 text-center border-b border-gray-100">
                   <span className="text-[10px] font-black uppercase tracking-[0.2em]">{name}</span>
                 </div>
               </div>
@@ -55,25 +55,29 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
               <div className="flex flex-col justify-around flex-grow relative">
                 {rounds[roundIdx].length > 0 ? (
                   rounds[roundIdx].map((game, gameIdx) => (
-                    <div key={game.id} className="relative py-4 px-4 flex items-center group">
+                    <div 
+                      key={game.id} 
+                      className="relative py-8 px-6 flex items-center"
+                      style={{ height: `${100 / rounds[roundIdx].length}%` }}
+                    >
                       <BracketGameCard game={game} onClick={onGameClick} />
                       
                       {/* Connector Lines */}
                       {roundIdx < ROUND_NAMES.length - 1 && (
                         <>
                           {/* Horizontal line from card */}
-                          <div className="absolute right-0 top-1/2 w-4 h-[2px] bg-gray-200"></div>
+                          <div className="absolute right-0 top-1/2 w-6 h-[1px] bg-gray-300"></div>
                           
                           {/* Vertical line connecting pairs */}
                           {gameIdx % 2 === 0 ? (
-                            <div className="absolute -right-[2px] top-1/2 w-[2px] h-full bg-gray-200"></div>
+                            <div className="absolute -right-[1px] top-1/2 w-[1px] h-1/2 bg-gray-300"></div>
                           ) : (
-                            <div className="absolute -right-[2px] bottom-1/2 w-[2px] h-full bg-gray-200"></div>
+                            <div className="absolute -right-[1px] bottom-1/2 w-[1px] h-1/2 bg-gray-300"></div>
                           )}
                           
                           {/* Horizontal line to next round */}
                           {gameIdx % 2 === 0 && (
-                            <div className="absolute -right-4 top-[100%] w-4 h-[2px] bg-gray-200"></div>
+                            <div className="absolute -right-6 top-[100%] w-6 h-[1px] bg-gray-300"></div>
                           )}
                         </>
                       )}
@@ -82,8 +86,12 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
                 ) : (
                   // Professional TBD Placeholder
                   <div className="flex flex-col justify-around h-full">
-                    {Array.from({ length: Math.max(1, 16 / Math.pow(2, roundIdx)) }).map((_, i) => (
-                      <div key={i} className="relative py-4 px-4 flex items-center opacity-60">
+                    {Array.from({ length: Math.max(1, 32 / Math.pow(2, roundIdx)) }).map((_, i) => (
+                      <div 
+                        key={i} 
+                        className="relative py-8 px-6 flex items-center opacity-40"
+                        style={{ height: `${100 / (32 / Math.pow(2, roundIdx))}%` }}
+                      >
                         <BracketGameCard 
                           game={{
                             id: `tbd-${roundIdx}-${i}`,
