@@ -15,7 +15,6 @@ import { cn } from "@/lib/utils";
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  // Fetching the full tournament date range (March 17 - April 7, 2026)
   ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100&seasontype=3&limit=100&dates=20260317-20260407"
 };
 
@@ -147,72 +146,71 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     }
 
     try {
-      console.log(`[HalfTimer] Fetching ${activeSport} data from:`, API_ENDPOINTS[activeSport]);
       const response = await fetch(API_ENDPOINTS[activeSport]);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      console.log(`[HalfTimer] Raw ${activeSport} data received:`, data);
 
-      const processedGames: Game[] = (data.events || []).map((event: EventData) => {
-        const competition = event.competitions[0];
-        const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
-        const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
+      const processedGames: Game[] = (data.events || [])
+        .map((event: EventData) => {
+          const competition = event.competitions[0];
+          const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
+          const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
-        let round = 1;
-        if (activeSport === 'ncaa') {
-          // Detect round from notes or description
-          const note = (competition.notes?.[0]?.text || "").toUpperCase();
-          const desc = (event.status.type.description || "").toUpperCase();
-          const combined = `${note} ${desc}`;
+          let round = 1;
+          if (activeSport === 'ncaa') {
+            const note = (competition.notes?.[0]?.text || "").toUpperCase();
+            const desc = (event.status.type.description || "").toUpperCase();
+            const combined = `${note} ${desc}`;
 
-          if (combined.includes("1ST ROUND") || combined.includes("FIRST ROUND") || combined.includes("ROUND OF 64")) round = 1;
-          else if (combined.includes("2ND ROUND") || combined.includes("SECOND ROUND") || combined.includes("ROUND OF 32")) round = 2;
-          else if (combined.includes("SWEET 16") || combined.includes("REGIONAL SEMIFINAL")) round = 3;
-          else if (combined.includes("ELITE 8") || combined.includes("REGIONAL FINAL")) round = 4;
-          else if (combined.includes("FINAL FOUR") || combined.includes("NATIONAL SEMIFINAL")) round = 5;
-          else if (combined.includes("CHAMPIONSHIP") || combined.includes("NATIONAL CHAMPIONSHIP")) round = 6;
-          else if (combined.includes("FIRST FOUR") || combined.includes("OPENING ROUND")) round = 0;
-          else round = 1; // Default to round 1 for tournament games if not specified
-        }
+            if (combined.includes("1ST ROUND") || combined.includes("FIRST ROUND") || combined.includes("ROUND OF 64")) round = 1;
+            else if (combined.includes("2ND ROUND") || combined.includes("SECOND ROUND") || combined.includes("ROUND OF 32")) round = 2;
+            else if (combined.includes("SWEET 16") || combined.includes("REGIONAL SEMIFINAL")) round = 3;
+            else if (combined.includes("ELITE 8") || combined.includes("REGIONAL FINAL")) round = 4;
+            else if (combined.includes("FINAL FOUR") || combined.includes("NATIONAL SEMIFINAL")) round = 5;
+            else if (combined.includes("CHAMPIONSHIP") || combined.includes("NATIONAL CHAMPIONSHIP")) round = 6;
+            else if (combined.includes("FIRST FOUR") || combined.includes("OPENING ROUND")) round = 0;
+            else round = 1;
+          }
 
-        const getSeed = (comp: any) => {
-          return comp?.seed || comp?.curatedRank?.current?.toString() || "";
-        };
+          const getSeed = (comp: any) => {
+            const s = comp?.seed || comp?.curatedRank?.current?.toString() || "";
+            return s === "99" ? "" : s;
+          };
 
-        return {
-          id: event.id,
-          name: event.name,
-          shortName: event.shortName,
-          date: event.date,
-          round,
-          status: {
-            type: {
-              description: event.status.type.description,
-              state: event.status.type.state,
-              detail: event.status.type.detail,
-              shortDetail: event.status.type.shortDetail,
+          return {
+            id: event.id,
+            name: event.name,
+            shortName: event.shortName,
+            date: event.date,
+            round,
+            status: {
+              type: {
+                description: event.status.type.description,
+                state: event.status.type.state,
+                detail: event.status.type.detail,
+                shortDetail: event.status.type.shortDetail,
+              },
             },
-          },
-          competitors: {
-            home: {
-              displayName: homeCompetitor?.team.displayName || "TBD",
-              logo: homeCompetitor?.team.logo || "/placeholder.svg",
-              score: homeCompetitor?.score || "0",
-              seed: getSeed(homeCompetitor),
+            competitors: {
+              home: {
+                displayName: homeCompetitor?.team.displayName || "TBD",
+                logo: homeCompetitor?.team.logo || "/placeholder.svg",
+                score: homeCompetitor?.score || "0",
+                seed: getSeed(homeCompetitor),
+              },
+              away: {
+                displayName: awayCompetitor?.team.displayName || "TBD",
+                logo: awayCompetitor?.team.logo || "/placeholder.svg",
+                score: awayCompetitor?.score || "0",
+                seed: getSeed(awayCompetitor),
+              },
             },
-            away: {
-              displayName: awayCompetitor?.team.displayName || "TBD",
-              logo: awayCompetitor?.team.logo || "/placeholder.svg",
-              score: awayCompetitor?.score || "0",
-              seed: getSeed(awayCompetitor),
-            },
-          },
-        };
-      });
+          };
+        })
+        .filter(g => g.round !== 0); // Ignore First Four
 
-      console.log(`[HalfTimer] Processed ${processedGames.length} games for ${activeSport}`);
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
@@ -231,13 +229,11 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
 
   const sortedGames = useMemo(() => {
     return [...games].sort((a, b) => {
-      // 1. Favorites first
       const aIsFavorited = favoriteGameIds.has(a.id);
       const bIsFavorited = favoriteGameIds.has(b.id);
       if (aIsFavorited && !bIsFavorited) return -1;
       if (!aIsFavorited && bIsFavorited) return 1;
 
-      // 2. Sort by state (Live/Halftime > Scheduled > Final)
       const getStatePriority = (state: string, desc: string) => {
         if (desc === "Halftime" || state === "in") return 0;
         if (state === "pre") return 1;
@@ -247,7 +243,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       const bPriority = getStatePriority(b.status.type.state, b.status.type.description);
       if (aPriority !== bPriority) return aPriority - bPriority;
 
-      // 3. Chronological sort within groups
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
   }, [games, favoriteGameIds]);

@@ -36,12 +36,20 @@ const ROUND_NAMES = [
 ];
 
 const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
-  // Helper to get games for a round, filling with placeholders to maintain structure
   const getGamesForRound = (roundIdx: number) => {
     const roundNum = roundIdx + 1;
     const realGames = games.filter(g => g.round === roundNum);
-    const totalSlots = 32 / Math.pow(2, roundIdx);
     
+    // For Round of 64, we only show games that have at least one real team
+    if (roundNum === 1) {
+      return realGames.filter(g => 
+        g.competitors.home.displayName !== "TBD" || 
+        g.competitors.away.displayName !== "TBD"
+      );
+    }
+
+    // For subsequent rounds, we fill with placeholders to maintain structure
+    const totalSlots = 32 / Math.pow(2, roundIdx);
     const displayGames = [...realGames];
     for (let i = realGames.length; i < totalSlots; i++) {
       displayGames.push({
@@ -64,39 +72,33 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
         <div className="flex p-12 gap-0 min-w-max bg-white">
           {ROUND_NAMES.map((name, roundIdx) => {
             const roundGames = getGamesForRound(roundIdx);
+            if (roundGames.length === 0 && roundIdx === 0) return null;
+
             return (
               <div key={name} className="flex flex-col w-72 relative">
-                {/* Round Header */}
                 <div className="sticky top-0 mb-12 px-4 z-20">
                   <div className="text-gray-400 py-2 px-4 text-center border-b border-gray-100">
                     <span className="text-[10px] font-black uppercase tracking-[0.2em]">{name}</span>
                   </div>
                 </div>
 
-                {/* Games Container */}
                 <div className="flex flex-col justify-around flex-grow relative">
                   {roundGames.map((game, gameIdx) => (
                     <div 
                       key={game.id} 
                       className="relative py-8 px-6 flex items-center"
-                      style={{ height: `${100 / roundGames.length}%` }}
+                      style={{ height: `${100 / Math.max(1, roundGames.length)}%` }}
                     >
                       <BracketGameCard game={game} onClick={onGameClick} />
                       
-                      {/* Connector Lines */}
-                      {roundIdx < ROUND_NAMES.length - 1 && (
+                      {roundIdx < ROUND_NAMES.length - 1 && roundGames.length > 1 && (
                         <>
-                          {/* Horizontal line from card */}
                           <div className="absolute right-0 top-1/2 w-6 h-[1px] bg-gray-300"></div>
-                          
-                          {/* Vertical line connecting pairs */}
                           {gameIdx % 2 === 0 ? (
                             <div className="absolute -right-[1px] top-1/2 w-[1px] h-full bg-gray-300"></div>
                           ) : (
                             <div className="absolute -right-[1px] bottom-1/2 w-[1px] h-full bg-gray-300"></div>
                           )}
-                          
-                          {/* Horizontal line to next round (midpoint) */}
                           {gameIdx % 2 === 0 && (
                             <div className="absolute -right-6 top-[100%] w-6 h-[1px] bg-gray-300"></div>
                           )}
