@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100"
+  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard"
 };
 
 const REFRESH_INTERVAL = 20 * 1000;
@@ -109,6 +109,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   });
 
   useEffect(() => {
+    // Clear games and errors immediately when switching sports to prevent cross-sport data leakage
+    setGames([]);
+    setError(null);
+    
     if (typeof window !== "undefined") {
       const storedFavorites = localStorage.getItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`);
       setFavoriteGameIds(storedFavorites ? new Set(JSON.parse(storedFavorites)) : new Set());
@@ -149,7 +153,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       const data = await response.json();
 
       // Strict filtering: Ensure we only process games for the active sport
-      // The ESPN API for NCAA sometimes includes other data, so we verify the sport
       const processedGames: Game[] = (data.events || []).map((event: EventData) => {
         const competition = event.competitions[0];
         const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
@@ -204,6 +207,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     } catch (err) {
       console.error(`Failed to fetch ${activeSport} game data:`, err);
       setError(`Failed to load ${activeSport.toUpperCase()} game data. Please try again later.`);
+      setGames([]); // Clear games on error to avoid showing stale data from other sports
     } finally {
       if (initialLoad) {
         setLoading(false);

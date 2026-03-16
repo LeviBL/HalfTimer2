@@ -55,19 +55,22 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
                     <BracketGameCard key={game.id} game={game} onClick={onGameClick} />
                   ))
                 ) : (
-                  // Professional TBD Placeholder
-                  <div className="w-48 h-20 flex flex-col items-center justify-center border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/30 group hover:border-gray-300 transition-colors">
+                  // Professional TBD Placeholder that looks like a real matchup slot
+                  <div className="w-48 h-20 flex flex-col justify-center border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/30 group hover:border-gray-300 transition-colors relative overflow-hidden">
                     <div className="w-full px-4 space-y-3 opacity-20">
                       <div className="flex justify-between items-center">
                         <div className="h-2 w-24 bg-gray-400 rounded"></div>
                         <div className="h-2 w-4 bg-gray-400 rounded"></div>
                       </div>
+                      <div className="h-px bg-gray-200 w-full"></div>
                       <div className="flex justify-between items-center">
                         <div className="h-2 w-20 bg-gray-400 rounded"></div>
                         <div className="h-2 w-4 bg-gray-400 rounded"></div>
                       </div>
                     </div>
-                    <span className="absolute text-[10px] font-bold text-gray-400 uppercase tracking-tighter group-hover:text-gray-500 transition-colors">Matchup TBD</span>
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <span className="text-[10px] font-bold text-gray-400 uppercase tracking-tighter group-hover:text-gray-500 transition-colors bg-white/80 px-2 py-1 rounded">Matchup TBD</span>
+                    </div>
                   </div>
                 )}
               </div>
