@@ -15,10 +15,11 @@ import { cn } from "@/lib/utils";
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard"
+  // Using groups=100 specifically targets the NCAA Tournament (March Madness)
+  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100"
 };
 
-// Official 2025-26 NCAA Tournament Bracket Data from Image
+// Official 2025-26 NCAA Tournament Bracket Data from Image (Initial State)
 const FALLBACK_NCAA_GAMES: Game[] = [
   // --- EAST REGION ---
   {
@@ -359,15 +360,16 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
         const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
+        // Improved round detection logic for NCAA Tournament
         let round = 1;
-        if (activeSport === 'ncaa' && competition.notes) {
-          const note = competition.notes[0]?.text.toUpperCase() || "";
-          if (note.includes("1ST ROUND")) round = 1;
-          else if (note.includes("2ND ROUND")) round = 2;
-          else if (note.includes("SWEET 16")) round = 3;
-          else if (note.includes("ELITE 8")) round = 4;
-          else if (note.includes("FINAL FOUR")) round = 5;
-          else if (note.includes("CHAMPIONSHIP")) round = 6;
+        if (activeSport === 'ncaa') {
+          const note = competition.notes?.[0]?.text.toUpperCase() || "";
+          if (note.includes("1ST ROUND") || note.includes("FIRST ROUND")) round = 1;
+          else if (note.includes("2ND ROUND") || note.includes("SECOND ROUND")) round = 2;
+          else if (note.includes("SWEET 16") || note.includes("REGIONAL SEMIFINAL")) round = 3;
+          else if (note.includes("ELITE 8") || note.includes("REGIONAL FINAL")) round = 4;
+          else if (note.includes("FINAL FOUR") || note.includes("NATIONAL SEMIFINAL")) round = 5;
+          else if (note.includes("CHAMPIONSHIP") || note.includes("NATIONAL CHAMPIONSHIP")) round = 6;
         }
 
         return {
@@ -401,7 +403,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         };
       });
 
-      // If NCAA and no games found, use fallback data
+      // If NCAA and no games found in the live feed (e.g., before tournament starts), use fallback data
       if (activeSport === 'ncaa' && processedGames.length === 0) {
         setGames(FALLBACK_NCAA_GAMES);
       } else {
