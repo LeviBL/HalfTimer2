@@ -43,6 +43,7 @@ interface CompetitionData {
     homeAway: "home" | "away";
     score: string;
     curatedRank?: { current: number };
+    seed?: string;
     team: {
       displayName: string;
       logo: string;
@@ -145,11 +146,13 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     }
 
     try {
+      console.log(`[HalfTimer] Fetching ${activeSport} data from:`, API_ENDPOINTS[activeSport]);
       const response = await fetch(API_ENDPOINTS[activeSport]);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+      console.log(`[HalfTimer] Raw ${activeSport} data received:`, data);
 
       const processedGames: Game[] = (data.events || []).map((event: EventData) => {
         const competition = event.competitions[0];
@@ -158,15 +161,24 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
 
         let round = 1;
         if (activeSport === 'ncaa') {
-          const note = competition.notes?.[0]?.text.toUpperCase() || "";
-          if (note.includes("1ST ROUND") || note.includes("FIRST ROUND")) round = 1;
-          else if (note.includes("2ND ROUND") || note.includes("SECOND ROUND")) round = 2;
-          else if (note.includes("SWEET 16") || note.includes("REGIONAL SEMIFINAL")) round = 3;
-          else if (note.includes("ELITE 8") || note.includes("REGIONAL FINAL")) round = 4;
-          else if (note.includes("FINAL FOUR") || note.includes("NATIONAL SEMIFINAL")) round = 5;
-          else if (note.includes("CHAMPIONSHIP") || note.includes("NATIONAL CHAMPIONSHIP")) round = 6;
-          else if (note.includes("FIRST FOUR") || note.includes("OPENING ROUND")) round = 0;
+          // Detect round from notes or description
+          const note = (competition.notes?.[0]?.text || "").toUpperCase();
+          const desc = (event.status.type.description || "").toUpperCase();
+          const combined = `${note} ${desc}`;
+
+          if (combined.includes("1ST ROUND") || combined.includes("FIRST ROUND") || combined.includes("ROUND OF 64")) round = 1;
+          else if (combined.includes("2ND ROUND") || combined.includes("SECOND ROUND") || combined.includes("ROUND OF 32")) round = 2;
+          else if (combined.includes("SWEET 16") || combined.includes("REGIONAL SEMIFINAL")) round = 3;
+          else if (combined.includes("ELITE 8") || combined.includes("REGIONAL FINAL")) round = 4;
+          else if (combined.includes("FINAL FOUR") || combined.includes("NATIONAL SEMIFINAL")) round = 5;
+          else if (combined.includes("CHAMPIONSHIP") || combined.includes("NATIONAL CHAMPIONSHIP")) round = 6;
+          else if (combined.includes("FIRST FOUR") || combined.includes("OPENING ROUND")) round = 0;
+          else round = 1; // Default to round 1 for tournament games if not specified
         }
+
+        const getSeed = (comp: any) => {
+          return comp?.seed || comp?.curatedRank?.current?.toString() || "";
+        };
 
         return {
           id: event.id,
@@ -184,26 +196,27 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           },
           competitors: {
             home: {
-              displayName: homeCompetitor?.team.displayName || "N/A",
+              displayName: homeCompetitor?.team.displayName || "TBD",
               logo: homeCompetitor?.team.logo || "/placeholder.svg",
               score: homeCompetitor?.score || "0",
-              seed: homeCompetitor?.curatedRank?.current?.toString() || "16",
+              seed: getSeed(homeCompetitor),
             },
             away: {
-              displayName: awayCompetitor?.team.displayName || "N/A",
+              displayName: awayCompetitor?.team.displayName || "TBD",
               logo: awayCompetitor?.team.logo || "/placeholder.svg",
               score: awayCompetitor?.score || "0",
-              seed: awayCompetitor?.curatedRank?.current?.toString() || "16",
+              seed: getSeed(awayCompetitor),
             },
           },
         };
       });
 
+      console.log(`[HalfTimer] Processed ${processedGames.length} games for ${activeSport}`);
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
     } catch (err) {
-      console.error(`Failed to fetch ${activeSport} game data:`, err);
+      console.error(`[HalfTimer] Failed to fetch ${activeSport} game data:`, err);
       setError(`Failed to load ${activeSport.toUpperCase()} game data.`);
       setGames([]);
     } finally {
