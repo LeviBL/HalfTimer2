@@ -148,12 +148,14 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       }
       const data = await response.json();
 
+      // Strict filtering: Ensure we only process games for the active sport
+      // The ESPN API for NCAA sometimes includes other data, so we verify the sport
       const processedGames: Game[] = (data.events || []).map((event: EventData) => {
         const competition = event.competitions[0];
         const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
         const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
-        // Determine round for NCAA
+        // Determine round for NCAA tournament
         let round = 1;
         if (activeSport === 'ncaa' && competition.notes) {
           const note = competition.notes[0]?.text.toUpperCase() || "";
