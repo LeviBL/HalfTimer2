@@ -71,11 +71,15 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
     };
   }, [isHalftime, game.id, getHalftimeStartTime]);
 
-  // Format date to local time (e.g., "8:50 AM")
-  const localTime = new Date(game.date).toLocaleTimeString([], { 
+  const dateObj = new Date(game.date);
+  const localTime = dateObj.toLocaleTimeString([], { 
     hour: 'numeric', 
     minute: '2-digit',
     hour12: true 
+  });
+  const localDate = dateObj.toLocaleDateString([], {
+    month: 'numeric',
+    day: 'numeric'
   });
 
   const isTbd = game.competitors.away.displayName === "TBD" || game.competitors.home.displayName === "TBD";
@@ -84,8 +88,8 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
     <Card 
       onClick={() => onClick(game)}
       className={cn(
-        "w-52 p-2 cursor-pointer hover:shadow-md transition-all border-2 bg-white rounded-xl relative",
-        isHalftime ? "border-blue-500 ring-2 ring-blue-100" : "border-gray-100 shadow-sm"
+        "w-52 p-2 cursor-pointer hover:shadow-sm transition-all border-2 bg-white rounded-xl relative",
+        isHalftime ? "border-blue-500 ring-1 ring-blue-100" : "border-gray-100 shadow-[0_2px_4px_rgba(0,0,0,0.05)]"
       )}
     >
       <div className="space-y-2">
@@ -95,7 +99,12 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
             {isTbd ? (
               <Shield className="w-4 h-4 text-gray-300" />
             ) : (
-              <img src={game.competitors.away.logo} className="w-5 h-5 object-contain flex-shrink-0" alt="" />
+              <img 
+                src={game.competitors.away.logo} 
+                className="w-5 h-5 object-contain flex-shrink-0" 
+                alt="" 
+                onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
+              />
             )}
             <div className="flex items-baseline gap-1 truncate">
               <span className="text-gray-400 font-bold text-[10px]">({game.competitors.away.seed})</span>
@@ -111,7 +120,12 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
             {isTbd ? (
               <Shield className="w-4 h-4 text-gray-300" />
             ) : (
-              <img src={game.competitors.home.logo} className="w-5 h-5 object-contain flex-shrink-0" alt="" />
+              <img 
+                src={game.competitors.home.logo} 
+                className="w-5 h-5 object-contain flex-shrink-0" 
+                alt="" 
+                onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
+              />
             )}
             <div className="flex items-baseline gap-1 truncate">
               <span className="text-gray-400 font-bold text-[10px]">({game.competitors.home.seed})</span>
@@ -126,7 +140,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
           {isHalftime ? (
             <span className="text-blue-600 animate-pulse">Halftime: {halftimeRemaining !== null ? formatCountdown(halftimeRemaining) : "..."}</span>
           ) : isScheduled ? (
-            <span>{localTime}</span>
+            <span>{localDate} • {localTime}</span>
           ) : isFinal ? (
             <span className="text-red-500">Final</span>
           ) : (
