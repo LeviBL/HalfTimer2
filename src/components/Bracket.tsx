@@ -40,17 +40,12 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
     const roundNum = roundIdx + 1;
     const realGames = games.filter(g => g.round === roundNum);
     
-    // For Round of 64, we only show games that have at least one real team
-    if (roundNum === 1) {
-      return realGames.filter(g => 
-        g.competitors.home.displayName !== "TBD" || 
-        g.competitors.away.displayName !== "TBD"
-      );
-    }
-
-    // For subsequent rounds, we fill with placeholders to maintain structure
+    // Total slots for this round to maintain structure (32, 16, 8, 4, 2, 1)
     const totalSlots = 32 / Math.pow(2, roundIdx);
+    
     const displayGames = [...realGames];
+    
+    // Fill with placeholders to maintain structure
     for (let i = realGames.length; i < totalSlots; i++) {
       displayGames.push({
         id: `tbd-${roundIdx}-${i}`,
@@ -72,7 +67,6 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
         <div className="flex p-12 gap-0 min-w-max bg-white">
           {ROUND_NAMES.map((name, roundIdx) => {
             const roundGames = getGamesForRound(roundIdx);
-            if (roundGames.length === 0 && roundIdx === 0) return null;
 
             return (
               <div key={name} className="flex flex-col w-72 relative">

@@ -208,8 +208,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
               },
             },
           };
-        })
-        .filter(g => g.round !== 0); // Ignore First Four
+        });
 
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
@@ -246,6 +245,20 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
   }, [games, favoriteGameIds]);
+
+  const standardViewGames = useMemo(() => {
+    return sortedGames.filter(game => {
+      // Ignore First Four / Play-in games
+      if (game.round === 0) return false;
+      
+      // Hide matchups where both teams are TBD
+      const isHomeTbd = game.competitors.home.displayName === "TBD";
+      const isAwayTbd = game.competitors.away.displayName === "TBD";
+      if (isHomeTbd && isAwayTbd) return false;
+      
+      return true;
+    });
+  }, [sortedGames]);
 
   useEffect(() => {
     const intervalId = setInterval(() => fetchGames(false), REFRESH_INTERVAL);
@@ -334,10 +347,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       ) : (
         <div className={cn(
           "w-full max-w-[720px] mx-auto",
-          sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
+          standardViewGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
         )}>
-          {sortedGames.length > 0 ? (
-            sortedGames.map((game) => (
+          {standardViewGames.length > 0 ? (
+            standardViewGames.map((game) => (
               <GameCard
                 key={game.id}
                 game={game}
