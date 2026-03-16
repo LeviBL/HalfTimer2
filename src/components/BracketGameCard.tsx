@@ -4,12 +4,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useHalftimeTimers } from "@/hooks/use-halftime-timers";
+import { Shield } from "lucide-react";
 
 interface Team {
   displayName: string;
   logo: string;
   score: string;
   seed?: string;
+  line?: string;
 }
 
 interface Game {
@@ -27,6 +29,7 @@ interface Game {
     home: Team;
     away: Team;
   };
+  network?: string;
 }
 
 interface BracketGameCardProps {
@@ -70,50 +73,80 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
     };
   }, [isHalftime, game.id, getHalftimeStartTime]);
 
-  // Extract time from detail string (e.g., "Mar 19, 11:50 AM") or fallback to local time
-  const displayTime = game.status.type.detail 
-    ? game.status.type.detail.split(',').pop()?.trim() 
-    : new Date(game.date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  // Format date to local time (e.g., "Mar 19 - 8:50 AM")
+  const localTime = new Date(game.date).toLocaleTimeString([], { 
+    hour: 'numeric', 
+    minute: '2-digit',
+    hour12: true 
+  });
+  const localDate = new Date(game.date).toLocaleDateString([], {
+    month: 'short',
+    day: 'numeric'
+  });
+
+  const isTbd = game.competitors.away.displayName === "TBD" || game.competitors.home.displayName === "TBD";
 
   return (
     <Card 
       onClick={() => onClick(game)}
       className={cn(
-        "w-52 p-2 cursor-pointer hover:shadow-md transition-all border-2",
-        isHalftime ? "border-amber-400 bg-amber-50/30" : "border-gray-200 bg-white"
+        "w-64 p-3 cursor-pointer hover:shadow-lg transition-all border-2 bg-white rounded-xl relative",
+        isHalftime ? "border-blue-500 ring-2 ring-blue-100" : "border-gray-100 shadow-sm"
       )}
     >
-      <div className="space-y-2">
+      {/* Betting Line */}
+      {!isTbd && isScheduled && (
+        <div className="absolute top-2 right-3 text-[10px] font-bold text-gray-400 uppercase tracking-tight">
+          {game.competitors.home.line || `${game.competitors.home.displayName.substring(0,3).toUpperCase()} -0.0`}
+        </div>
+      )}
+
+      <div className="space-y-3">
         {/* Away Team */}
-        <div className="flex justify-between items-center text-xs">
-          <div className="flex items-center gap-2 overflow-hidden flex-1">
-            <span className="text-gray-500 font-bold min-w-[1.75rem]">({game.competitors.away.seed || "?"})</span>
-            <img src={game.competitors.away.logo} className="w-5 h-5 object-contain flex-shrink-0" alt="" />
-            <span className="truncate font-semibold text-gray-900">{game.competitors.away.displayName}</span>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-3 overflow-hidden flex-1">
+            {game.competitors.away.displayName === "TBD" ? (
+              <Shield className="w-5 h-5 text-gray-300 fill-gray-100" />
+            ) : (
+              <img src={game.competitors.away.logo} className="w-6 h-6 object-contain flex-shrink-0" alt="" />
+            )}
+            <div className="flex items-baseline gap-1.5 truncate">
+              <span className="text-gray-400 font-bold text-sm">{game.competitors.away.seed}</span>
+              <span className="font-bold text-gray-900 text-sm truncate">{game.competitors.away.displayName}</span>
+            </div>
           </div>
-          <span className="font-bold ml-2">{game.competitors.away.score}</span>
+          {!isScheduled && <span className="font-black text-gray-900 ml-2">{game.competitors.away.score}</span>}
         </div>
 
         {/* Home Team */}
-        <div className="flex justify-between items-center text-xs">
-          <div className="flex items-center gap-2 overflow-hidden flex-1">
-            <span className="text-gray-500 font-bold min-w-[1.75rem]">({game.competitors.home.seed || "?"})</span>
-            <img src={game.competitors.home.logo} className="w-5 h-5 object-contain flex-shrink-0" alt="" />
-            <span className="truncate font-semibold text-gray-900">{game.competitors.home.displayName}</span>
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-3 overflow-hidden flex-1">
+            {game.competitors.home.displayName === "TBD" ? (
+              <Shield className="w-5 h-5 text-gray-300 fill-gray-100" />
+            ) : (
+              <img src={game.competitors.home.logo} className="w-6 h-6 object-contain flex-shrink-0" alt="" />
+            )}
+            <div className="flex items-baseline gap-1.5 truncate">
+              <span className="text-gray-400 font-bold text-sm">{game.competitors.home.seed}</span>
+              <span className="font-bold text-gray-900 text-sm truncate">{game.competitors.home.displayName}</span>
+            </div>
           </div>
-          <span className="font-bold ml-2">{game.competitors.home.score}</span>
+          {!isScheduled && <span className="font-black text-gray-900 ml-2">{game.competitors.home.score}</span>}
         </div>
 
-        {/* Status */}
-        <div className="pt-1.5 border-t border-gray-100 text-[10px] text-center font-bold uppercase tracking-wider">
+        {/* Footer Info */}
+        <div className="pt-2 border-t border-gray-50 flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-wider">
           {isHalftime ? (
-            <span className="text-amber-600">Halftime: {halftimeRemaining !== null ? formatCountdown(halftimeRemaining) : "..."}</span>
+            <span className="text-blue-600 animate-pulse">Halftime: {halftimeRemaining !== null ? formatCountdown(halftimeRemaining) : "..."}</span>
           ) : isScheduled ? (
-            <span className="text-gray-500">{displayTime}</span>
+            <>
+              <span>{localDate} - {localTime}</span>
+              <span className="text-gray-300">{game.network || "CBS"}</span>
+            </>
           ) : isFinal ? (
-            <span className="text-red-600">Final</span>
+            <span className="text-red-500">Final</span>
           ) : (
-            <span className="text-emerald-600">{game.status.type.shortDetail}</span>
+            <span className="text-emerald-500">{game.status.type.shortDetail}</span>
           )}
         </div>
       </div>
