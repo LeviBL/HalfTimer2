@@ -15,11 +15,10 @@ import { cn } from "@/lib/utils";
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  // Using groups=100 specifically targets the NCAA Tournament (March Madness)
   ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100"
 };
 
-// Official 2025-26 NCAA Tournament Bracket Data from Image (Initial State)
+// Official 2025-26 NCAA Tournament Bracket Data
 const FALLBACK_NCAA_GAMES: Game[] = [
   // --- EAST REGION ---
   {
@@ -167,58 +166,6 @@ const FALLBACK_NCAA_GAMES: Game[] = [
       home: { displayName: "Arkansas", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/8.png", score: "0", seed: "4" },
       away: { displayName: "Hawai'i", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/62.png", score: "0", seed: "13" }
     }
-  },
-
-  // --- SOUTH REGION ---
-  {
-    id: "ncaa-26-s1",
-    name: "Florida vs TBD",
-    shortName: "TBD @ FLA",
-    date: "2026-03-20T22:25:00Z",
-    round: 1,
-    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 6:25 PM" } },
-    competitors: {
-      home: { displayName: "Florida", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/57.png", score: "0", seed: "1" },
-      away: { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: "16" }
-    }
-  },
-  {
-    id: "ncaa-26-s2",
-    name: "Clemson vs Iowa",
-    shortName: "IOWA @ CLEM",
-    date: "2026-03-20T19:50:00Z",
-    round: 1,
-    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 20, 3:50 PM" } },
-    competitors: {
-      home: { displayName: "Clemson", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/228.png", score: "0", seed: "8" },
-      away: { displayName: "Iowa", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2294.png", score: "0", seed: "9" }
-    }
-  },
-
-  // --- MIDWEST REGION ---
-  {
-    id: "ncaa-26-m1",
-    name: "Michigan vs TBD",
-    shortName: "TBD @ MICH",
-    date: "2026-03-19T20:30:00Z",
-    round: 1,
-    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 4:30 PM" } },
-    competitors: {
-      home: { displayName: "Michigan", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/130.png", score: "0", seed: "1" },
-      away: { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: "16" }
-    }
-  },
-  {
-    id: "ncaa-26-m2",
-    name: "Georgia vs Saint Louis",
-    shortName: "SLU @ UGA",
-    date: "2026-03-19T22:45:00Z",
-    round: 1,
-    status: { type: { description: "Scheduled", state: "pre", detail: "Mar 19, 6:45 PM" } },
-    competitors: {
-      home: { displayName: "Georgia", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/61.png", score: "0", seed: "8" },
-      away: { displayName: "Saint Louis", logo: "https://a.espncdn.com/i/teamlogos/ncaa/500/2534.png", score: "0", seed: "9" }
-    }
   }
 ];
 
@@ -360,7 +307,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
         const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
-        // Improved round detection logic for NCAA Tournament
         let round = 1;
         if (activeSport === 'ncaa') {
           const note = competition.notes?.[0]?.text.toUpperCase() || "";
@@ -403,7 +349,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         };
       });
 
-      // If NCAA and no games found in the live feed (e.g., before tournament starts), use fallback data
       if (activeSport === 'ncaa' && processedGames.length === 0) {
         setGames(FALLBACK_NCAA_GAMES);
       } else {
