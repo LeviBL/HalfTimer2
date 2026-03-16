@@ -1,3 +1,4 @@
+Upcoming > Final).">
 "use client";
 
 import React, { useState, useEffect, useMemo } from "react";
@@ -269,15 +270,24 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
 
   const sortedGames = useMemo(() => {
     return [...games].sort((a, b) => {
+      // 1. Favorites first
       const aIsFavorited = favoriteGameIds.has(a.id);
       const bIsFavorited = favoriteGameIds.has(b.id);
-
       if (aIsFavorited && !bIsFavorited) return -1;
       if (!aIsFavorited && bIsFavorited) return 1;
 
-      if (a.status.type.state === "post" && b.status.type.state !== "post") return 1;
-      if (a.status.type.state !== "post" && b.status.type.state === "post") return -1;
-      return 0;
+      // 2. Sort by state (Live/Halftime > Scheduled > Final)
+      const getStatePriority = (state: string, desc: string) => {
+        if (desc === "Halftime" || state === "in") return 0;
+        if (state === "pre") return 1;
+        return 2;
+      };
+      const aPriority = getStatePriority(a.status.type.state, a.status.type.description);
+      const bPriority = getStatePriority(b.status.type.state, b.status.type.description);
+      if (aPriority !== bPriority) return aPriority - bPriority;
+
+      // 3. Chronological sort within groups
+      return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
   }, [games, favoriteGameIds]);
 

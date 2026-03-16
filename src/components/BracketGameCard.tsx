@@ -135,18 +135,20 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
           {!isScheduled && <span className="font-black text-gray-900 text-xs ml-2">{game.competitors.home.score}</span>}
         </div>
 
-        {/* Footer Info */}
-        <div className="bg-gray-50/50 px-3 py-1.5 flex justify-center items-center text-[9px] font-bold text-gray-400 uppercase tracking-wider">
-          {isHalftime ? (
-            <span className="text-blue-600 animate-pulse">Halftime: {halftimeRemaining !== null ? formatCountdown(halftimeRemaining) : "..."}</span>
-          ) : isScheduled ? (
-            <span>{localDate} • {localTime}</span>
-          ) : isFinal ? (
-            <span className="text-red-500">Final</span>
-          ) : (
-            <span className="text-emerald-500">{game.status.type.shortDetail}</span>
-          )}
-        </div>
+        {/* Footer Info - Hidden for TBD games */}
+        {!isTbd && (
+          <div className="bg-gray-50/50 px-3 py-1.5 flex justify-center items-center text-[9px] font-bold text-gray-400 uppercase tracking-wider">
+            {isHalftime ? (
+              <span className="text-blue-600 animate-pulse">Halftime: {halftimeRemaining !== null ? formatCountdown(halftimeRemaining) : "..."}</span>
+            ) : isScheduled ? (
+              <span>{localDate} • {localTime}</span>
+            ) : isFinal ? (
+              <span className="text-red-500">Final</span>
+            ) : (
+              <span className="text-emerald-500">{game.status.type.shortDetail}</span>
+            )}
+          </div>
+        )}
       </div>
     </Card>
   );
