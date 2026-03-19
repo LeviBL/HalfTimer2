@@ -2,12 +2,10 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import GameCard from "@/components/GameCard";
-import Bracket from "@/components/Bracket";
-import GameCardModal from "@/components/GameCardModal";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, Trophy } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
@@ -101,7 +99,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-  const [selectedGame, setSelectedGame] = useState<Game | null>(null);
   
   const [favoriteGameIds, setFavoriteGameIds] = useState<Set<string>>(() => {
     if (typeof window !== "undefined") {
@@ -262,17 +259,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     });
   }, [sortedGames, activeSport]);
 
-  const bracketGames = useMemo(() => {
-    if (activeSport !== 'ncaa') return [];
-    return games.filter(game => game.round !== undefined && game.round >= 1 && game.round <= 6);
-  }, [games, activeSport]);
-
   useEffect(() => {
     const intervalId = setInterval(() => fetchGames(false), REFRESH_INTERVAL);
     return () => clearInterval(intervalId);
   }, [activeSport]);
-
-  const isNcaa = activeSport === 'ncaa';
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
@@ -297,23 +287,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           <p className="text-xl font-semibold text-blue-900">
             NFL season is over - thanks for being here, and we’ll see you back on September 10th for kickoff.
           </p>
-        </div>
-      )}
-
-      {isNcaa && !loading && (
-        <div className="w-full max-w-7xl mb-12 space-y-12">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Trophy className="h-8 w-8 text-orange-500" />
-            <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tighter">March Madness Bracket</h2>
-          </div>
-          
-          <Bracket games={bracketGames} onGameClick={setSelectedGame} />
-          
-          <div className="flex items-center justify-center gap-3 pt-12">
-            <div className="h-px bg-gray-200 flex-grow max-w-[200px]"></div>
-            <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Standard View</h2>
-            <div className="h-px bg-gray-200 flex-grow max-w-[200px]"></div>
-          </div>
         </div>
       )}
 
@@ -383,14 +356,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           <span>= Halftime</span>
         </p>
       </div>
-
-      <GameCardModal 
-        game={selectedGame} 
-        isOpen={!!selectedGame} 
-        onClose={() => setSelectedGame(null)}
-        isFavorited={selectedGame ? favoriteGameIds.has(selectedGame.id) : false}
-        onToggleFavorite={toggleFavorite}
-      />
 
       <MadeWithDyad />
     </div>
