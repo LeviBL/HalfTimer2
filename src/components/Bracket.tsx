@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import BracketGameCard from "./BracketGameCard";
 
 interface Game {
@@ -29,21 +29,53 @@ interface BracketProps {
 const REGIONS = ["East", "West", "South", "Midwest"];
 
 const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
-  const getGamesForRegion = (region: string) => {
-    return games
-      .filter(g => g.region === region)
-      .sort((a, b) => {
-        // Sort by seed pairing (1 vs 16, 8 vs 9, etc.)
-        const aSeed = parseInt(a.competitors.away.seed || "0");
-        const bSeed = parseInt(b.competitors.away.seed || "0");
-        return aSeed - bSeed;
+  const groupedRegions = useMemo(() => {
+    const regions: Record<string, Game[]> = {
+      East: [],
+      West: [],
+      South: [],
+      Midwest: []
+    };
+
+    // First, use explicit region data if available
+    games.forEach(game => {
+      if (game.region && regions[game.region]) {
+        regions[game.region].push(game);
+      }
+    });
+
+    // Fallback: If regions are empty or incomplete, group by seed pairing logic
+    // Each region has exactly 8 games in the Round of 64
+    const unassignedGames = games.filter(g => !g.region || g.region === "Other");
+    
+    if (unassignedGames.length > 0) {
+      // Group into 4 buckets of 8
+      for (let i = 0; i < 4; i++) {
+        const regionName = REGIONS[i];
+        if (regions[regionName].length === 0) {
+          regions[regionName] = unassignedGames.slice(i * 8, (i + 1) * 8);
+        }
+      }
+    }
+
+    // Sort each region by standard bracket pairing order (1/16, 8/9, 5/12, 4/13, 6/11, 3/14, 7/10, 2/15)
+    const pairingOrder = ["1", "8", "5", "4", "6", "3", "7", "2"];
+    
+    Object.keys(regions).forEach(regionName => {
+      regions[regionName].sort((a, b) => {
+        const aSeed = a.competitors.away.seed || a.competitors.home.seed || "0";
+        const bSeed = b.competitors.away.seed || b.competitors.home.seed || "0";
+        return pairingOrder.indexOf(aSeed) - pairingOrder.indexOf(bSeed);
       });
-  };
+    });
+
+    return regions;
+  }, [games]);
 
   return (
     <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 px-4">
       {REGIONS.map((region) => {
-        const regionGames = getGamesForRegion(region);
+        const regionGames = groupedRegions[region];
         
         return (
           <div key={region} className="space-y-6">

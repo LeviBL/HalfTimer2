@@ -164,7 +164,8 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           if (activeSport === 'ncaa') {
             const note = (competition.notes?.[0]?.text || "").toUpperCase();
             const desc = (event.status.type.description || "").toUpperCase();
-            const combined = `${note} ${desc}`;
+            const name = (event.name || "").toUpperCase();
+            const combined = `${note} ${desc} ${name}`;
 
             if (combined.includes("EAST")) region = "East";
             else if (combined.includes("WEST")) region = "West";
@@ -264,6 +265,21 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         const isHomeTbd = game.competitors.home.displayName === "TBD";
         const isAwayTbd = game.competitors.away.displayName === "TBD";
         if (isHomeTbd && isAwayTbd) return false;
+
+        // Exclude specific non-NCAA tournament games requested by user
+        const forbiddenMatchups = [
+          ["UMBC", "Howard"],
+          ["Texas", "NC State"],
+          ["Prairie View A&M", "Lehigh"],
+          ["Miami (OH)", "SMU"]
+        ];
+        
+        const isForbidden = forbiddenMatchups.some(([teamA, teamB]) => 
+          (game.competitors.home.displayName.includes(teamA) && game.competitors.away.displayName.includes(teamB)) ||
+          (game.competitors.home.displayName.includes(teamB) && game.competitors.away.displayName.includes(teamA))
+        );
+        
+        if (isForbidden) return false;
       }
       
       return true;
