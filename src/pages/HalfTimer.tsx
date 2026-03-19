@@ -86,7 +86,6 @@ interface Game {
     away: TeamData;
   };
   round?: number;
-  region?: string;
 }
 
 interface HalfTimerProps {
@@ -160,17 +159,11 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
           let round = 1;
-          let region = "Other";
           if (activeSport === 'ncaa') {
             const note = (competition.notes?.[0]?.text || "").toUpperCase();
             const desc = (event.status.type.description || "").toUpperCase();
             const name = (event.name || "").toUpperCase();
             const combined = `${note} ${desc} ${name}`;
-
-            if (combined.includes("EAST")) region = "East";
-            else if (combined.includes("WEST")) region = "West";
-            else if (combined.includes("SOUTH")) region = "South";
-            else if (combined.includes("MIDWEST")) region = "Midwest";
 
             // Round detection based on ESPN notes
             if (combined.includes("1ST ROUND") || combined.includes("FIRST ROUND") || combined.includes("ROUND OF 64")) round = 1;
@@ -194,7 +187,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
             shortName: event.shortName,
             date: event.date,
             round,
-            region,
             status: {
               type: {
                 description: event.status.type.description,
