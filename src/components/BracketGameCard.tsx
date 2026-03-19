@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useHalftimeTimers } from "@/hooks/use-halftime-timers";
-import { Shield } from "lucide-react";
 
 interface Team {
   displayName: string;
@@ -28,6 +27,7 @@ interface Game {
     home: Team;
     away: Team;
   };
+  round?: number;
 }
 
 interface BracketGameCardProps {
@@ -49,6 +49,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
   const isHalftime = game.status.type.description === "Halftime";
   const isFinal = game.status.type.state === "post";
   const isScheduled = game.status.type.state === "pre";
+  const isFutureRound = game.round && game.round > 1;
 
   useEffect(() => {
     if (isHalftime) {
@@ -86,7 +87,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
     <Card 
       onClick={() => onClick(game)}
       className={cn(
-        "w-full max-w-[280px] p-0 cursor-pointer hover:bg-gray-50 transition-all duration-200 border border-gray-200 bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md active:scale-95",
+        "w-full max-w-[280px] p-0 cursor-pointer hover:bg-gray-50 transition-all duration-200 border border-gray-200 bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md active:scale-95 z-10",
         isHalftime ? "ring-2 ring-amber-400 border-amber-400" : ""
       )}
     >
@@ -109,7 +110,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
               </span>
             </div>
           </div>
-          {!isScheduled && (
+          {!isScheduled && !isFutureRound && (
             <span className="font-black text-gray-900 text-sm ml-2">{game.competitors.away.score}</span>
           )}
         </div>
@@ -132,14 +133,16 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
               </span>
             </div>
           </div>
-          {!isScheduled && (
+          {!isScheduled && !isFutureRound && (
             <span className="font-black text-gray-900 text-sm ml-2">{game.competitors.home.score}</span>
           )}
         </div>
 
         {/* Footer Info */}
         <div className="bg-gray-50/80 px-4 py-2 flex justify-center items-center text-[10px] font-black text-gray-500 uppercase tracking-widest">
-          {isHalftime ? (
+          {isFutureRound ? (
+            <span>TBD</span>
+          ) : isHalftime ? (
             <span className="text-amber-600 animate-pulse">Halftime: {halftimeRemaining !== null ? formatCountdown(halftimeRemaining) : "..."}</span>
           ) : isScheduled ? (
             <span>{localDate} • {localTime}</span>
