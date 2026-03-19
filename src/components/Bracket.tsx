@@ -48,11 +48,53 @@ const BASE_GAP = 40;
 const SLOT_HEIGHT = CARD_HEIGHT + BASE_GAP;
 
 const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
-  // 1. Process the 32 Round of 64 games with strict sorting
+  // 1. Process the 32 Round of 64 games with strict seed-based ordering
   const round1Matches = useMemo(() => {
-    return [...games]
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
-      .slice(0, 32);
+    // Filter for Round 1 games
+    const r1 = games.filter(g => g.round === 1);
+    
+    // Define the strict NCAA seed pattern for a single region
+    const seedPattern = [
+      [1, 16], [8, 9], [5, 12], [4, 13],
+      [6, 11], [3, 14], [7, 10], [2, 15]
+    ];
+
+    // Helper to identify a game by its seed pair
+    const getSeedKey = (g: Game) => {
+      const s1 = parseInt(g.competitors.home.seed || "0");
+      const s2 = parseInt(g.competitors.away.seed || "0");
+      return [s1, s2].sort((a, b) => a - b).join('-');
+    };
+
+    // Group games by their seed pair (there should be 4 games for each pair across 4 regions)
+    const groups: Record<string, Game[]> = {};
+    r1.forEach(g => {
+      const key = getSeedKey(g);
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(g);
+    });
+
+    // Sort each group by date to maintain consistent regional distribution
+    Object.values(groups).forEach(group => {
+      group.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    });
+
+    const ordered: Game[] = [];
+    // Build 4 regions using the seed pattern
+    for (let region = 0; region < 4; region++) {
+      seedPattern.forEach(([s1, s2]) => {
+        const key = [s1, s2].sort((a, b) => a - b).join('-');
+        const group = groups[key];
+        if (group && group.length > 0) {
+          const game = group.shift();
+          if (game) ordered.push(game);
+        }
+      });
+    }
+
+    // If we have leftovers or fewer than 32 games, we return what we have
+    // but the logic above ensures the first 32 follow the bracket order if data is present.
+    return ordered.slice(0, 32);
   }, [games]);
 
   // 2. Generate the full bracket structure (6 rounds)
