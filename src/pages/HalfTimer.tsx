@@ -31,6 +31,7 @@ interface TeamData {
 interface CompetitionData {
   id: string;
   date: string;
+  bracketPosition?: number;
   status: {
     type: {
       description: string;
@@ -68,7 +69,7 @@ interface EventData {
   competitions: CompetitionData[];
 }
 
-interface Game {
+export interface Game {
   id: string;
   name: string;
   shortName: string;
@@ -86,6 +87,7 @@ interface Game {
     away: TeamData;
   };
   round?: number;
+  bracketPosition?: number;
 }
 
 interface HalfTimerProps {
@@ -153,7 +155,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       const data = await response.json();
 
       const processedGames: Game[] = (data.events || [])
-        .map((event: EventData) => {
+        .map((event: EventData, index: number) => {
           const competition = event.competitions[0];
           const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
           const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
@@ -165,7 +167,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
             const name = (event.name || "").toUpperCase();
             const combined = `${note} ${desc} ${name}`;
 
-            // Round detection based on ESPN notes
             if (combined.includes("1ST ROUND") || combined.includes("FIRST ROUND") || combined.includes("ROUND OF 64")) round = 1;
             else if (combined.includes("2ND ROUND") || combined.includes("SECOND ROUND") || combined.includes("ROUND OF 32")) round = 2;
             else if (combined.includes("SWEET 16") || combined.includes("REGIONAL SEMIFINAL")) round = 3;
@@ -187,6 +188,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
             shortName: event.shortName,
             date: event.date,
             round,
+            bracketPosition: competition.bracketPosition || index,
             status: {
               type: {
                 description: event.status.type.description,
@@ -251,57 +253,18 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   const standardViewGames = useMemo(() => {
     return sortedGames.filter(game => {
       if (activeSport === 'ncaa') {
-        // Ignore First Four / Play-in games
         if (game.round === 0) return false;
-        
-        // Hide matchups where both teams are TBD
         const isHomeTbd = game.competitors.home.displayName === "TBD";
         const isAwayTbd = game.competitors.away.displayName === "TBD";
         if (isHomeTbd && isAwayTbd) return false;
-
-        // Exclude specific non-NCAA tournament games requested by user
-        const forbiddenMatchups = [
-          ["UMBC", "Howard"],
-          ["Texas", "NC State"],
-          ["Prairie View A&M", "Lehigh"],
-          ["Miami (OH)", "SMU"]
-        ];
-        
-        const isForbidden = forbiddenMatchups.some(([teamA, teamB]) => 
-          (game.competitors.home.displayName.includes(teamA) && game.competitors.away.displayName.includes(teamB)) ||
-          (game.competitors.home.displayName.includes(teamB) && game.competitors.away.displayName.includes(teamA))
-        );
-        
-        if (isForbidden) return false;
       }
-      
       return true;
     });
   }, [sortedGames, activeSport]);
 
   const bracketGames = useMemo(() => {
     if (activeSport !== 'ncaa') return [];
-    return games.filter(game => {
-      // STRICT FILTERING:
-      // 1. Only Round of 64
-      if (game.round !== 1) return false;
-      
-      // 2. Only March 19 or March 20
-      const gameDate = new Date(game.date);
-      const day = gameDate.getDate();
-      const month = gameDate.getMonth(); // 2 is March
-      if (month !== 2 || (day !== 19 && day !== 20)) return false;
-
-      // 3. Must have real teams (no TBD)
-      if (game.competitors.home.displayName === "TBD" || game.competitors.away.displayName === "TBD") return false;
-      
-      // 4. Must have valid seeds (1-16)
-      const homeSeed = parseInt(game.competitors.home.seed || "0");
-      const awaySeed = parseInt(game.competitors.away.seed || "0");
-      if (homeSeed < 1 || homeSeed > 16 || awaySeed < 1 || awaySeed > 16) return false;
-      
-      return true;
-    });
+    return games.filter(game => game.round !== undefined && game.round >= 1 && game.round <= 6);
   }, [games, activeSport]);
 
   useEffect(() => {

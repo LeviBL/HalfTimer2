@@ -4,31 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useHalftimeTimers } from "@/hooks/use-halftime-timers";
-
-interface Team {
-  displayName: string;
-  logo: string;
-  score: string;
-  seed?: string;
-}
-
-interface Game {
-  id: string;
-  date: string;
-  status: {
-    type: {
-      description: string;
-      state: "pre" | "in" | "post";
-      shortDetail?: string;
-      detail?: string;
-    };
-  };
-  competitors: {
-    home: Team;
-    away: Team;
-  };
-  round?: number;
-}
+import { Game } from "@/pages/HalfTimer";
 
 interface BracketGameCardProps {
   game: Game;
@@ -49,10 +25,9 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
   const isHalftime = game.status.type.description === "Halftime";
   const isFinal = game.status.type.state === "post";
   const isScheduled = game.status.type.state === "pre";
-  const isFutureRound = game.round && game.round > 1;
 
   useEffect(() => {
-    if (isHalftime && !isFutureRound) {
+    if (isHalftime) {
       const startTime = getHalftimeStartTime(game.id) || Date.now();
       const duration = 14 * 60 + 25;
 
@@ -70,7 +45,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isHalftime, game.id, getHalftimeStartTime, isFutureRound]);
+  }, [isHalftime, game.id, getHalftimeStartTime]);
 
   const dateObj = new Date(game.date);
   const localTime = dateObj.toLocaleTimeString([], { 
@@ -83,12 +58,14 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
     day: 'numeric'
   });
 
+  const isTbd = (teamName: string) => teamName === "TBD" || teamName === "TBA";
+
   return (
     <Card 
       onClick={() => onClick(game)}
       className={cn(
         "w-full max-w-[280px] p-0 cursor-pointer hover:bg-gray-50 transition-all duration-200 border border-gray-200 bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md active:scale-95 z-10",
-        isHalftime && !isFutureRound ? "ring-2 ring-amber-400 border-amber-400" : ""
+        isHalftime ? "ring-2 ring-amber-400 border-amber-400" : ""
       )}
     >
       <div className="divide-y divide-gray-100">
@@ -96,21 +73,24 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
         <div className="flex justify-between items-center px-4 py-3 h-12">
           <div className="flex items-center gap-3 overflow-hidden flex-1">
             <span className="text-gray-400 font-black text-xs w-5 text-center">
-              {isFutureRound ? "" : `(${game.competitors.away.seed || ""})`}
+              {!isTbd(game.competitors.away.displayName) && `(${game.competitors.away.seed || ""})`}
             </span>
             <div className="flex items-center gap-2 truncate">
               <img 
-                src={isFutureRound ? "/placeholder.svg" : game.competitors.away.logo} 
+                src={game.competitors.away.logo} 
                 className="w-5 h-5 object-contain flex-shrink-0" 
                 alt="" 
                 onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
               />
-              <span className="font-bold text-sm truncate text-gray-900">
-                {isFutureRound ? "TBD" : game.competitors.away.displayName}
+              <span className={cn(
+                "font-bold text-sm truncate",
+                isTbd(game.competitors.away.displayName) ? "text-gray-400" : "text-gray-900"
+              )}>
+                {game.competitors.away.displayName}
               </span>
             </div>
           </div>
-          {!isScheduled && !isFutureRound && (
+          {!isScheduled && !isTbd(game.competitors.away.displayName) && (
             <span className="font-black text-gray-900 text-sm ml-2">{game.competitors.away.score}</span>
           )}
         </div>
@@ -119,30 +99,31 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
         <div className="flex justify-between items-center px-4 py-3 h-12">
           <div className="flex items-center gap-3 overflow-hidden flex-1">
             <span className="text-gray-400 font-black text-xs w-5 text-center">
-              {isFutureRound ? "" : `(${game.competitors.home.seed || ""})`}
+              {!isTbd(game.competitors.home.displayName) && `(${game.competitors.home.seed || ""})`}
             </span>
             <div className="flex items-center gap-2 truncate">
               <img 
-                src={isFutureRound ? "/placeholder.svg" : game.competitors.home.logo} 
+                src={game.competitors.home.logo} 
                 className="w-5 h-5 object-contain flex-shrink-0" 
                 alt="" 
                 onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
               />
-              <span className="font-bold text-sm truncate text-gray-900">
-                {isFutureRound ? "TBD" : game.competitors.home.displayName}
+              <span className={cn(
+                "font-bold text-sm truncate",
+                isTbd(game.competitors.home.displayName) ? "text-gray-400" : "text-gray-900"
+              )}>
+                {game.competitors.home.displayName}
               </span>
             </div>
           </div>
-          {!isScheduled && !isFutureRound && (
+          {!isScheduled && !isTbd(game.competitors.home.displayName) && (
             <span className="font-black text-gray-900 text-sm ml-2">{game.competitors.home.score}</span>
           )}
         </div>
 
         {/* Footer Info */}
         <div className="bg-gray-50/80 px-4 py-2 flex justify-center items-center text-[10px] font-black text-gray-500 uppercase tracking-widest">
-          {isFutureRound ? (
-            <span>TBD</span>
-          ) : isHalftime ? (
+          {isHalftime ? (
             <span className="text-amber-600 animate-pulse">Halftime: {halftimeRemaining !== null ? formatCountdown(halftimeRemaining) : "..."}</span>
           ) : isScheduled ? (
             <span>{localDate} • {localTime}</span>
