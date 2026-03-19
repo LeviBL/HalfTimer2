@@ -48,25 +48,20 @@ const BASE_GAP = 40;
 const SLOT_HEIGHT = CARD_HEIGHT + BASE_GAP;
 
 const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
-  // 1. Process the 32 Round of 64 games with strict seed-based ordering
+  // 1. Process the 32 Round of 64 games using FIXED BRACKET SLOTS
   const round1Matches = useMemo(() => {
     // Filter for Round 1 games
     const r1 = games.filter(g => g.round === 1);
     
-    // Define the strict NCAA seed pattern for a single region
-    const seedPattern = [
-      [1, 16], [8, 9], [5, 12], [4, 13],
-      [6, 11], [3, 14], [7, 10], [2, 15]
-    ];
-
-    // Helper to identify a game by its seed pair
+    // Helper to identify a game by its normalized seed pair (e.g., "1-16")
     const getSeedKey = (g: Game) => {
       const s1 = parseInt(g.competitors.home.seed || "0");
       const s2 = parseInt(g.competitors.away.seed || "0");
-      return [s1, s2].sort((a, b) => a - b).join('-');
+      const sorted = [s1, s2].sort((a, b) => a - b);
+      return `${sorted[0]}-${sorted[1]}`;
     };
 
-    // Group games by their seed pair (there should be 4 games for each pair across 4 regions)
+    // Group games by their seed pair
     const groups: Record<string, Game[]> = {};
     r1.forEach(g => {
       const key = getSeedKey(g);
@@ -74,26 +69,35 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
       groups[key].push(g);
     });
 
-    // Sort each group by date to maintain consistent regional distribution
+    // Sort within groups by date to maintain consistent regional distribution across blocks
     Object.values(groups).forEach(group => {
       group.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     });
 
+    // EXACT slot types for a single region block
+    const seedPattern = [
+      "1-16", // Slot 0
+      "8-9",  // Slot 1
+      "5-12", // Slot 2
+      "4-13", // Slot 3
+      "6-11", // Slot 4
+      "3-14", // Slot 5
+      "7-10", // Slot 6
+      "2-15"  // Slot 7
+    ];
+
     const ordered: Game[] = [];
-    // Build 4 regions using the seed pattern
+    // Build 4 identical blocks (regions)
     for (let region = 0; region < 4; region++) {
-      seedPattern.forEach(([s1, s2]) => {
-        const key = [s1, s2].sort((a, b) => a - b).join('-');
-        const group = groups[key];
-        if (group && group.length > 0) {
-          const game = group.shift();
-          if (game) ordered.push(game);
+      seedPattern.forEach(key => {
+        if (groups[key] && groups[key].length > 0) {
+          // Take the next available game for this seed matchup
+          ordered.push(groups[key].shift()!);
         }
       });
     }
 
-    // If we have leftovers or fewer than 32 games, we return what we have
-    // but the logic above ensures the first 32 follow the bracket order if data is present.
+    // Return exactly 32 games in the correct bracket order
     return ordered.slice(0, 32);
   }, [games]);
 
@@ -131,9 +135,6 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
       <div className="flex gap-16 min-w-max px-12 py-8">
         {bracketData.map((roundMatches, roundIdx) => {
           // Calculate vertical spacing for this round
-          // Round 0: 1x SLOT_HEIGHT
-          // Round 1: 2x SLOT_HEIGHT
-          // Round 2: 4x SLOT_HEIGHT
           const roundSlotHeight = SLOT_HEIGHT * Math.pow(2, roundIdx);
           
           return (
