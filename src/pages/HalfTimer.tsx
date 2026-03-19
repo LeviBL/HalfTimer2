@@ -172,6 +172,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
             else if (combined.includes("SOUTH")) region = "South";
             else if (combined.includes("MIDWEST")) region = "Midwest";
 
+            // Round detection based on ESPN notes
             if (combined.includes("1ST ROUND") || combined.includes("FIRST ROUND") || combined.includes("ROUND OF 64")) round = 1;
             else if (combined.includes("2ND ROUND") || combined.includes("SECOND ROUND") || combined.includes("ROUND OF 32")) round = 2;
             else if (combined.includes("SWEET 16") || combined.includes("REGIONAL SEMIFINAL")) round = 3;
@@ -289,14 +290,23 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   const bracketGames = useMemo(() => {
     if (activeSport !== 'ncaa') return [];
     return games.filter(game => {
-      // Only Round of 64
+      // STRICT FILTERING:
+      // 1. Only Round of 64
       if (game.round !== 1) return false;
       
-      // Must have real teams (no TBD in Round of 64)
+      // 2. Only March 19 or March 20
+      const gameDate = new Date(game.date);
+      const day = gameDate.getDate();
+      const month = gameDate.getMonth(); // 2 is March
+      if (month !== 2 || (day !== 19 && day !== 20)) return false;
+
+      // 3. Must have real teams (no TBD)
       if (game.competitors.home.displayName === "TBD" || game.competitors.away.displayName === "TBD") return false;
       
-      // Must have valid seeds
-      if (!game.competitors.home.seed || !game.competitors.away.seed) return false;
+      // 4. Must have valid seeds (1-16)
+      const homeSeed = parseInt(game.competitors.home.seed || "0");
+      const awaySeed = parseInt(game.competitors.away.seed || "0");
+      if (homeSeed < 1 || homeSeed > 16 || awaySeed < 1 || awaySeed > 16) return false;
       
       return true;
     });
