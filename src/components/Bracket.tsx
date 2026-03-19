@@ -55,37 +55,24 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
       .slice(0, 32);
   }, [games]);
 
-  // 2. Generate the full bracket structure (6 rounds) using strict index-based pairing
+  // 2. Generate the full bracket structure (6 rounds)
+  // STRICT RULE: Only Round of 64 has real data. Rounds 1-5 are strictly TBD.
   const bracketData = useMemo(() => {
     const rounds: Game[][] = [round1Matches.map(g => ({ ...g, round: 1 }))];
 
     for (let r = 1; r < 6; r++) {
-      const prevRound = rounds[r - 1];
-      const currentRoundSize = prevRound.length / 2;
+      const currentRoundSize = rounds[r - 1].length / 2;
       const currentRoundMatches: Game[] = [];
 
       for (let i = 0; i < currentRoundSize; i++) {
-        const parent1 = prevRound[i * 2];
-        const parent2 = prevRound[i * 2 + 1];
-
-        const getWinner = (game: Game) => {
-          if (game.status.type.state !== "post") return null;
-          const homeScore = parseInt(game.competitors.home.score || "0");
-          const awayScore = parseInt(game.competitors.away.score || "0");
-          return homeScore > awayScore ? game.competitors.home : game.competitors.away;
-        };
-
-        const winner1 = parent1 ? getWinner(parent1) : null;
-        const winner2 = parent2 ? getWinner(parent2) : null;
-
         currentRoundMatches.push({
           id: `r${r}-m${i}`,
           date: "TBD",
           status: { type: { description: "TBD", state: "pre" } },
           round: r + 1,
           competitors: {
-            away: winner1 || { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: "" },
-            home: winner2 || { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: "" }
+            away: { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: "" },
+            home: { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: "" }
           }
         });
       }
@@ -139,7 +126,7 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
                         <div className="absolute right-[-64px] w-16 h-full pointer-events-none">
                           {/* Horizontal line out from current game */}
                           <div 
-                            className="absolute top-1/2 right-16 w-8 h-px bg-gray-300" 
+                            className="absolute top-1/2 right-8 w-8 h-px bg-gray-300" 
                             style={{ transform: 'translateY(-50%)' }}
                           />
                           

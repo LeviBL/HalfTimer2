@@ -52,7 +52,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
   const isFutureRound = game.round && game.round > 1;
 
   useEffect(() => {
-    if (isHalftime) {
+    if (isHalftime && !isFutureRound) {
       const startTime = getHalftimeStartTime(game.id) || Date.now();
       const duration = 14 * 60 + 25;
 
@@ -70,7 +70,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
     return () => {
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
-  }, [isHalftime, game.id, getHalftimeStartTime]);
+  }, [isHalftime, game.id, getHalftimeStartTime, isFutureRound]);
 
   const dateObj = new Date(game.date);
   const localTime = dateObj.toLocaleTimeString([], { 
@@ -88,7 +88,7 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
       onClick={() => onClick(game)}
       className={cn(
         "w-full max-w-[280px] p-0 cursor-pointer hover:bg-gray-50 transition-all duration-200 border border-gray-200 bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md active:scale-95 z-10",
-        isHalftime ? "ring-2 ring-amber-400 border-amber-400" : ""
+        isHalftime && !isFutureRound ? "ring-2 ring-amber-400 border-amber-400" : ""
       )}
     >
       <div className="divide-y divide-gray-100">
@@ -96,17 +96,17 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
         <div className="flex justify-between items-center px-4 py-3 h-12">
           <div className="flex items-center gap-3 overflow-hidden flex-1">
             <span className="text-gray-400 font-black text-xs w-5 text-center">
-              ({game.competitors.away.seed || ""})
+              {isFutureRound ? "" : `(${game.competitors.away.seed || ""})`}
             </span>
             <div className="flex items-center gap-2 truncate">
               <img 
-                src={game.competitors.away.logo} 
+                src={isFutureRound ? "/placeholder.svg" : game.competitors.away.logo} 
                 className="w-5 h-5 object-contain flex-shrink-0" 
                 alt="" 
                 onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
               />
               <span className="font-bold text-sm truncate text-gray-900">
-                {game.competitors.away.displayName}
+                {isFutureRound ? "TBD" : game.competitors.away.displayName}
               </span>
             </div>
           </div>
@@ -119,17 +119,17 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
         <div className="flex justify-between items-center px-4 py-3 h-12">
           <div className="flex items-center gap-3 overflow-hidden flex-1">
             <span className="text-gray-400 font-black text-xs w-5 text-center">
-              ({game.competitors.home.seed || ""})
+              {isFutureRound ? "" : `(${game.competitors.home.seed || ""})`}
             </span>
             <div className="flex items-center gap-2 truncate">
               <img 
-                src={game.competitors.home.logo} 
+                src={isFutureRound ? "/placeholder.svg" : game.competitors.home.logo} 
                 className="w-5 h-5 object-contain flex-shrink-0" 
                 alt="" 
                 onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
               />
               <span className="font-bold text-sm truncate text-gray-900">
-                {game.competitors.home.displayName}
+                {isFutureRound ? "TBD" : game.competitors.home.displayName}
               </span>
             </div>
           </div>
