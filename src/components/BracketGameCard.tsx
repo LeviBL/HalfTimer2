@@ -82,79 +82,63 @@ const BracketGameCard: React.FC<BracketGameCardProps> = ({ game, onClick }) => {
     day: 'numeric'
   });
 
-  const isTbd = (team: Team) => team.displayName === "TBD" || !team.displayName;
-
   return (
     <Card 
       onClick={() => onClick(game)}
       className={cn(
-        "w-56 p-0 cursor-pointer hover:bg-gray-50 transition-colors border border-gray-200 bg-white rounded-lg overflow-hidden shadow-sm",
+        "w-full max-w-[280px] p-0 cursor-pointer hover:bg-gray-50 transition-all duration-200 border border-gray-200 bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-md active:scale-95",
         isHalftime ? "ring-2 ring-amber-400 border-amber-400" : ""
       )}
     >
       <div className="divide-y divide-gray-100">
         {/* Away Team */}
-        <div className="flex justify-between items-center px-3 py-2 h-10">
-          <div className="flex items-center gap-2 overflow-hidden flex-1">
-            <span className="text-gray-400 font-bold text-[10px] w-4 text-center">
-              {game.competitors.away.seed || ""}
+        <div className="flex justify-between items-center px-4 py-3 h-12">
+          <div className="flex items-center gap-3 overflow-hidden flex-1">
+            <span className="text-gray-400 font-black text-xs w-5 text-center">
+              ({game.competitors.away.seed || ""})
             </span>
             <div className="flex items-center gap-2 truncate">
-              {!isTbd(game.competitors.away) ? (
-                <img 
-                  src={game.competitors.away.logo} 
-                  className="w-4 h-4 object-contain flex-shrink-0" 
-                  alt="" 
-                  onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
-                />
-              ) : (
-                <Shield className="w-4 h-4 text-gray-200" />
-              )}
-              <span className={cn(
-                "font-bold text-xs truncate",
-                isTbd(game.competitors.away) ? "text-gray-300 italic" : "text-gray-900"
-              )}>
+              <img 
+                src={game.competitors.away.logo} 
+                className="w-5 h-5 object-contain flex-shrink-0" 
+                alt="" 
+                onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
+              />
+              <span className="font-bold text-sm truncate text-gray-900">
                 {game.competitors.away.displayName}
               </span>
             </div>
           </div>
-          {!isScheduled && !isTbd(game.competitors.away) && (
-            <span className="font-black text-gray-900 text-xs ml-2">{game.competitors.away.score}</span>
+          {!isScheduled && (
+            <span className="font-black text-gray-900 text-sm ml-2">{game.competitors.away.score}</span>
           )}
         </div>
 
         {/* Home Team */}
-        <div className="flex justify-between items-center px-3 py-2 h-10">
-          <div className="flex items-center gap-2 overflow-hidden flex-1">
-            <span className="text-gray-400 font-bold text-[10px] w-4 text-center">
-              {game.competitors.home.seed || ""}
+        <div className="flex justify-between items-center px-4 py-3 h-12">
+          <div className="flex items-center gap-3 overflow-hidden flex-1">
+            <span className="text-gray-400 font-black text-xs w-5 text-center">
+              ({game.competitors.home.seed || ""})
             </span>
             <div className="flex items-center gap-2 truncate">
-              {!isTbd(game.competitors.home) ? (
-                <img 
-                  src={game.competitors.home.logo} 
-                  className="w-4 h-4 object-contain flex-shrink-0" 
-                  alt="" 
-                  onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
-                />
-              ) : (
-                <Shield className="w-4 h-4 text-gray-200" />
-              )}
-              <span className={cn(
-                "font-bold text-xs truncate",
-                isTbd(game.competitors.home) ? "text-gray-300 italic" : "text-gray-900"
-              )}>
+              <img 
+                src={game.competitors.home.logo} 
+                className="w-5 h-5 object-contain flex-shrink-0" 
+                alt="" 
+                onError={(e) => (e.currentTarget.src = "/placeholder.svg")}
+              />
+              <span className="font-bold text-sm truncate text-gray-900">
                 {game.competitors.home.displayName}
               </span>
             </div>
           </div>
-          {!isScheduled && !isTbd(game.competitors.home) && (
-            <span className="font-black text-gray-900 text-xs ml-2">{game.competitors.home.score}</span>
+          {!isScheduled && (
+            <span className="font-black text-gray-900 text-sm ml-2">{game.competitors.home.score}</span>
           )}
         </div>
 
         {/* Footer Info */}
-        <div className="bg-gray-50/50 px-3 py-1.5 flex justify-center items-center text-[9px] font-bold text-gray-400 uppercase tracking-wider">
+        <div className="bg-gray-50/80 px-4 py-2 flex justify-center items-center text-[10px] font-black text-gray-500 uppercase tracking-widest">
           {isHalftime ? (
             <span className="text-amber-600 animate-pulse">Halftime: {halftimeRemaining !== null ? formatCountdown(halftimeRemaining) : "..."}</span>
           ) : isScheduled ? (

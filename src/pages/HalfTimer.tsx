@@ -86,6 +86,7 @@ interface Game {
     away: TeamData;
   };
   round?: number;
+  region?: string;
 }
 
 interface HalfTimerProps {
@@ -159,10 +160,16 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
           let round = 1;
+          let region = "Other";
           if (activeSport === 'ncaa') {
             const note = (competition.notes?.[0]?.text || "").toUpperCase();
             const desc = (event.status.type.description || "").toUpperCase();
             const combined = `${note} ${desc}`;
+
+            if (combined.includes("EAST")) region = "East";
+            else if (combined.includes("WEST")) region = "West";
+            else if (combined.includes("SOUTH")) region = "South";
+            else if (combined.includes("MIDWEST")) region = "Midwest";
 
             if (combined.includes("1ST ROUND") || combined.includes("FIRST ROUND") || combined.includes("ROUND OF 64")) round = 1;
             else if (combined.includes("2ND ROUND") || combined.includes("SECOND ROUND") || combined.includes("ROUND OF 32")) round = 2;
@@ -185,6 +192,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
             shortName: event.shortName,
             date: event.date,
             round,
+            region,
             status: {
               type: {
                 description: event.status.type.description,
@@ -248,17 +256,35 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
 
   const standardViewGames = useMemo(() => {
     return sortedGames.filter(game => {
-      // Ignore First Four / Play-in games
-      if (game.round === 0) return false;
-      
-      // Hide matchups where both teams are TBD
-      const isHomeTbd = game.competitors.home.displayName === "TBD";
-      const isAwayTbd = game.competitors.away.displayName === "TBD";
-      if (isHomeTbd && isAwayTbd) return false;
+      if (activeSport === 'ncaa') {
+        // Ignore First Four / Play-in games
+        if (game.round === 0) return false;
+        
+        // Hide matchups where both teams are TBD
+        const isHomeTbd = game.competitors.home.displayName === "TBD";
+        const isAwayTbd = game.competitors.away.displayName === "TBD";
+        if (isHomeTbd && isAwayTbd) return false;
+      }
       
       return true;
     });
-  }, [sortedGames]);
+  }, [sortedGames, activeSport]);
+
+  const bracketGames = useMemo(() => {
+    if (activeSport !== 'ncaa') return [];
+    return games.filter(game => {
+      // Only Round of 64
+      if (game.round !== 1) return false;
+      
+      // Must have real teams (no TBD in Round of 64)
+      if (game.competitors.home.displayName === "TBD" || game.competitors.away.displayName === "TBD") return false;
+      
+      // Must have valid seeds
+      if (!game.competitors.home.seed || !game.competitors.away.seed) return false;
+      
+      return true;
+    });
+  }, [games, activeSport]);
 
   useEffect(() => {
     const intervalId = setInterval(() => fetchGames(false), REFRESH_INTERVAL);
@@ -294,17 +320,18 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       )}
 
       {isNcaa && !loading && (
-        <div className="w-full max-w-6xl mb-12 space-y-8">
+        <div className="w-full max-w-7xl mb-12 space-y-12">
           <div className="flex items-center justify-center gap-3 mb-4">
             <Trophy className="h-8 w-8 text-orange-500" />
             <h2 className="text-3xl font-black text-gray-900 uppercase tracking-tighter">March Madness Bracket</h2>
           </div>
-          <Bracket games={games} onGameClick={setSelectedGame} />
           
-          <div className="flex items-center justify-center gap-3 pt-8">
-            <div className="h-px bg-gray-200 flex-grow max-w-[100px]"></div>
+          <Bracket games={bracketGames} onGameClick={setSelectedGame} />
+          
+          <div className="flex items-center justify-center gap-3 pt-12">
+            <div className="h-px bg-gray-200 flex-grow max-w-[200px]"></div>
             <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">Standard View</h2>
-            <div className="h-px bg-gray-200 flex-grow max-w-[100px]"></div>
+            <div className="h-px bg-gray-200 flex-grow max-w-[200px]"></div>
           </div>
         </div>
       )}

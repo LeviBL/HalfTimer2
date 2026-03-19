@@ -2,7 +2,6 @@
 
 import React from "react";
 import BracketGameCard from "./BracketGameCard";
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 interface Game {
   id: string;
@@ -19,6 +18,7 @@ interface Game {
     away: any;
   };
   round?: number;
+  region?: string;
 }
 
 interface BracketProps {
@@ -26,87 +26,49 @@ interface BracketProps {
   onGameClick: (game: Game) => void;
 }
 
-const ROUND_NAMES = [
-  "Round of 64",
-  "Round of 32",
-  "Sweet 16",
-  "Elite 8",
-  "Final Four",
-  "Championship"
-];
+const REGIONS = ["East", "West", "South", "Midwest"];
 
 const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
-  const getGamesForRound = (roundIdx: number) => {
-    const roundNum = roundIdx + 1;
-    const realGames = games.filter(g => g.round === roundNum);
-    
-    // Total slots for this round to maintain structure (32, 16, 8, 4, 2, 1)
-    const totalSlots = 32 / Math.pow(2, roundIdx);
-    
-    const displayGames = [...realGames];
-    
-    // Fill with placeholders to maintain structure
-    for (let i = realGames.length; i < totalSlots; i++) {
-      displayGames.push({
-        id: `tbd-${roundIdx}-${i}`,
-        date: new Date().toISOString(),
-        status: { type: { description: "Scheduled", state: "pre" } },
-        competitors: {
-          home: { displayName: "TBD", logo: "", score: "0", seed: "" },
-          away: { displayName: "TBD", logo: "", score: "0", seed: "" }
-        },
-        round: roundNum
+  const getGamesForRegion = (region: string) => {
+    return games
+      .filter(g => g.region === region)
+      .sort((a, b) => {
+        // Sort by seed pairing (1 vs 16, 8 vs 9, etc.)
+        const aSeed = parseInt(a.competitors.away.seed || "0");
+        const bSeed = parseInt(b.competitors.away.seed || "0");
+        return aSeed - bSeed;
       });
-    }
-    return displayGames;
   };
 
   return (
-    <div className="w-full bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden">
-      <ScrollArea className="w-full whitespace-nowrap">
-        <div className="flex p-12 gap-0 min-w-max bg-white">
-          {ROUND_NAMES.map((name, roundIdx) => {
-            const roundGames = getGamesForRound(roundIdx);
-
-            return (
-              <div key={name} className="flex flex-col w-72 relative">
-                <div className="sticky top-0 mb-12 px-4 z-20">
-                  <div className="text-gray-400 py-2 px-4 text-center border-b border-gray-100">
-                    <span className="text-[10px] font-black uppercase tracking-[0.2em]">{name}</span>
+    <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-8 px-4">
+      {REGIONS.map((region) => {
+        const regionGames = getGamesForRegion(region);
+        
+        return (
+          <div key={region} className="space-y-6">
+            <div className="flex items-center gap-4">
+              <div className="h-px bg-gray-200 flex-grow"></div>
+              <h3 className="text-xl font-black text-gray-400 uppercase tracking-widest">{region} Region</h3>
+              <div className="h-px bg-gray-200 flex-grow"></div>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {regionGames.length > 0 ? (
+                regionGames.map((game) => (
+                  <div key={game.id} className="flex justify-center">
+                    <BracketGameCard game={game} onClick={onGameClick} />
                   </div>
+                ))
+              ) : (
+                <div className="col-span-full py-8 text-center text-gray-400 italic text-sm">
+                  Region data loading or not yet available...
                 </div>
-
-                <div className="flex flex-col justify-around flex-grow relative">
-                  {roundGames.map((game, gameIdx) => (
-                    <div 
-                      key={game.id} 
-                      className="relative py-8 px-6 flex items-center"
-                      style={{ height: `${100 / Math.max(1, roundGames.length)}%` }}
-                    >
-                      <BracketGameCard game={game} onClick={onGameClick} />
-                      
-                      {roundIdx < ROUND_NAMES.length - 1 && roundGames.length > 1 && (
-                        <>
-                          <div className="absolute right-0 top-1/2 w-6 h-[1px] bg-gray-300"></div>
-                          {gameIdx % 2 === 0 ? (
-                            <div className="absolute -right-[1px] top-1/2 w-[1px] h-full bg-gray-300"></div>
-                          ) : (
-                            <div className="absolute -right-[1px] bottom-1/2 w-[1px] h-full bg-gray-300"></div>
-                          )}
-                          {gameIdx % 2 === 0 && (
-                            <div className="absolute -right-6 top-[100%] w-6 h-[1px] bg-gray-300"></div>
-                          )}
-                        </>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <ScrollBar orientation="horizontal" />
-      </ScrollArea>
+              )}
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 };
