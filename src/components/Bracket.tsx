@@ -25,27 +25,84 @@ const SLOT_HEIGHT = CARD_HEIGHT + BASE_GAP;
 
 const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
   const bracketData = useMemo(() => {
-    const rounds: Game[][] = [];
+    // 1. Order Round 1 (Round of 64) strictly by seed pattern
+    const r1Games = games.filter(g => g.round === 1);
     
-    for (let r = 1; r <= 6; r++) {
-      const roundGames = games
-        .filter(g => g.round === r)
-        .sort((a, b) => (a.bracketPosition || 0) - (b.bracketPosition || 0));
-      
-      const expectedSize = 32 / Math.pow(2, r - 1);
-      const filledRound: Game[] = [];
-      
-      for (let i = 0; i < expectedSize; i++) {
-        const existingGame = roundGames.find(g => {
-          // ESPN's bracketPosition is often 1-indexed within the round or global
-          // We try to match by index if bracketPosition isn't perfectly sequential
-          return g.bracketPosition === i || g.bracketPosition === i + 1 || roundGames.indexOf(g) === i;
-        });
+    const getSeedKey = (g: Game) => {
+      const s1 = parseInt(g.competitors.home.seed || "0");
+      const s2 = parseInt(g.competitors.away.seed || "0");
+      const sorted = [s1, s2].sort((a, b) => a - b);
+      return `${sorted[0]}-${sorted[1]}`;
+    };
 
-        if (existingGame) {
-          filledRound.push(existingGame);
+    const groups: Record<string, Game[]> = {};
+    r1Games.forEach(g => {
+      const key = getSeedKey(g);
+      if (!groups[key]) groups[key] = [];
+      groups[key].push(g);
+    });
+
+    // Sort by date to keep regions consistent
+    Object.values(groups).forEach(group => {
+      group.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    });
+
+    const seedPattern = ["1-16", "8-9", "5-12", "4-13", "6-11", "3-14", "7-10", "2-15"];
+    const orderedR1: Game[] = [];
+    
+    for (let region = 0; region < 4; region++) {
+      seedPattern.forEach(key => {
+        if (groups[key] && groups[key].length > 0) {
+          orderedR1.push(groups[key].shift()!);
         } else {
-          filledRound.push({
+          // Placeholder if game missing
+          orderedR1.push({
+            id: `placeholder-r1-reg${region}-${key}`,
+            name: "TBD vs TBD",
+            shortName: "TBD",
+            date: "TBD",
+            status: { type: { description: "TBD", state: "pre" } },
+            round: 1,
+            competitors: {
+              home: { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: key.split('-')[0] },
+              away: { displayName: "TBD", logo: "/placeholder.svg", score: "0", seed: key.split('-')[1] }
+            }
+          });
+        }
+      });
+    }
+
+    const rounds: Game[][] = [orderedR1];
+
+    // 2. Populate subsequent rounds based on the "Path" from Round 1
+    for (let r = 2; r <= 6; r++) {
+      const prevRound = rounds[r - 2];
+      const currentRoundSize = prevRound.length / 2;
+      const currentRound: Game[] = [];
+      const apiGamesForRound = games.filter(g => g.round === r);
+
+      for (let i = 0; i < currentRoundSize; i++) {
+        const parent1 = prevRound[i * 2];
+        const parent2 = prevRound[i * 2 + 1];
+        
+        // Get all possible team names that could be in this slot
+        const possibleTeams = new Set([
+          parent1.competitors.home.displayName,
+          parent1.competitors.away.displayName,
+          parent2.competitors.home.displayName,
+          parent2.competitors.away.displayName
+        ]);
+
+        // Find a game in the API for this round that involves these teams
+        const matchingGame = apiGamesForRound.find(g => 
+          possibleTeams.has(g.competitors.home.displayName) || 
+          possibleTeams.has(g.competitors.away.displayName)
+        );
+
+        if (matchingGame) {
+          currentRound.push(matchingGame);
+        } else {
+          currentRound.push({
             id: `placeholder-r${r}-p${i}`,
             name: "TBD vs TBD",
             shortName: "TBD",
@@ -59,8 +116,9 @@ const Bracket: React.FC<BracketProps> = ({ games, onGameClick }) => {
           });
         }
       }
-      rounds.push(filledRound);
+      rounds.push(currentRound);
     }
+
     return rounds;
   }, [games]);
 
