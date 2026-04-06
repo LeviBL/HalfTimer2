@@ -4,15 +4,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const Footer: React.FC = () => {
-  const currentYear = new Date().getFullYear();
-
   return (
     <footer className="w-full bg-white border-t border-gray-200 mt-12 py-8 px-4">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
         <div className="text-center md:text-left">
           <h2 className="text-xl font-bold text-gray-900">The Halftimer</h2>
           <p className="text-sm text-gray-500 mt-1">
-            © {currentYear} The Halftimer. All rights reserved.
+            © 2025 The Halftimer. All rights reserved.
           </p>
         </div>
 
@@ -20,14 +18,17 @@ const Footer: React.FC = () => {
           <Link to="/" className="hover:text-blue-600 transition-colors">Home</Link>
           <Link to="/march-madness-halftime-timer" className="hover:text-orange-600 transition-colors">March Madness</Link>
           <Link to="/about" className="hover:text-blue-600 transition-colors">About</Link>
-          <Link to="/contact" className="hover:text-blue-600 transition-colors">Contact</Link>
+          <Link to="/faq" className="hover:text-blue-600 transition-colors">FAQ</Link>
           <Link to="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</Link>
           <Link to="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</Link>
+          <Link to="/contact" className="hover:text-blue-600 transition-colors">Contact</Link>
         </nav>
       </div>
       <div className="max-w-3xl mx-auto mt-8 text-center text-xs text-gray-400">
+        <p className="mb-2">
+          The Halftimer provides real-time sports data for informational purposes only.
+        </p>
         <p>
-          The Halftimer provides real-time sports data for informational purposes only. 
           We are not affiliated with the NFL, NBA, or NCAA.
         </p>
       </div>

@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 const MobileNavMenu: React.FC = () => {
   return (
@@ -46,6 +45,14 @@ const MobileNavMenu: React.FC = () => {
             className="block px-3 py-2 text-gray-700 hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
             About
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link
+            to="/faq"
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
+          >
+            FAQ
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

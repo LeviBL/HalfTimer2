@@ -5,7 +5,7 @@ import GameCard from "@/components/GameCard";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
-import { Loader2, Info, Clock, ShieldCheck, Zap } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -347,102 +347,24 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         </div>
       )}
 
-      <div className="mt-12 p-4 bg-white/70 backdrop-blur-sm rounded-lg shadow-md text-gray-800 text-xs flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center">
-        <p className="flex items-center gap-2">
-          <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full"></span>
-          <span>= Live Game</span>
-        </p>
-        <p className="flex items-center gap-2">
-          <span className="inline-block w-5 h-5 bg-amber-400 rounded-full"></span>
-          <span>= Halftime</span>
-        </p>
-      </div>
-
-      {/* Knowledge Base / Detailed Tool Description Section */}
-      <section className="w-full max-w-4xl mt-16 px-4 py-12 bg-white rounded-2xl shadow-sm border border-gray-100">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">How The Halftimer Works</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            We provide the most accurate live halftime countdowns for NFL, NBA, and NCAA basketball games. 
-            Never miss the start of the second half again.
+      <div className="mt-12 p-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-md text-gray-800 flex flex-col items-center gap-6">
+        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center text-xs">
+          <p className="flex items-center gap-2">
+            <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full"></span>
+            <span>= Live Game</span>
+          </p>
+          <p className="flex items-center gap-2">
+            <span className="inline-block w-5 h-5 bg-amber-400 rounded-full"></span>
+            <span>= Halftime</span>
           </p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="flex gap-4">
-            <div className="flex-shrink-0 w-12 h-12 bg-blue-100 rounded-xl flex items-center justify-center text-blue-600">
-              <Zap size={24} />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Real-Time Detection</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Our system monitors live game feeds every 20 seconds. As soon as a game hits "Halftime" in the official scorebook, 
-                our timer triggers automatically.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <div className="flex-shrink-0 w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center text-amber-600">
-              <Clock size={24} />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Precise Countdowns</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                We use sport-specific durations (12:20 for NFL, 14:30 for NBA, 14:25 for NCAA) to give you a precise 
-                window of when play will resume.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <div className="flex-shrink-0 w-12 h-12 bg-emerald-100 rounded-xl flex items-center justify-center text-emerald-600">
-              <ShieldCheck size={24} />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Skip the Ads</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Halftime is filled with commercials and fluff. Use our timer to step away, grab a snack, or check other games, 
-                knowing exactly when to come back.
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-4">
-            <div className="flex-shrink-0 w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center text-purple-600">
-              <Info size={24} />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold mb-2">Why It's Accurate</h3>
-              <p className="text-gray-600 text-sm leading-relaxed">
-                Unlike manual timers, we sync with official league data. If a game is delayed or halftime is extended, 
-                our system adjusts to keep you informed.
-              </p>
-            </div>
-          </div>
+        
+        <div className="flex flex-col items-center gap-1 text-sm font-medium text-gray-600 border-t border-gray-200 pt-4 w-full">
+          <p>NFL halftime: 13 minutes</p>
+          <p>NBA halftime: 15 minutes</p>
+          <p>NCAAM halftime: 15 minutes</p>
         </div>
-
-        <div className="mt-12 p-6 bg-gray-50 rounded-xl border border-gray-200">
-          <h3 className="text-lg font-bold mb-4 flex items-center gap-2">
-            <Info size={20} className="text-blue-500" />
-            Frequently Asked Questions
-          </h3>
-          <div className="space-y-4">
-            <div>
-              <h4 className="font-semibold text-gray-900">How long is halftime in the NBA?</h4>
-              <p className="text-gray-600 text-sm">NBA halftime is officially 15 minutes, but play typically resumes around the 14:30 mark after warmups.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900">How long is halftime in the NFL?</h4>
-              <p className="text-gray-600 text-sm">NFL halftime is 13 minutes long, with our timer optimized for the 12:20 mark to ensure you don't miss kickoff.</p>
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900">Does this work for March Madness?</h4>
-              <p className="text-gray-600 text-sm">Yes! We have a dedicated March Madness section that tracks every tournament game with a 15-minute halftime window.</p>
-            </div>
-          </div>
-        </div>
-      </section>
+      </div>
 
       <Footer />
       <MadeWithDyad />
