@@ -74,6 +74,11 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   const gameId = game.id;
   const halftimeDuration = DURATIONS[sport];
 
+  const isHalftime = gameStatusDescription === "Halftime";
+  const isScheduled = game.status.type.state === "pre";
+  const isFinal = game.status.type.state === "post";
+  const isInProgress = game.status.type.state === "in" && !isHalftime;
+
   useEffect(() => {
     const isCurrentlyHalftime = gameStatusDescription === "Halftime";
 
@@ -141,11 +146,6 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       ? ((halftimeDuration - halftimeRemainingSeconds) / halftimeDuration) * 100
       : 0;
 
-  const isHalftime = gameStatusDescription === "Halftime";
-  const isScheduled = game.status.type.state === "pre";
-  const isFinal = game.status.type.state === "post";
-  const isInProgress = game.status.type.state === "in" && !isHalftime;
-
   const borderColorClass = isHalftime
     ? "border-amber-400"
     : game.status.type.state === "in"
@@ -179,7 +179,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
             <img src={game.competitors.away.logo} alt={game.competitors.away.displayName} className="w-10 h-10 object-contain" />
             <span className="text-xl font-bold">{getTeamName(game.competitors.away.displayName)}</span>
           </div>
-          <span className="text-3xl font-extrabold">{game.competitors.away.score}</span>
+          {!isScheduled && <span className="text-3xl font-extrabold">{game.competitors.away.score}</span>}
         </div>
 
         <div className="flex justify-between items-center mb-6">
@@ -187,7 +187,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
             <img src={game.competitors.home.logo} alt={game.competitors.home.displayName} className="w-10 h-10 object-contain" />
             <span className="text-xl font-bold">{getTeamName(game.competitors.home.displayName)}</span>
           </div>
-          <span className="text-3xl font-extrabold">{game.competitors.home.score}</span>
+          {!isScheduled && <span className="text-3xl font-extrabold">{game.competitors.home.score}</span>}
         </div>
 
         <div className="text-center text-lg font-semibold mb-4">
