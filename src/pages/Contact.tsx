@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 
@@ -26,17 +25,8 @@ const Contact: React.FC = () => {
             contacthalftimer@gmail.com
           </a>
         </p>
-        
-        <div className="mt-8 p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
-          <h2 className="text-xl font-bold mb-2">Feedback</h2>
-          <p className="text-gray-600">
-            We are constantly looking to improve. If you have a feature request or found a bug, 
-            please let us know!
-          </p>
-        </div>
       </div>
       <Footer />
-      <MadeWithDyad />
     </div>
   );
 };

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useMemo } from "react";
 import GameCard from "@/components/GameCard";
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
@@ -367,7 +366,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       </div>
 
       <Footer />
-      <MadeWithDyad />
     </div>
   );
 };

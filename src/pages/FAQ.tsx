@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 import {
@@ -27,7 +26,17 @@ const FAQ: React.FC = () => {
     },
     {
       question: "Why should I use The Halftimer?",
-      answer: "Halftime lengths vary by sport and situation. The Halftimer helps you: avoid missing the start of the second half, track multiple games more efficiently, step away during breaks with confidence, and stay on top of live sports without constant checking."
+      answer: (
+        <div className="space-y-2">
+          <p>Halftime lengths vary by sport and situation. The Halftimer helps you:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>Avoid missing the start of the second half</li>
+            <li>Track multiple games more efficiently</li>
+            <li>Step away during breaks with confidence</li>
+            <li>Stay on top of live sports without constant checking</li>
+          </ul>
+        </div>
+      )
     },
     {
       question: "Is The Halftimer free to use?",
@@ -55,7 +64,16 @@ const FAQ: React.FC = () => {
     },
     {
       question: "Who is The Halftimer for?",
-      answer: "The Halftimer is built for: sports fans watching live games, viewers following multiple games at once, and people who don’t want to miss key moments after halftime."
+      answer: (
+        <div className="space-y-2">
+          <p>The Halftimer is built for:</p>
+          <ul className="list-disc pl-5 space-y-1">
+            <li>Sports fans watching live games</li>
+            <li>Viewers following multiple games at once</li>
+            <li>People who don’t want to miss key moments after halftime</li>
+          </ul>
+        </div>
+      )
     },
     {
       question: "How can I contact you?",
@@ -71,7 +89,7 @@ const FAQ: React.FC = () => {
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <MobileNavMenu />
       <div className="max-w-3xl w-full mx-auto bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">FAQ – The Halftimer</h1>
+        <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">FAQ</h1>
         
         <Accordion type="single" collapsible className="w-full space-y-2">
           {faqData.map((item, index) => (
@@ -87,7 +105,6 @@ const FAQ: React.FC = () => {
         </Accordion>
       </div>
       <Footer />
-      <MadeWithDyad />
     </div>
   );
 };

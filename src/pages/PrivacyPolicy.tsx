@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 
@@ -13,7 +12,7 @@ const PrivacyPolicy: React.FC = () => {
         <h1 className="text-4xl font-extrabold text-gray-900 mb-6 text-center">Privacy Policy</h1>
 
         <p className="mb-4">
-          At The Halftimer, accessible from <a href="https://thehalftimer.com" className="text-blue-600 hover:underline">thehalftimer.com</a>, your privacy is important to us. 
+          At The Halftimer, your privacy is important to us. 
           This Privacy Policy explains what information we collect, how we use it, and your rights regarding that information.
         </p>
 
@@ -42,10 +41,9 @@ const PrivacyPolicy: React.FC = () => {
           We may update this Privacy Policy occasionally. Any changes will be posted on this page with the updated date.
         </p>
 
-        <p className="text-gray-600 mt-8 text-right">Last updated: February 8th, 2026</p>
+        <p className="text-gray-600 mt-8 text-right">Last updated: April 6th, 2026</p>
       </div>
       <Footer />
-      <MadeWithDyad />
     </div>
   );
 };

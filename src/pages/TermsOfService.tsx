@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { MadeWithDyad } from "@/components/made-with-dyad";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 
@@ -50,10 +49,9 @@ const TermsOfService: React.FC = () => {
           We may update these Terms of Service at any time. Updates will be posted on this page with the revised date.
         </p>
 
-        <p className="text-gray-600 mt-8 text-right">Last updated: October 17, 2025</p>
+        <p className="text-gray-600 mt-8 text-right">Last updated: April 6th, 2026</p>
       </div>
       <Footer />
-      <MadeWithDyad />
     </div>
   );
 };

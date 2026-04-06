@@ -28,9 +28,12 @@ const Footer: React.FC = () => {
         <p className="mb-2">
           The Halftimer provides real-time sports data for informational purposes only.
         </p>
-        <p>
+        <p className="mb-4">
           We are not affiliated with the NFL, NBA, or NCAA.
         </p>
+        <div className="pt-4 border-t border-gray-100 text-gray-500">
+          <span>Made by Levi Brous-Light</span>
+        </div>
       </div>
     </footer>
   );
