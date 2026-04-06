@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import MobileNavMenu from "@/components/MobileNavMenu";
+import Footer from "@/components/Footer";
 import { toast } from "sonner";
 
 const About: React.FC = () => {
@@ -10,9 +11,7 @@ const About: React.FC = () => {
 
   useEffect(() => {
     const handler = (e: Event) => {
-      // Prevent the mini-infobar from appearing on mobile
       e.preventDefault();
-      // Stash the event so it can be triggered later.
       setDeferredPrompt(e);
     };
 
@@ -27,15 +26,11 @@ const About: React.FC = () => {
     e.preventDefault();
     
     if (deferredPrompt) {
-      // Show the install prompt
       deferredPrompt.prompt();
-      // Wait for the user to respond to the prompt
       const { outcome } = await deferredPrompt.userChoice;
       console.log(`User response to the install prompt: ${outcome}`);
-      // We've used the prompt, and can't use it again
       setDeferredPrompt(null);
     } else {
-      // Fallback for iOS or browsers that don't support beforeinstallprompt
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
       if (isIOS) {
         toast.info("To install: tap the 'Share' icon in your browser and select 'Add to Home Screen'.", {
@@ -64,7 +59,15 @@ const About: React.FC = () => {
         <p className="mb-6 text-lg leading-relaxed">
           The goal is simple: optimize time, reduce guesswork, and create a smoother viewing experience for fans. Built with clarity and speed in mind, The Halftimer avoids distractions and endless ads, all for love of the game.
         </p>
-        <p className="text-md text-gray-600 text-right italic">
+        
+        <div className="mt-8 p-6 bg-blue-50 rounded-xl border border-blue-100">
+          <h2 className="text-xl font-bold text-blue-900 mb-2">Our Mission</h2>
+          <p className="text-blue-800">
+            To provide sports fans with the most accurate, distraction-free second-screen experience. We believe your time is valuable, and you shouldn't have to guess when the game is back on.
+          </p>
+        </div>
+
+        <p className="text-md text-gray-600 text-right italic mt-8">
           Created and developed by Levi Brous-Light.
         </p>
       </div>
@@ -78,6 +81,7 @@ const About: React.FC = () => {
         </button>
       </div>
       
+      <Footer />
       <MadeWithDyad />
     </div>
   );

@@ -2,12 +2,13 @@
 
 import React from "react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
-import MobileNavMenu from "@/components/MobileNavMenu"; // Import MobileNavMenu
+import MobileNavMenu from "@/components/MobileNavMenu";
+import Footer from "@/components/Footer";
 
 const Contact: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
-      <MobileNavMenu /> {/* Render MobileNavMenu here */}
+      <MobileNavMenu />
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg prose prose-sm sm:prose lg:prose-lg">
         <h1 className="text-4xl font-extrabold text-gray-900 mb-6 text-center">Contact Us</h1>
 
@@ -25,7 +26,16 @@ const Contact: React.FC = () => {
             contacthalftimer@gmail.com
           </a>
         </p>
+        
+        <div className="mt-8 p-6 bg-gray-50 rounded-xl border border-gray-200 text-center">
+          <h2 className="text-xl font-bold mb-2">Feedback</h2>
+          <p className="text-gray-600">
+            We are constantly looking to improve. If you have a feature request or found a bug, 
+            please let us know!
+          </p>
+        </div>
       </div>
+      <Footer />
       <MadeWithDyad />
     </div>
   );

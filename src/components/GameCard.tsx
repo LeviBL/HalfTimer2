@@ -6,8 +6,9 @@ import { cn } from "@/lib/utils";
 import { getAbbreviatedTeamName as getNflAbbreviation } from "@/utils/nflTeamAbbreviations";
 import { getAbbreviatedNbaTeamName as getNbaAbbreviation } from "@/utils/nbaTeamAbbreviations";
 import { ProgressWithIndicator } from "@/components/ProgressWithIndicator";
-import { Star, Loader2 } from "lucide-react";
+import { Star, Loader2, Share2 } from "lucide-react";
 import { useHalftimeTimers } from "@/hooks/use-halftime-timers";
+import { toast } from "sonner";
 
 const formatCountdown = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60);
@@ -61,7 +62,7 @@ interface GameCardProps {
 const DURATIONS = {
   nfl: 12 * 60 + 20, // 12:20
   nba: 14 * 60 + 30, // 14:30
-  ncaa: 14 * 60 + 25, // 14:25 (Updated as requested)
+  ncaa: 14 * 60 + 25, // 14:25
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
@@ -119,6 +120,22 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
     };
   }, [gameStatusDescription, gameId, getHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
 
+  const handleShare = () => {
+    const shareUrl = window.location.origin + (sport === 'ncaa' ? '/march-madness-halftime-timer' : '/');
+    const shareText = `Check out the live halftime countdown for ${game.competitors.away.displayName} vs ${game.competitors.home.displayName} on The Halftimer!`;
+    
+    if (navigator.share) {
+      navigator.share({
+        title: 'The Halftimer',
+        text: shareText,
+        url: shareUrl,
+      }).catch(console.error);
+    } else {
+      navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+      toast.success("Link copied to clipboard!");
+    }
+  };
+
   const halftimeProgress =
     halftimeRemainingSeconds !== null && halftimeDuration > 0
       ? ((halftimeDuration - halftimeRemainingSeconds) / halftimeDuration) * 100
@@ -142,7 +159,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   const getTeamName = (name: string) => {
     if (sport === 'nfl') return getNflAbbreviation(name);
     if (sport === 'nba') return getNbaAbbreviation(name);
-    return name; // NCAA uses full names for now
+    return name;
   };
 
   return (
@@ -204,18 +221,28 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
             )
           )}
         </div>
-        <button
-          onClick={() => onToggleFavorite(game.id)}
-          className="absolute bottom-3 right-3 p-1 rounded-full bg-white/70 backdrop-blur-sm shadow-md hover:scale-110 transition-transform duration-200"
-          aria-label={isFavorited ? "Unfavorite game" : "Favorite game"}
-        >
-          <Star
-            className={cn(
-              "h-3 w-3",
-              isFavorited ? "fill-yellow-500 text-yellow-500" : "text-gray-400"
-            )}
-          />
-        </button>
+        
+        <div className="absolute bottom-3 right-3 flex gap-2">
+          <button
+            onClick={handleShare}
+            className="p-1.5 rounded-full bg-white/70 backdrop-blur-sm shadow-md hover:scale-110 transition-transform duration-200"
+            aria-label="Share game"
+          >
+            <Share2 className="h-3.5 w-3.5 text-blue-500" />
+          </button>
+          <button
+            onClick={() => onToggleFavorite(game.id)}
+            className="p-1.5 rounded-full bg-white/70 backdrop-blur-sm shadow-md hover:scale-110 transition-transform duration-200"
+            aria-label={isFavorited ? "Unfavorite game" : "Favorite game"}
+          >
+            <Star
+              className={cn(
+                "h-3.5 w-3.5",
+                isFavorited ? "fill-yellow-500 text-yellow-500" : "text-gray-400"
+              )}
+            />
+          </button>
+        </div>
       </CardContent>
     </Card>
   );
