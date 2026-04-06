@@ -22,6 +22,14 @@ const Footer: React.FC = () => {
           <Link to="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</Link>
           <Link to="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</Link>
           <Link to="/contact" className="hover:text-blue-600 transition-colors">Contact</Link>
+          <a 
+            href="https://github.com/LeviBL/HalfTimer2" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-gray-900 transition-colors"
+          >
+            GitHub
+          </a>
         </nav>
       </div>
       <div className="max-w-3xl mx-auto mt-8 text-center text-xs text-gray-400">
