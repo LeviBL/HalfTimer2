@@ -129,16 +129,8 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
     const shareUrl = window.location.origin + (sport === 'ncaa' ? '/march-madness-halftime-timer' : '/');
     const shareText = `Check out the live halftime countdown for ${game.competitors.away.displayName} vs ${game.competitors.home.displayName} on The Halftimer!`;
     
-    if (navigator.share) {
-      navigator.share({
-        title: 'The Halftimer',
-        text: shareText,
-        url: shareUrl,
-      }).catch(console.error);
-    } else {
-      navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
-      toast.success("Link copied to clipboard!");
-    }
+    navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+    toast.success("Link copied to clipboard!");
   };
 
   const halftimeProgress =
