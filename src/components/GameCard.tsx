@@ -179,7 +179,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
             <img src={game.competitors.away.logo} alt={game.competitors.away.displayName} className="w-10 h-10 object-contain" />
             <span className="text-xl font-bold">{getTeamName(game.competitors.away.displayName)}</span>
           </div>
-          {!isScheduled && <span className="text-3xl font-extrabold">{game.competitors.away.score}</span>}
+          <span className="text-3xl font-extrabold">{isScheduled ? "--" : game.competitors.away.score}</span>
         </div>
 
         <div className="flex justify-between items-center mb-6">
@@ -187,7 +187,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
             <img src={game.competitors.home.logo} alt={game.competitors.home.displayName} className="w-10 h-10 object-contain" />
             <span className="text-xl font-bold">{getTeamName(game.competitors.home.displayName)}</span>
           </div>
-          {!isScheduled && <span className="text-3xl font-extrabold">{game.competitors.home.score}</span>}
+          <span className="text-3xl font-extrabold">{isScheduled ? "--" : game.competitors.home.score}</span>
         </div>
 
         <div className="text-center text-lg font-semibold mb-4">
