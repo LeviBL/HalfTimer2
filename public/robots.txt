@@ -1,7 +1,8 @@
 User-agent: *
 Allow: /
-
-User-agent: Mediapartners-Google
-Allow: /
+Disallow: /admin
+Disallow: /api
+Disallow: /dist
+Disallow: /node_modules
 
 Sitemap: https://thehalftimer.com/sitemap.xml
