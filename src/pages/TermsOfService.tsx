@@ -3,7 +3,6 @@
 import React from "react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
-import Logo from "@/components/Logo";
 
 const TermsOfService: React.FC = () => {
   return (
@@ -11,7 +10,6 @@ const TermsOfService: React.FC = () => {
       <MobileNavMenu />
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg prose prose-sm sm:prose lg:prose-lg">
         <div className="flex items-center justify-center gap-4 mb-6">
-          <Logo size={48} />
           <h1 className="text-4xl font-extrabold text-gray-900 text-center m-0">Terms of Service</h1>
         </div>
 

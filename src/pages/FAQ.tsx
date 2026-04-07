@@ -3,7 +3,6 @@
 import React from "react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
-import Logo from "@/components/Logo";
 import {
   Accordion,
   AccordionContent,
@@ -91,7 +90,6 @@ const FAQ: React.FC = () => {
       <MobileNavMenu />
       <div className="max-w-3xl w-full mx-auto bg-white p-8 rounded-lg shadow-lg">
         <div className="flex items-center justify-center gap-4 mb-8">
-          <Logo size={48} />
           <h1 className="text-4xl font-extrabold text-gray-900 text-center">FAQ</h1>
         </div>
         

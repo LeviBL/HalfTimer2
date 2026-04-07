@@ -10,7 +10,7 @@ interface LogoProps {
 
 const Logo: React.FC<LogoProps> = ({ className, size = 40 }) => {
   return (
-    <div className={cn("relative flex items-center justify-center transition-all duration-300 hover:rotate-3 hover:scale-110", className)}>
+    <div className={cn("relative flex items-center justify-center transition-all duration-300", className)}>
       <img 
         src="/favicon.svg" 
         alt="HalfTimer Logo" 

@@ -2,14 +2,18 @@
 
 import React from "react";
 import { Link } from "react-router-dom";
+import Logo from "./Logo";
 
 const Footer: React.FC = () => {
   return (
     <footer className="w-full bg-white border-t border-gray-200 mt-12 py-8 px-4">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-        <div className="text-center md:text-left">
-          <h2 className="text-xl font-bold text-gray-900">The Halftimer</h2>
-          <p className="text-sm text-gray-500 mt-1">
+        <div className="flex flex-col items-center md:items-start text-center md:text-left">
+          <div className="flex items-center gap-3 mb-2">
+            <Logo size={24} />
+            <h2 className="text-xl font-bold text-gray-900">The Halftimer</h2>
+          </div>
+          <p className="text-sm text-gray-500">
             © 2025 The Halftimer. All rights reserved.
           </p>
         </div>
