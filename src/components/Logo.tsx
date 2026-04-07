@@ -1,0 +1,25 @@
+"use client";
+
+import React from "react";
+import { cn } from "@/lib/utils";
+
+interface LogoProps {
+  className?: string;
+  size?: number;
+}
+
+const Logo: React.FC<LogoProps> = ({ className, size = 40 }) => {
+  return (
+    <div className={cn("relative flex items-center justify-center transition-all duration-300 hover:rotate-3 hover:scale-110", className)}>
+      <img 
+        src="/favicon.svg" 
+        alt="HalfTimer Logo" 
+        width={size} 
+        height={size}
+        className="drop-shadow-md"
+      />
+    </div>
+  );
+};
+
+export default Logo;

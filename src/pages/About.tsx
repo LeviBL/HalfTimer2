@@ -3,13 +3,17 @@
 import React from "react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
+import Logo from "@/components/Logo";
 
 const About: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <MobileNavMenu />
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-6 text-center">About The Halftimer</h1>
+        <div className="flex items-center justify-center gap-4 mb-6">
+          <Logo size={48} />
+          <h1 className="text-4xl font-extrabold text-gray-900 text-center">About The Halftimer</h1>
+        </div>
 
         <p className="mb-4 text-lg leading-relaxed">
           The Halftimer is a live sports halftime countdown designed to make watching football and basketball more efficient and enjoyable. Every week, fans check scores and highlights, but no platform tells you exactly when the second half starts. The Halftimer solves that.

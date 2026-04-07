@@ -3,6 +3,7 @@
 import React from "react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
+import Logo from "@/components/Logo";
 import {
   Accordion,
   AccordionContent,
@@ -89,7 +90,10 @@ const FAQ: React.FC = () => {
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <MobileNavMenu />
       <div className="max-w-3xl w-full mx-auto bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-extrabold text-gray-900 mb-8 text-center">FAQ</h1>
+        <div className="flex items-center justify-center gap-4 mb-8">
+          <Logo size={48} />
+          <h1 className="text-4xl font-extrabold text-gray-900 text-center">FAQ</h1>
+        </div>
         
         <Accordion type="single" collapsible className="w-full space-y-2">
           {faqData.map((item, index) => (
