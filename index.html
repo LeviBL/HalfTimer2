@@ -23,10 +23,62 @@
     </script>
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4912492512734266" crossorigin="anonymous"></script>
+
+    <style>
+      /* Basic styling for fallback content to ensure it looks professional to crawlers */
+      .fallback-content { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
+      .fallback-header { text-align: center; margin-bottom: 40px; }
+      .fallback-section { margin-bottom: 30px; }
+      .fallback-footer { border-top: 1px solid #eee; padding-top: 20px; margin-top: 40px; text-align: center; font-size: 0.9em; }
+      .fallback-nav a { margin: 0 10px; color: #0066cc; text-decoration: none; }
+    </style>
   </head>
 
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Fallback content for SEO and AdSense Crawlers -->
+      <div class="fallback-content">
+        <header class="fallback-header">
+          <h1>HalfTimer</h1>
+          <p>Live NFL, NBA, and NCAAM Halftime Countdown</p>
+        </header>
+
+        <main>
+          <section class="fallback-section">
+            <h2>About The Halftimer</h2>
+            <p>The Halftimer is a live sports utility designed to optimize your viewing experience. We track real-time game data for the NFL, NBA, and College Basketball to provide precise halftime countdowns. Skip the ads and never miss the start of the second half again.</p>
+          </section>
+
+          <section class="fallback-section">
+            <h2>Frequently Asked Questions</h2>
+            <div class="faq-item">
+              <h3>What is The Halftimer?</h3>
+              <p>A real-time sports utility that tracks halftime durations across major leagues like the NFL and NBA.</p>
+            </div>
+            <div class="faq-item">
+              <h3>How does it work?</h3>
+              <p>We use official game timing structures and live context to track halftime in real time, helping you know exactly when play resumes.</p>
+            </div>
+            <div class="faq-item">
+              <h3>Is it free?</h3>
+              <p>Yes, The Halftimer is completely free to use for all sports fans.</p>
+            </div>
+          </section>
+        </main>
+
+        <footer class="fallback-footer">
+          <nav class="fallback-nav">
+            <a href="/">Home</a>
+            <a href="/about">About</a>
+            <a href="/faq">FAQ</a>
+            <a href="/privacy">Privacy Policy</a>
+            <a href="/terms">Terms of Service</a>
+            <a href="/contact">Contact</a>
+          </nav>
+          <p>&copy; 2025 The Halftimer. All rights reserved.</p>
+        </footer>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
