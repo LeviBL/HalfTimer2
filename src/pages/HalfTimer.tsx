@@ -352,18 +352,20 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         </div>
       )}
 
-      <div className="mt-12 p-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-md text-gray-800 flex flex-col items-center">
-        <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center text-xs font-medium">
-          <p className="flex items-center gap-2">
-            <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full shadow-sm"></span>
-            <span>= Live Game</span>
-          </p>
-          <p className="flex items-center gap-2">
-            <span className="inline-block w-5 h-5 bg-amber-400 rounded-full shadow-sm"></span>
-            <span>= Halftime</span>
-          </p>
+      {activeSport !== 'ncaa' && (
+        <div className="mt-12 p-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-md text-gray-800 flex flex-col items-center">
+          <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center text-xs font-medium">
+            <p className="flex items-center gap-2">
+              <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full shadow-sm"></span>
+              <span>= Live Game</span>
+            </p>
+            <p className="flex items-center gap-2">
+              <span className="inline-block w-5 h-5 bg-amber-400 rounded-full shadow-sm"></span>
+              <span>= Halftime</span>
+            </p>
+          </div>
         </div>
-      </div>
+      )}
 
       <Footer />
     </div>
