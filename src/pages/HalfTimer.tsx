@@ -108,6 +108,11 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     return new Set();
   });
 
+  // Sync activeSport state when defaultSport prop changes (e.g., via URL navigation)
+  useEffect(() => {
+    setActiveSport(defaultSport);
+  }, [defaultSport]);
+
   useEffect(() => {
     setGames([]);
     setError(null);
