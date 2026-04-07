@@ -250,10 +250,8 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   const standardViewGames = useMemo(() => {
     return sortedGames.filter(game => {
       if (activeSport === 'ncaa') {
-        if (game.round === 0) return false;
-        const isHomeTbd = game.competitors.home.displayName === "TBD";
-        const isAwayTbd = game.competitors.away.displayName === "TBD";
-        if (isHomeTbd && isAwayTbd) return false;
+        // Hide all games for NCAA as the season is over
+        return false;
       }
       return true;
     });
@@ -293,7 +291,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       {activeSport === 'ncaa' && (
         <div className="w-full max-w-[600px] mb-8 p-6 bg-orange-50 border border-orange-200 rounded-xl text-center shadow-sm">
           <p className="text-xl font-semibold text-orange-900">
-            March Madness is over - thanks for being here, and we’ll see you back on November 2, 2026 for the start of the new season.
+            March Madness is over- see you for the start of the next season on November 2, 2026.
           </p>
         </div>
       )}
@@ -349,7 +347,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
               />
             ))
           ) : (
-            <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
+            activeSport !== 'ncaa' && <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
           )}
         </div>
       )}
