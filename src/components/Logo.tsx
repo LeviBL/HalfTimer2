@@ -13,7 +13,7 @@ const Logo: React.FC<LogoProps> = ({ className, size = 40 }) => {
     <div className={cn("relative flex items-center justify-center transition-all duration-300", className)}>
       <img 
         src="/favicon.svg" 
-        alt="HalfTimer Logo" 
+        alt="The Halftimer - Live NFL and NBA Halftime Countdown Clock" 
         width={size} 
         height={size}
         className="drop-shadow-md"
