@@ -23,24 +23,13 @@
     </script>
     <!-- Google AdSense -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4912492512734266" crossorigin="anonymous"></script>
-
-    <style>
-      /* This ensures the SEO content is never visible to users but remains in the DOM for crawlers */
-      .seo-only {
-        display: none !important;
-        visibility: hidden;
-        height: 0;
-        width: 0;
-        overflow: hidden;
-      }
-    </style>
   </head>
 
   <body>
     <div id="root"></div>
     
-    <!-- SEO Content Container: Hidden from users, visible to crawlers -->
-    <div class="seo-only" aria-hidden="true">
+    <!-- SEO Content Container: Inline style ensures it is NEVER visible to users -->
+    <div style="display: none !important;" aria-hidden="true">
       <header>
         <h1>HalfTimer</h1>
         <p>Live NFL, NBA, and NCAAM Halftime Countdown</p>
