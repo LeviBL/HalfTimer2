@@ -27,8 +27,8 @@
 
   <body>
     <div id="root">
-      <!-- SEO Content: Inside root so React clears it on load. Hidden from users via inline style. -->
-      <div style="display: none !important;" aria-hidden="true">
+      <!-- SEO Content Wrapper: Readable by bots, invisible to users, cleared by React on mount -->
+      <div style="opacity: 0.01; height: 0; overflow: hidden; pointer-events: none;">
         <header>
           <h1>HalfTimer</h1>
           <p>Live NFL, NBA, and NCAAM Halftime Countdown</p>
