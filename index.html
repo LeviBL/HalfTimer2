@@ -13,6 +13,17 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     
+    <script>
+      // Dynamically set canonical URL to prevent "Split Identity" issues on sub-pages
+      (function() {
+        const canonicalElement = document.querySelector("link[rel='canonical']");
+        const currentPath = window.location.pathname === '/' ? '' : window.location.pathname;
+        if (canonicalElement) {
+          canonicalElement.setAttribute('href', 'https://thehalftimer.com' + currentPath);
+        }
+      })();
+    </script>
+
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-EN4DXLX1DY"></script>
     <script>
