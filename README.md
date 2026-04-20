@@ -1,1 +1,1 @@
-# Live NFL Halftime Timer
+# Live NFL and NBA Halftime Timer
