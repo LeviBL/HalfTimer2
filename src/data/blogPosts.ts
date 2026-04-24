@@ -11,23 +11,129 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
-    slug: "how-to-optimize-your-nfl-viewing-experience",
-    title: "How to Optimize Your NFL Viewing Experience",
-    excerpt: "Learn the best ways to stay on top of every game without missing a single play, from multi-screen setups to timing your breaks perfectly.",
-    content: "Full article content will go here...",
-    date: "May 15, 2025",
+    slug: "the-science-of-nba-halftime",
+    title: "The Science of the NBA Halftime: Why Timing is Everything for Fans and Coaches",
+    excerpt: "The NBA halftime is one of the most structured yet misunderstood parts of a basketball game. Learn why the 15-minute window is more complex than it appears.",
+    content: `The NBA halftime is one of the most structured yet misunderstood parts of a basketball game. On paper, it is simple. The league mandates a 15 minute halftime break between the second and third quarters. In practice, that window is often stretched, compressed, or reshaped depending on broadcast schedules, arena logistics, and game flow.
+
+For coaches, halftime is not just a break. It is a controlled reset point. Teams use this time to analyze first half performance, adjust defensive schemes, and manage player fatigue. Coaching staffs rely heavily on quick analytics, including shot charts, pace metrics, and matchup efficiencies. The 15 minute window forces decisions to be made quickly and precisely.
+
+For fans, halftime is something entirely different. It is a moment to step away, check scores from other games, grab food, or scroll social media. This is where the disconnect begins. The official clock says 15 minutes, but real world experience says otherwise.
+
+National TV broadcasts are a major factor. Games aired on ESPN or TNT often extend halftime to accommodate commercials, studio analysis, and sponsored segments. What is listed as a 15 minute break can easily stretch closer to 18 or even 20 minutes. This inconsistency creates friction for fans trying to time their return.
+
+Arena operations add another layer. Halftime shows, on-court entertainment, and sponsor activations all compete for time. While the league has a baseline structure, execution varies by venue.
+
+This is where precise halftime tracking becomes essential. Modern sports consumption is built around multitasking. Fans rarely sit through a full broadcast without engaging with a second screen. They check fantasy stats, place bets, or follow other games in real time. Without a reliable countdown, fans either return too early and wait, or come back late and miss key moments.
+
+The need for accurate halftime timing has grown alongside digital habits. Static clocks and generic timers no longer reflect the real experience. Fans want live updates that reflect actual game conditions, not theoretical schedules.
+
+The NBA halftime is not just a break in play. It is a dynamic window shaped by media, strategy, and user behavior. Understanding that complexity explains why precise timing tools are no longer optional for serious fans.`,
+    date: "December 9, 2025",
     author: "Levi Brous-Light",
-    category: "NFL",
-    image: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?q=80&w=800&auto=format&fit=crop"
+    category: "NBA",
+    image: "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=800&auto=format&fit=crop"
   },
   {
-    slug: "the-science-of-halftime-durations",
-    title: "The Science of Halftime Durations",
-    excerpt: "Ever wondered why some halftimes feel longer than others? We dive into the regulations and broadcast requirements that dictate the clock.",
-    content: "Full article content will go here...",
-    date: "May 10, 2025",
+    slug: "nfl-vs-nba-halftime-comparison",
+    title: "NFL vs. NBA Halftime: Comparing the Mid-Game Break",
+    excerpt: "Halftime is a universal concept across sports, but not all halftimes are created equal. We compare the tactical and logistical differences between the two leagues.",
+    content: `Halftime is a universal concept across sports, but not all halftimes are created equal. The NFL and NBA offer two distinct approaches that reflect the nature of their games.
+
+In the NFL, halftime is officially set at 12 minutes. This shorter window reflects the structure of football, where plays are discrete and heavily strategized between downs. Coaches use halftime to adjust formations, review opponent tendencies, and reset game plans. Because football has fewer continuous sequences than basketball, the halftime adjustment tends to be more tactical and less fluid.
+
+In contrast, the NBA uses a 15 minute halftime. Basketball is a continuous, high pace sport where momentum can swing rapidly. Coaches use halftime to slow the game down mentally, refocus players, and correct defensive breakdowns. The additional three minutes may seem minor, but it allows for more detailed adjustments and physical recovery.
+
+Momentum plays a different role in each sport. In basketball, a hot shooting stretch can carry over if halftime is managed well. In football, momentum is often reset due to the stop start nature of the game. The longer halftime in the NBA can either cool off a streak or provide a chance to regroup.
+
+Logistics also differ significantly. NFL halftime includes field maintenance, sideline adjustments, and broadcast segments. In large stadiums, movement and coordination take more time, even within the shorter official window. NBA arenas operate in a more compact environment, allowing for faster transitions between activities.
+
+The Super Bowl introduces a unique exception. Halftime during the Super Bowl extends to roughly 30 minutes due to the halftime show. This creates a completely different rhythm compared to a standard NFL game. Players must manage extended downtime, which can affect performance in the second half.
+
+From a fan perspective, these differences matter. The variability in timing affects how viewers plan their breaks. A standard NFL halftime is predictable, while an NBA halftime, especially on national TV, can fluctuate.
+
+Understanding these differences highlights why accurate halftime tracking tools are valuable. Each sport operates on its own timing ecosystem, and fans benefit from real time updates rather than relying on fixed assumptions.`,
+    date: "January 16, 2026",
+    author: "Levi Brous-Light",
+    category: "Sports Analysis",
+    image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop"
+  },
+  {
+    slug: "guide-to-managing-game-intermissions",
+    title: "How to Never Miss a Tip-Off: A Guide to Managing Game Intermissions",
+    excerpt: "Modern sports fans are multitaskers. Learn how to manage your time during breaks without missing the most important moments of the game.",
+    content: `Modern sports fans do not watch games the way they used to. Watching a game now often means multitasking. You might be checking stats, replying to messages, or switching between multiple games. Halftime is the moment where that multitasking peaks.
+
+The problem is simple. Halftime is not as predictable as it seems. While leagues publish official durations, actual timing varies due to broadcasts, reviews, and in-game events. This creates a gap between expectation and reality.
+
+Many fans rely on rough estimates. They assume halftime will last about 15 minutes and set a mental timer. This approach works sometimes, but it often leads to missed plays or unnecessary waiting.
+
+The risk is missing the start of the third quarter. In basketball, this is one of the most important segments of the game. Teams come out with adjustments, and momentum can shift quickly. Missing even a minute can mean missing a scoring run or a key defensive change.
+
+A better approach is using real time halftime tracking. Instead of guessing, fans can rely on live countdowns that adjust based on actual game conditions. This removes uncertainty and allows for more efficient use of time.
+
+For example, instead of sitting through commercials, you can step away with confidence. Grab food, check another game, or take a break without worrying about missing action. When the countdown hits zero, you know the game is about to resume.
+
+This is especially useful for fans following multiple games. Coordinating between different halftime windows becomes much easier when you have accurate timing for each game.
+
+Another benefit is improved viewing experience. Instead of constantly checking back to see if the game has restarted, you can focus on what you are doing and return at the right moment.
+
+Managing game intermissions is about control. With the right tools, halftime becomes an opportunity instead of a risk. You stay engaged, informed, and in sync with the game.`,
+    date: "January 28, 2026",
+    author: "Levi Brous-Light",
+    category: "Fan Experience",
+    image: "https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=800&auto=format&fit=crop"
+  },
+  {
+    slug: "why-halftime-timing-is-broken",
+    title: "Why Halftime Timing Is Broken and How Real-Time Tracking Fixes It",
+    excerpt: "Halftime should be simple, but broadcast requirements and arena logistics make it unpredictable. We explore how real-time data solves the guessing game.",
+    content: `Halftime should be simple. The game stops, a clock runs, and the game resumes. In reality, halftime timing is inconsistent across nearly every major sport.
+
+The issue starts with official rules versus actual execution. Leagues publish fixed halftime durations, but broadcasts, timeouts, and arena events often extend or alter those windows. Fans are left guessing when the game will actually resume.
+
+Television is a major driver of this inconsistency. Networks insert commercials, analysis segments, and sponsor content into halftime. These additions are not always synchronized with the official clock. As a result, the real halftime duration becomes unpredictable.
+
+In arena settings, halftime entertainment adds another layer. Performances, contests, and promotional events vary in length. Some run on schedule, while others extend beyond the planned window.
+
+For fans, this creates a fragmented experience. You either return too early and wait through filler content, or come back late and miss the start of the second half. Neither outcome is ideal.
+
+Real time tracking addresses this problem directly. Instead of relying on static estimates, it uses live data to reflect the actual state of the game. This allows fans to see exactly how much time remains before play resumes.
+
+The advantage is precision. You are no longer dependent on guesswork. Whether you are watching from home or following multiple games, you can align your schedule with the actual flow of the event.
+
+This shift mirrors broader trends in sports technology. Fans expect real time updates, accurate data, and seamless integration with their viewing habits. Halftime tracking is a natural extension of that expectation.
+
+Fixing halftime timing is not about changing the rules. It is about improving how information is delivered to fans. Real time tracking turns an unpredictable break into a reliable, actionable moment.`,
+    date: "March 3, 2026",
     author: "Levi Brous-Light",
     category: "Sports Tech",
-    image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1501139083538-0139583c060f?q=80&w=800&auto=format&fit=crop"
+  },
+  {
+    slug: "rise-of-second-screen-viewing",
+    title: "The Rise of Second-Screen Sports Viewing and Why Timing Tools Matter",
+    excerpt: "Sports viewing is no longer a single-screen experience. Discover why precise timing is the key to balancing multiple streams of information.",
+    content: `Sports viewing has changed dramatically in the past decade. The traditional model of watching a single game without distraction is no longer the norm. Today, fans engage with multiple screens at once.
+
+This behavior is known as second-screen viewing. While the main game plays on a TV or stream, fans use their phones or computers to check stats, browse social media, or follow other games. This creates a more interactive but also more complex experience.
+
+Halftime is the peak of second-screen activity. With the game paused, fans shift their attention elsewhere. They might check fantasy scores, watch highlights, or place live bets. The challenge is knowing when to shift back.
+
+Without accurate timing, this becomes a guessing game. Fans either interrupt their second-screen activity too early or stay away too long and miss key moments.
+
+Timing tools solve this problem by providing real time updates. Instead of relying on assumptions, fans can see exactly when halftime is ending. This allows for better coordination between screens.
+
+The impact is significant. Fans stay more engaged because they do not miss important plays. They also use their time more efficiently during breaks.
+
+This trend is especially relevant for younger audiences. Digital natives expect seamless integration between platforms. They want tools that enhance their experience rather than disrupt it.
+
+From a broader perspective, timing tools are part of a larger shift toward data driven sports consumption. Fans are no longer passive viewers. They are active participants who want control and precision.
+
+As second-screen viewing continues to grow, the importance of accurate halftime tracking will only increase. It is a small feature that solves a very real problem in modern sports consumption.`,
+    date: "April 22, 2026",
+    author: "Levi Brous-Light",
+    category: "Digital Trends",
+    image: "https://images.unsplash.com/photo-1551817958-11e0f7060b2b?q=80&w=800&auto=format&fit=crop"
   }
 ];
