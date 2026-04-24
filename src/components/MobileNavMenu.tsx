@@ -49,6 +49,15 @@ const MobileNavMenu: React.FC = () => {
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link
+            to="/blog"
+            className="block px-3 py-2 text-gray-700 hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
+          >
+            Blog
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuSeparator className="bg-gray-200 my-1" />
+        <DropdownMenuItem asChild>
+          <Link
             to="/privacy"
             className="block px-3 py-2 text-gray-700 hover:bg-gray-300 hover:text-blue-600 transition-colors duration-200 rounded-md font-medium"
           >
