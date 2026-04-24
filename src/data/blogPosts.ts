@@ -56,7 +56,7 @@ Understanding these differences highlights why accurate halftime tracking tools 
     date: "January 16, 2026",
     author: "Levi Brous-Light",
     category: "Sports Analysis",
-    image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?q=80&w=800&auto=format&fit=crop"
   },
   {
     slug: "guide-to-managing-game-intermissions",
@@ -82,7 +82,7 @@ Managing game intermissions is about control. With the right tools, halftime bec
     date: "January 28, 2026",
     author: "Levi Brous-Light",
     category: "Fan Experience",
-    image: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1508098682722-e99c43a406b2?q=80&w=800&auto=format&fit=crop"
   },
   {
     slug: "why-halftime-timing-is-broken",
@@ -134,6 +134,6 @@ As second-screen viewing continues to grow, the importance of accurate halftime 
     date: "April 22, 2026",
     author: "Levi Brous-Light",
     category: "Digital Trends",
-    image: "https://images.unsplash.com/photo-1551817958-11e0f7060b2b?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1593341646782-e0b495cff86d?q=80&w=800&auto=format&fit=crop"
   }
 ];
