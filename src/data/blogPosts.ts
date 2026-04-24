@@ -94,7 +94,7 @@ The issue starts with official rules versus actual execution. Leagues publish fi
 
 Television is a major driver of this inconsistency. Networks insert commercials, analysis segments, and sponsor content into halftime. These additions are not always synchronized with the official clock. As a result, the real halftime duration becomes unpredictable.
 
-In arena settings, halftime entertainment add another layer. Performances, contests, and promotional events vary in length. Some run on schedule, while others extend beyond the planned window.
+In arena settings, halftime entertainment adds another layer. Performances, contests, and promotional events vary in length. Some run on schedule, while others extend beyond the planned window.
 
 For fans, this creates a fragmented experience. You either return too early and wait through filler content, or come back late and miss the start of the second half. Neither outcome is ideal.
 
@@ -134,6 +134,6 @@ As second-screen viewing continues to grow, the importance of accurate halftime 
     date: "April 22, 2026",
     author: "Levi Brous-Light",
     category: "Digital Trends",
-    image: "https://images.unsplash.com/photo-1593341646782-e0b495cff86d?q=80&w=800&auto=format&fit=crop"
+    image: "https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=800&auto=format&fit=crop"
   }
 ];
