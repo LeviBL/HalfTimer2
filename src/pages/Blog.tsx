@@ -8,6 +8,11 @@ import BlogPostCard from "@/components/BlogPostCard";
 import { blogPosts } from "@/data/blogPosts";
 
 const Blog: React.FC = () => {
+  // Sort posts by date (descending)
+  const sortedPosts = [...blogPosts].sort((a, b) => 
+    new Date(b.date).getTime() - new Date(a.date).getTime()
+  );
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <MobileNavMenu />
@@ -23,7 +28,7 @@ const Blog: React.FC = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {blogPosts.map((post) => (
+          {sortedPosts.map((post) => (
             <BlogPostCard key={post.slug} post={post} />
           ))}
         </div>

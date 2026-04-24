@@ -5,7 +5,7 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 import { blogPosts } from "@/data/blogPosts";
-import { Calendar, User, ChevronLeft, Share2 } from "lucide-react";
+import { Calendar, User, ChevronLeft, Share2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -25,6 +25,15 @@ const BlogPost: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <MobileNavMenu />
+      
+      <div className="max-w-3xl w-full mx-auto mb-4 flex justify-start">
+        <Link to="/blog">
+          <Button variant="ghost" className="flex items-center gap-2 text-gray-600 hover:text-blue-600 transition-colors">
+            <ArrowLeft className="h-4 w-4" /> Back to Blog
+          </Button>
+        </Link>
+      </div>
+
       <article className="max-w-3xl w-full mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
         <div className="relative h-[300px] md:h-[400px]">
           <img 
@@ -34,9 +43,6 @@ const BlogPost: React.FC = () => {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
             <div className="text-white">
-              <Link to="/blog" className="flex items-center gap-1 text-sm font-medium mb-4 hover:text-blue-300 transition-colors">
-                <ChevronLeft className="h-4 w-4" /> Back to Blog
-              </Link>
               <h1 className="text-3xl md:text-4xl font-bold mb-4 leading-tight">
                 {post.title}
               </h1>
@@ -54,7 +60,6 @@ const BlogPost: React.FC = () => {
 
         <div className="p-8 md:p-12">
           <div className="prose prose-lg max-w-none text-gray-700 leading-relaxed">
-            {/* This is where the generated content will go */}
             <p className="text-xl font-medium text-gray-900 mb-6 italic">
               {post.excerpt}
             </p>
