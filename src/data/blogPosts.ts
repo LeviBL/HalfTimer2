@@ -77,7 +77,7 @@ And the data makes that obvious.`,
     date: "April 25, 2026",
     author: "Levi Brous-Light",
     category: "NBA Analysis",
-    image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=800&auto=format&fit=crop"
+    image: "/src/assets/blog/nba-fade.jpg"
   },
   {
     slug: "rise-of-second-screen-viewing",
