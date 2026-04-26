@@ -5,9 +5,10 @@ import { useParams, Link, Navigate } from "react-router-dom";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 import { blogPosts } from "@/data/blogPosts";
-import { Calendar, User, ChevronLeft, Share2, ArrowLeft } from "lucide-react";
+import { Calendar, User, Share2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import BlogPostCard from "@/components/BlogPostCard";
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -22,6 +23,13 @@ const BlogPost: React.FC = () => {
     toast.success("Link copied to clipboard!");
   };
 
+  // Get two other posts for the "Next Read" section
+  const currentIndex = blogPosts.findIndex((p) => p.slug === slug);
+  const nextPosts = [
+    blogPosts[(currentIndex + 1) % blogPosts.length],
+    blogPosts[(currentIndex + 2) % blogPosts.length],
+  ];
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <MobileNavMenu />
@@ -34,7 +42,7 @@ const BlogPost: React.FC = () => {
         </Link>
       </div>
 
-      <article className="max-w-3xl w-full mx-auto bg-white rounded-2xl shadow-xl overflow-hidden">
+      <article className="max-w-3xl w-full mx-auto bg-white rounded-2xl shadow-xl overflow-hidden mb-12">
         <div className="relative h-[300px] md:h-[400px]">
           <img 
             src={post.image} 
@@ -82,6 +90,20 @@ const BlogPost: React.FC = () => {
           </div>
         </div>
       </article>
+
+      {/* Next Read Section */}
+      <div className="max-w-4xl w-full mx-auto mb-12">
+        <div className="flex items-center gap-4 mb-8">
+          <h3 className="text-2xl font-bold text-gray-900">Next Read</h3>
+          <div className="flex-grow h-px bg-gray-200" />
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {nextPosts.map((nextPost) => (
+            <BlogPostCard key={nextPost.slug} post={nextPost} />
+          ))}
+        </div>
+      </div>
+
       <Footer />
     </div>
   );
