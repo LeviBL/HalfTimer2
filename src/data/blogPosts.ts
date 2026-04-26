@@ -53,7 +53,7 @@ Jokić has effectively rendered the MVP debate a formality. This isn't about who
     date: "April 26, 2026",
     author: "Ben Jacobson",
     category: "Opinion",
-    image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=800&auto=format&fit=crop"
+    image: "/blog/jokic-mvp.jpg"
   },
   {
     slug: "nba-players-second-half-performance",
