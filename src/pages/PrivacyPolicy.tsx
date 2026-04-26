@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { Link } from "react-router-dom";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 
@@ -13,37 +14,49 @@ const PrivacyPolicy: React.FC = () => {
           <h1 className="text-4xl font-extrabold text-gray-900 text-center m-0">Privacy Policy</h1>
         </div>
 
-        <p className="mb-4">
-          At The Halftimer, your privacy is important to us. 
-          This Privacy Policy explains what information we collect, how we use it, and your rights regarding that information.
+        <p className="text-sm text-gray-500 text-center mb-8">Last Updated: April 25, 2026</p>
+
+        <p className="mb-6">
+          At The Halftimer, we are committed to protecting your privacy. This policy outlines how we handle data and the third-party services we use to keep the site running.
         </p>
 
-        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Information We Collect</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">1. Data Collection</h2>
         <p className="mb-4">
-          We do not collect any personally identifiable information directly from users. 
-          However, we use third-party services such as Google AdSense that may use cookies to serve ads based on your prior visits to this or other websites.
+          The Halftimer does not require user accounts or collect personally identifiable information (like names or emails) directly. We use standard log files (IP addresses, browser type, and time stamps) to analyze site traffic and performance during peak game times.
         </p>
 
-        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Cookies</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">2. Cookies and Third-Party Advertising</h2>
         <p className="mb-4">
-          Cookies are small files stored on your device that help websites function properly. 
-          Third-party vendors, including Google, use cookies to serve ads based on your interests. 
-          You can choose to disable cookies through your browser settings.
+          We use Google AdSense to serve advertisements.
+        </p>
+        <ul className="list-disc pl-5 space-y-2 mb-4">
+          <li>Google uses cookies to serve ads based on your prior visits to this or other websites.</li>
+          <li>Google's use of advertising cookies enables it and its partners to serve ads to you based on your visit to this site.</li>
+          <li>You may opt out of personalized advertising by visiting <a href="https://adssettings.google.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline">Google Ads Settings</a>.</li>
+        </ul>
+
+        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">3. Analytics</h2>
+        <p className="mb-4">
+          We use Google Analytics to track site usage, such as page views and returning users. This data is anonymous and helps us optimize the countdown timers for the best fan experience.
         </p>
 
-        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Third-Party Services</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">4. Your Rights (CCPA & GDPR)</h2>
         <p className="mb-4">
-          We use Google AdSense to display ads. Google may collect data as described in the 
-          <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline"> Google Ad Policy</a>. 
-          We do not control how Google handles your data, but we recommend reviewing their privacy practices.
+          Depending on your location (including California and the EU), you have the right to:
+        </p>
+        <ul className="list-disc pl-5 space-y-2 mb-4">
+          <li>Know what data is being collected (in our case, anonymous cookies).</li>
+          <li>Request the deletion of any data.</li>
+          <li>Opt out of the "sale" of personal information.</li>
+        </ul>
+        <p className="mb-4">
+          Since we do not store personal profiles, your "data" consists of cookies which you can manage or delete directly through your browser settings at any time.
         </p>
 
-        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">Changes to This Policy</h2>
+        <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">5. Contact</h2>
         <p className="mb-4">
-          We may update this Privacy Policy occasionally. Any changes will be posted on this page with the updated date.
+          If you have questions about this policy or the site, you can reach out via our <Link to="/contact" className="text-blue-600 hover:underline">contact page</Link>.
         </p>
-
-        <p className="text-gray-600 mt-8 text-right">Last updated: April 6th, 2026</p>
       </div>
       <Footer />
     </div>
