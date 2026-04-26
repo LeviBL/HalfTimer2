@@ -76,7 +76,7 @@ That is why second-half stats matter more than they seem. Anyone can score early
 And the data makes that obvious.`,
     date: "April 25, 2026",
     author: "Levi Brous-Light",
-    category: "NBA Analysis",
+    category: "NBA",
     image: "/src/assets/blog/nba-fade.jpg"
   },
   {
@@ -102,7 +102,7 @@ From a broader perspective, timing tools are part of a larger shift toward data 
 As second-screen viewing continues to grow, the importance of accurate halftime tracking will only increase. It is a small feature that solves a very real problem in modern sports consumption.`,
     date: "April 22, 2026",
     author: "Levi Brous-Light",
-    category: "Digital Trends",
+    category: "Sports Tech",
     image: "https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=800&auto=format&fit=crop"
   },
   {
@@ -154,7 +154,7 @@ Another benefit is improved viewing experience. Instead of constantly checking b
 Managing game intermissions is about control. With the right tools, halftime becomes an opportunity instead of a risk. You stay engaged, informed, and in sync with the game.`,
     date: "January 28, 2026",
     author: "Levi Brous-Light",
-    category: "Fan Experience",
+    category: "Sports Analysis",
     image: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?q=80&w=800&auto=format&fit=crop"
   },
   {
