@@ -11,6 +11,51 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "nikola-jokic-mvp-race",
+    title: "Nikola Jokić Stands Alone in the MVP Race",
+    excerpt: "The NBA has officially narrowed the field for the 2025–2026 MVP award. While the finalist list is a trio, the race is a solo run.",
+    content: `The NBA has officially narrowed the field for the 2025–2026 MVP award, and the names are exactly who we expected: reigning victor Shai Gilgeous-Alexander, Nikola Jokić, and the young phenomenon Victor Wembanyama.
+
+But as the dust settles on the regular season, it’s becoming increasingly clear that while the finalist list is a trio, the race is a solo run. To argue that anyone other than Nikola Jokić should take home the trophy is to ignore one of the most statistically dominant stretches in the history of professional basketball.
+
+The Wembanyama Problem
+Victor Wembanyama is a defensive marvel, and his impact on that end is undeniable. Leading the league with 3.1 blocks per game while averaging a 25/11 double-double is a historic feat for a second-year player. However, the MVP conversation requires more than defensive gravity.
+
+When you look at the offensive efficiency, the gap between Wemby and the veterans is massive. His scoring and playmaking (3.1 APG) simply don't carry the same weight as the other two candidates. Despite the highlights, his defensive rating (108.7) and defensive win shares actually trail Shai Gilgeous-Alexander. Wembanyama is a future MVP, but putting him in this specific year's conversation feels more like a nod to his potential than a reflection of his current total-game impact.
+
+The Case for Shai
+If anyone has a legitimate claim to challenge the throne, it’s Shai Gilgeous-Alexander. He has led the Oklahoma City Thunder to a historic 68–14 record—the sixth-best winning percentage in NBA history. His individual efficiency is staggering:
+
+PPG: 31.1
+FG%: 55.3%
+True Shooting: 66.5% (The 4th highest for a guard ever)
+Defensive Rating: 108.7
+
+Shai isn't just a scorer; he is the engine of a "historically great" team and arguably the best two-way guard in the league. In almost any other season, this would be a unanimous MVP win.
+
+The Statistical Immortality of Nikola Jokić
+The unfortunate reality for Shai is that Nikola Jokić is currently breaking the sport of basketball. Jokić’s 2025-26 campaign isn’t just an MVP season; it is a statistical anomaly that tests the limits of what one player can do on a court.
+
+Jokić finished the season averaging 27.7 PPG, 12.9 RPG, and 10.7 APG. He is now only the third player in history to average a triple-double over a full season, and the first player ever to lead the league in both total assists and total rebounds simultaneously.
+
+The advanced metrics are where the debate truly ends:
+
+Box Plus/Minus (BPM): 14.20 (The highest in NBA/ABA history).
+Player Efficiency Rating (PER): The 2nd highest mark ever, trailing only his own 2021 record.
+Defensive BPM: 4.08 (Ranked 12th all-time for a single season).
+
+Jokić is narrowly edging out Shai in nearly every efficiency category while being the primary rebounder and playmaker for his team. He isn't just "efficient"; he is the most effective player on both ends of the floor by almost every measurable standard.
+
+The Pedestal of Basketball Immortality
+The debate over whether Shai or Wemby belongs in the conversation misses the point. We are watching a player in his absolute prime produce a season that rivals the peaks of Jordan, LeBron, or Wilt.
+
+Jokić has effectively rendered the MVP debate a formality. This isn't about who had a great year, it’s about acknowledging that we are witnessing one of the greatest individual seasons in the history of the game. To vote otherwise isn't just a difference of opinion; it's a denial of the data right in front of us.`,
+    date: "April 26, 2026",
+    author: "Ben Jacobson",
+    category: "Opinion",
+    image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=800&auto=format&fit=crop"
+  },
+  {
     slug: "nba-players-second-half-performance",
     title: "Which NBA Players Fade and Which Take Over After the Break?",
     excerpt: "Halftime separates the elite creators from the system players. We analyze real second-half scoring data to see who truly dominates when the game slows down.",
@@ -74,7 +119,7 @@ Halftime does not just split a game. It filters players.
 * Elite shot creators dominate the second half
 That is why second-half stats matter more than they seem. Anyone can score early. Fewer players can do it when the game becomes predictable, slower, and more difficult.
 And the data makes that obvious.`,
-    date: "April 25, 2026",
+    date: "April 20, 2026",
     author: "Levi Brous-Light",
     category: "NBA",
     image: "/blog/nba-fade.jpg"
@@ -100,7 +145,7 @@ This trend is especially relevant for younger audiences. Digital natives expect 
 From a broader perspective, timing tools are part of a larger shift toward data driven sports consumption. Fans are no longer passive viewers. They are active participants who want control and precision.
 
 As second-screen viewing continues to grow, the importance of accurate halftime tracking will only increase. It is a small feature that solves a very real problem in modern sports consumption.`,
-    date: "April 22, 2026",
+    date: "April 7, 2026",
     author: "Levi Brous-Light",
     category: "Sports Tech",
     image: "https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=800&auto=format&fit=crop"
