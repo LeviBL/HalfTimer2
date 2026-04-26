@@ -14,8 +14,6 @@ const PrivacyPolicy: React.FC = () => {
           <h1 className="text-4xl font-extrabold text-gray-900 text-center m-0">Privacy Policy</h1>
         </div>
 
-        <p className="text-sm text-gray-500 text-center mb-8">Last Updated: April 25, 2026</p>
-
         <p className="mb-6">
           At The Halftimer, we are committed to protecting your privacy. This policy outlines how we handle data and the third-party services we use to keep the site running.
         </p>
@@ -57,6 +55,8 @@ const PrivacyPolicy: React.FC = () => {
         <p className="mb-4">
           If you have questions about this policy or the site, you can reach out via our <Link to="/contact" className="text-blue-600 hover:underline">contact page</Link>.
         </p>
+
+        <p className="text-gray-600 mt-8 text-right">Last updated: April 25, 2026</p>
       </div>
       <Footer />
     </div>
