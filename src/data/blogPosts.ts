@@ -71,14 +71,14 @@ Lets look at Deandre Ayton for example. Deandre Ayton put up 5.6 points per game
 
 **Why Scoring Changes After Halftime**
 The numbers reflect three real in-game changes:
-* **Defenses Lock In:** Coaches spend halftime adjusting coverages. If a player is scoring easily, they will see double teams, different matchups, or altered schemes in the second half.
-* **The Game Slows Down:** Possessions become more deliberate. Less transition means fewer easy points, which hurts players who rely on pace.
-* **Shot Creation Becomes Everything:** Late in games, offenses break down. Plays stop working cleanly. The ability to create your own shot becomes the most valuable skill on the court.
+1. Defenses Lock In: Coaches spend halftime adjusting coverages. If a player is scoring easily, they will see double teams, different matchups, or altered schemes in the second half.
+2. The Game Slows Down: Possessions become more deliberate. Less transition means fewer easy points, which hurts players who rely on pace.
+3. Shot Creation Becomes Everything: Late in games, offenses break down. Plays stop working cleanly. The ability to create your own shot becomes the most valuable skill on the court.
 
-**The Real Divide: Closers vs System Players**
+The Real Divide: Closers vs System Players
 The data points to a simple conclusion. There are two types of scorers:
-* **Closers:** Maintain elite scoring after halftime and thrive against set defenses (e.g., Mitchell, Shai, Ant, Luka).
-* **System Players:** Depend more on structure and flow, seeing reduced opportunities as production declines relative to stars.
+* Closers: Maintain elite scoring after halftime and thrive against set defenses (e.g., Mitchell, Shai, Ant, Luka).
+* System Players: Depend more on structure and flow, seeing reduced opportunities as production declines relative to stars.
 
 **Final Takeaway**
 Halftime does not just split a game. It filters players. The best scorers still produce when defenses adjust, and elite shot creators dominate the second half. That is why second-half stats matter more than they seem. Anyone can score early. Fewer players can do it when the game becomes predictable, slower, and more difficult.`,
