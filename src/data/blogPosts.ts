@@ -11,6 +11,43 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "2026-nfl-draft-round-1-breakdown",
+    title: "2026 NFL Draft - Round 1 Breakdown (With Grades)",
+    excerpt: "The 2026 NFL Draft is in the books. From the Giants' bold move at #1 to the late-round steals, we grade every major move from a wild opening night.",
+    content: `The 2026 NFL Draft will be remembered as the night the defensive identity of the league shifted. With a class top-heavy with generational defensive talent, teams didn't hesitate to pull the trigger on game-changers. Here is our breakdown and grading of the most pivotal picks from Round 1.
+
+**1. New York Giants: Arvell Reese, LB, Ohio State**
+**Grade: A+**
+The Giants didn't overthink it. Arvell Reese is the most complete defensive prospect we've seen in a decade. His sideline-to-sideline speed and elite diagnostic skills make him the perfect anchor for a Giants defense that has been searching for a true identity. Pairing him with their existing front four creates a nightmare scenario for NFC East quarterbacks. This is a foundational pick that will pay dividends for the next ten years.
+
+**2. Tennessee Titans: Arch Manning, QB, Texas**
+**Grade: A**
+The most anticipated prospect in years finally finds his home. The Titans moved heaven and earth to ensure they were in a position to grab Manning, and for good reason. His poise, processing speed, and pedigree are unmatched. While there will be immense pressure, Tennessee has built a solid offensive line to protect their new investment.
+
+**3. Las Vegas Raiders: Malaki Starks, S, Georgia**
+**Grade: B+**
+The Raiders needed a playmaker in the secondary, and they got the best one available. Starks is a ball-hawk with elite range. While some might argue for an edge rusher here, the Raiders' secondary was a sieve last season, and Starks immediately fixes their biggest weakness.
+
+**4. New England Patriots: Julian Sayin, QB, Ohio State**
+**Grade: B**
+The Patriots continue their search for the heir to the throne. Sayin has all the tools—arm strength, accuracy, and leadership. However, the Patriots' roster still has significant holes at wide receiver. Sayin is a great talent, but he'll need help to succeed in Foxborough.
+
+**5. Carolina Panthers: Kelvin Banks Jr., OT, Texas**
+**Grade: A-**
+Protecting the quarterback is priority number one, and Banks is a brick wall. He’s a Day 1 starter at left tackle who brings a mean streak to the Panthers' run game. It’s not a flashy pick, but it’s the right one.
+
+**The Biggest Steal: Jackson Arnold, QB, Oklahoma (Pick 22 to the Rams)**
+**Grade: A+**
+Getting a talent like Arnold at 22 is highway robbery. Sean McVay now has a young, dynamic successor to sit behind Stafford for a year. Arnold’s mobility and deep-ball accuracy fit the Rams' system perfectly.
+
+**Final Thoughts**
+The 2026 class was defined by its defensive depth and a few high-end quarterbacks who will reshape their franchises. The Giants came away as the biggest winners of the night, securing a generational talent in Reese who will be the face of their franchise for years to come.`,
+    date: "April 27, 2026",
+    author: "Levi Brous-Light",
+    category: "Opinion",
+    image: "/blog/nfl-draft-2026.jpg"
+  },
+  {
     slug: "nikola-jokic-mvp-race",
     title: "Nikola Jokić Stands Alone in the MVP Race",
     excerpt: "The NBA has officially narrowed the field for the 2025–2026 MVP award. While the finalist list is a trio, the race is a solo run.",
@@ -75,7 +112,7 @@ The numbers reflect three real in-game changes:
 2. The Game Slows Down: Possessions become more deliberate. Less transition means fewer easy points, which hurts players who rely on pace.
 3. Shot Creation Becomes Everything: Late in games, offenses break down. Plays stop working cleanly. The ability to create your own shot becomes the most valuable skill on the court.
 
-The Real Divide: Closers vs System Players
+**The Real Divide: Closers vs System Players**
 The data points to a simple conclusion. There are two types of scorers:
 * Closers: Maintain elite scoring after halftime and thrive against set defenses (e.g., Mitchell, Shai, Ant, Luka).
 * System Players: Depend more on structure and flow, seeing reduced opportunities as production declines relative to stars.
