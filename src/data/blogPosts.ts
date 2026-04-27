@@ -75,7 +75,7 @@ The numbers reflect three real in-game changes:
 2. The Game Slows Down: Possessions become more deliberate. Less transition means fewer easy points, which hurts players who rely on pace.
 3. Shot Creation Becomes Everything: Late in games, offenses break down. Plays stop working cleanly. The ability to create your own shot becomes the most valuable skill on the court.
 
-The Real Divide: Closers vs System Players
+**The Real Divide: Closers vs System Players**
 The data points to a simple conclusion. There are two types of scorers:
 * Closers: Maintain elite scoring after halftime and thrive against set defenses (e.g., Mitchell, Shai, Ant, Luka).
 * System Players: Depend more on structure and flow, seeing reduced opportunities as production declines relative to stars.
