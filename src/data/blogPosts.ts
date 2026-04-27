@@ -14,42 +14,11 @@ export const blogPosts: BlogPost[] = [
     slug: "nikola-jokic-mvp-race",
     title: "Nikola Jokić Stands Alone in the MVP Race",
     excerpt: "The NBA has officially narrowed the field for the 2025–2026 MVP award. While the finalist list is a trio, the race is a solo run.",
-    content: `The NBA has officially narrowed the field for the 2025–2026 MVP award, and the names are exactly who we expected: reigning victor Shai Gilgeous-Alexander, Nikola Jokić, and the young phenomenon Victor Wembanyama.
-
-But as the dust settles on the regular season, it’s becoming increasingly clear that while the finalist list is a trio, the race is a solo run. To argue that anyone other than Nikola Jokić should take home the trophy is to ignore one of the most statistically dominant stretches in the history of professional basketball.
-
-The Wembanyama Problem
-Victor Wembanyama is a defensive marvel, and his impact on that end is undeniable. Leading the league with 3.1 blocks per game while averaging a 25/11 double-double is a historic feat for a second-year player. However, the MVP conversation requires more than defensive gravity.
-
-When you look at the offensive efficiency, the gap between Wemby and the veterans is massive. His scoring and playmaking (3.1 APG) simply don't carry the same weight as the other two candidates. Despite the highlights, his defensive rating (108.7) and defensive win shares actually trail Shai Gilgeous-Alexander. Wembanyama is a future MVP, but putting him in this specific year's conversation feels more like a nod to his potential than a reflection of his current total-game impact.
-
-The Case for Shai
-If anyone has a legitimate claim to challenge the throne, it’s Shai Gilgeous-Alexander. He has led the Oklahoma City Thunder to a historic 68–14 record—the sixth-best winning percentage in NBA history. His individual efficiency is staggering:
-
-PPG: 31.1
-FG%: 55.3%
-True Shooting: 66.5% (The 4th highest for a guard ever)
-Defensive Rating: 108.7
-
-Shai isn't just a scorer; he is the engine of a "historically great" team and arguably the best two-way guard in the league. In almost any other season, this would be a unanimous MVP win.
-
-The Statistical Immortality of Nikola Jokić
-The unfortunate reality for Shai is that Nikola Jokić is currently breaking the sport of basketball. Jokić’s 2025-26 campaign isn’t just an MVP season; it is a statistical anomaly that tests the limits of what one player can do on a court.
-
-Jokić finished the season averaging 27.7 PPG, 12.9 RPG, and 10.7 APG. He is now only the third player in history to average a triple-double over a full season, and the first player ever to lead the league in both total assists and total rebounds simultaneously.
-
-The advanced metrics are where the debate truly ends:
-
-Box Plus/Minus (BPM): 14.20 (The highest in NBA/ABA history).
-Player Efficiency Rating (PER): The 2nd highest mark ever, trailing only his own 2021 record.
-Defensive BPM: 4.08 (Ranked 12th all-time for a single season).
-
-Jokić is narrowly edging out Shai in nearly every efficiency category while being the primary rebounder and playmaker for his team. He isn't just "efficient"; he is the most effective player on both ends of the floor by almost every measurable standard.
-
-The Pedestal of Basketball Immortality
-The debate over whether Shai or Wemby belongs in the conversation misses the point. We are watching a player in his absolute prime produce a season that rivals the peaks of Jordan, LeBron, or Wilt.
-
-Jokić has effectively rendered the MVP debate a formality. This isn't about who had a great year, it’s about acknowledging that we are witnessing one of the greatest individual seasons in the history of the game. To vote otherwise isn't just a difference of opinion; it's a denial of the data right in front of us.`,
+    content: `After one of the most skilled seasons in league history, the NBA has officially released its 2025–2026 MVP finalists. Shai Gilgeous-Alexander leads the charge, with Nikola Jokić and Victor Wembanyama right behind him.
+Victor Wembanyama does not deserve to be mentioned in the same sentence as Nikola Jokić and Shai Gilgeous-Alexander. He finished the season averaging 25 ppg, 11.5 rpg, and 3.1 apg. His offensive impact is laughable compared to the other candidates. He averages fewer points and assists while being significantly less efficient. The only reason he’s in the MVP conversation is his impact on the defensive end. He averaged 3 blocks per game, which led the league. However, he has a worse defensive rating than both Shai and Jokić. He also has fewer defensive win shares than Shai. Victor’s relatively inadequate offense, combined with a defense that, while better, is not significantly better than the other MVP candidates, makes him a weak MVP candidate.
+Shai ended the season averaging 31.1 ppg, 4.3 rpg, and 6.6 apg. He did this while shooting 55.3% from the field and 38.6% from three. He had a historically efficient season, with the fourth-highest true shooting percentage among point guards of all time at 66.5%, trailing only Dave Twadrzik (1976–77) and Stephen Curry (2015–16, 2017–18). He is also the best player on a historically great team; the Thunder are 68–14, putting them at the sixth-best win percentage of any team of all time. Additionally, he is one of the best defenders in the league, with a defensive rating of 108.7, only trailing his teammate Cason Wallace.
+However, all of that pales in comparison to Nikola Jokić. Jokić is having one of the greatest individual seasons of all time. He ended the season averaging a whopping 27.7 ppg, 12.9 rpg, and 10.7 apg. He is only the third player to have ever averaged a triple-double, and this is his second time doing it in his career. In addition, he is having an incredibly efficient season, shooting 56.9% from the field, 38% from three, and 67% true shooting, narrowly edging out Shai in all but three-point percentage. He is also the first player to ever lead the league in both assists and rebounds, dominating every aspect of the game. In addition, he has the highest single-season box plus/minus in NBA/ABA history at 14.20, surpassing multiple previous marks, many of which he already held. Jokić this season also holds the second-highest player efficiency rating in a single season, only behind himself in 2021. On the other side of the court, Nikola Jokić has a 4.08 defensive box plus/minus, which, according to basketball-reference.com, ranks 12th all-time in a single season. Jokić clearly surpasses Shai in every aspect of the game, effectively ending the debate for any other candidate.
+The debate over whether Shai Gilgeous-Alexander, Victor Wembanyama, or Nikola Jokić should win MVP misses the point entirely. Jokić isn’t just having a runaway MVP season; he’s producing one of the greatest individual seasons the NBA has ever seen. The conversation shouldn’t be dragging him down to the level of the rest of the league, but rather raising him onto the pedestal of basketball immortality and testing him against the peaks of the greatest players to ever do it. To argue that anyone else should be in contention makes the MVP debate a laughingstock.`,
     date: "April 26, 2026",
     author: "Ben Jacobson",
     category: "Opinion",
