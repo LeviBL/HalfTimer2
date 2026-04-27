@@ -106,7 +106,7 @@ Logistics also differ significantly. NFL halftime includes field maintenance, si
 
 **The Super Bowl Exception**
 The Super Bowl introduces a unique exception. Halftime during the Super Bowl extends to roughly 30 minutes due to the halftime show. This creates a completely different rhythm compared to a standard NFL game. Players must manage extended downtime, which can affect performance in the second half.`,
-    date: "January 16, 2026",
+    date: "March 18, 2026",
     author: "Levi Brous-Light",
     category: "Sports Analysis",
     image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=800&auto=format&fit=crop"
@@ -130,7 +130,7 @@ Arena operations add another layer. Halftime shows, on-court entertainment, and 
 
 **The Need for Precision**
 This is where precise halftime tracking becomes essential. Modern sports consumption is built around multitasking. Fans rarely sit through a full broadcast without engaging with a second screen. Without a reliable countdown, fans either return too early and wait, or come back late and miss key moments.`,
-    date: "December 9, 2025",
+    date: "March 4, 2026",
     author: "Levi Brous-Light",
     category: "NBA",
     image: "https://images.unsplash.com/photo-1546519638-68e109498ffc?q=80&w=800&auto=format&fit=crop"
