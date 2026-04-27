@@ -13,35 +13,136 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "2026-nfl-draft-round-1-breakdown",
     title: "2026 NFL Draft - Round 1 Breakdown (With Grades)",
-    excerpt: "The 2026 NFL Draft is in the books. From the Giants' bold move at #1 to the late-round steals, we grade every major move from a wild opening night.",
-    content: `The 2026 NFL Draft will be remembered as the night the defensive identity of the league shifted. With a class top-heavy with generational defensive talent, teams didn't hesitate to pull the trigger on game-changers. Here is our breakdown and grading of the most pivotal picks from Round 1.
+    excerpt: "The 2026 NFL Draft is in the books. From the Raiders' calculated move at #1 to the late-round steals, we grade every major move from a wild opening night.",
+    content: `The 2026 NFL Draft will be remembered as a night of calculated risks and defensive dominance. Here is our full breakdown and grading of every pick from Round 1.
 
-**1. New York Giants: Arvell Reese, LB, Ohio State**
-**Grade: A+**
-The Giants didn't overthink it. Arvell Reese is the most complete defensive prospect we've seen in a decade. His sideline-to-sideline speed and elite diagnostic skills make him the perfect anchor for a Giants defense that has been searching for a true identity. Pairing him with their existing front four creates a nightmare scenario for NFC East quarterbacks. This is a foundational pick that will pay dividends for the next ten years.
-
-**2. Tennessee Titans: Arch Manning, QB, Texas**
+**1. Raiders - Fernando Mendoza (QB, Indiana)**
 **Grade: A**
-The most anticipated prospect in years finally finds his home. The Titans moved heaven and earth to ensure they were in a position to grab Manning, and for good reason. His poise, processing speed, and pedigree are unmatched. While there will be immense pressure, Tennessee has built a solid offensive line to protect their new investment.
+This is the one pick that felt inevitable. Mendoza isn’t flashy, but everything about him is controlled… accuracy, decision-making, pocket feel. Vegas didn’t overthink it. They needed a QB, and this is the only one in the class who actually looked like a long-term answer. Now the pressure shifts to the roster around him. (It’s funny how awkward his party felt even though there was no surprise as to him going #1.)
 
-**3. Las Vegas Raiders: Malaki Starks, S, Georgia**
+**2. Jets - David Bailey (EDGE, Texas Tech)**
 **Grade: B+**
-The Raiders needed a playmaker in the secondary, and they got the best one available. Starks is a ball-hawk with elite range. While some might argue for an edge rusher here, the Raiders' secondary was a sieve last season, and Starks immediately fixes their biggest weakness.
+This pick is just adding juice to an already aggressive front. The Jets didn’t need to reach for offense here, so they didn’t. Bailey fits exactly what they want to do defensively in attacking. Many were surprised that the Jets did not go with Arvell Reese here.
 
-**4. New England Patriots: Julian Sayin, QB, Ohio State**
-**Grade: B**
-The Patriots continue their search for the heir to the throne. Sayin has all the tools—arm strength, accuracy, and leadership. However, the Patriots' roster still has significant holes at wide receiver. Sayin is a great talent, but he'll need help to succeed in Foxborough.
+**3. Cardinals - Jeremiyah Love (RB, Notre Dame)**
+**Grade: B+**
+Don’t get me wrong, Love might be the best player in this draft. But this was not a need. Love is explosive and versatile, but taking a running back this high always raises questions. Arizona is betting on identity where they secure their run game first and figure the rest out later. Maybe they should have looked to Vegas last season to see how early RB went. Still, I have a hard time giving Love a low grade given how high his ceiling is.
 
-**5. Carolina Panthers: Kelvin Banks Jr., OT, Texas**
+**4. Titans - Carnell Tate (WR, Ohio State)**
+**Grade: B+**
+This pick is about helping their quarterback immediately. This pick feels a little high for me because Tate isn’t a burner, but he’s always open. Clean routes, strong hands, reliable target. This is something the Titans needed desperately all last season. Tennessee clearly wants to make life easy on their young QB, and this does that.
+
+**5. Giants - Arvell Reese (LB, Ohio State)**
 **Grade: A-**
-Protecting the quarterback is priority number one, and Banks is a brick wall. He’s a Day 1 starter at left tackle who brings a mean streak to the Panthers' run game. It’s not a flashy pick, but it’s the right one.
+Many were surprised that Arvell dropped this far, thinking that the Jets would take him at 5, but I just don’t see the fit. As Malik Nabers said on his stream with Micah Parsons, they have tons of depth with rushers taking Abdul Carter early last year. Reese is a hybrid weapon, but the Giants already have bodies in similar roles. It feels like they drafted a great player without a clear plan for him.
 
-**The Biggest Steal: Jackson Arnold, QB, Oklahoma (Pick 22 to the Rams)**
+**6. Chiefs - Mansoor Delane (CB, LSU)**
+**Grade: A-**
+Kansas City traded up with the Browns for a reason. Delane is balanced in press, zone, and has strong instincts. He fits their system immediately. This is a quiet pick but directly replaces McDuffie who was shipped to the Rams a few months ago. The reason that I give the Chiefs an A- instead of an A is that they traded up from pick 9 when Delane seemingly would have still been available.
+
+**7. Commanders - Sonny Styles (LB, Ohio State)**
+**Grade: A**
+This pick makes sense. Styles does everything from coverage to run support. Washington needed a defensive centerpiece, and they got one. Great plug-and-play pick here. Washington fans are going to love this guy. They got their Bobby Wagner replacement.
+
+**8. Saints - Jordyn Tyson (WR, Arizona State)**
+**Grade: A-**
+Big body with high upside and a very real injury history. That’s the tradeoff. If he’s healthy, this gives the Saints a legit receiving duo. If not, it’s a miss. Simple as that. I like the saints building around Sough.
+
+**9. Browns - Spencer Fano (OT, Utah)**
+**Grade: A-**
+Versatility wins here. Tackle, guard, wherever… Cleveland just needed talent up front. This is a stabilizing pick more than a flashy one. They are trying to build up some time for their young QB Sanders to hit his weapons that they secured later in Concepcion and Denzel Boston, along with Fannin and Judkins. 
+
+**10. Giants - Francis Mauigoa (OL, Miami)**
+**Grade: A**
+This is a really solid pick. They needed to fix the line, and they did. Mauigoa brings power and flexibility. Way cleaner fit than their first pick.
+
+**11. Cowboys - Caleb Downs (S, Ohio State)**
 **Grade: A+**
-Getting a talent like Arnold at 22 is highway robbery. Sean McVay now has a young, dynamic successor to sit behind Stafford for a year. Arnold’s mobility and deep-ball accuracy fit the Rams' system perfectly.
+Watching live, I was super surprised that Downs dropped out of the top 10. One of the safest players in the class. He’s smart, physical, and versatile. Not enough positive to say about this guy- absolute ball hawk.
 
-**Final Thoughts**
-The 2026 class was defined by its defensive depth and a few high-end quarterbacks who will reshape their franchises. The Giants came away as the biggest winners of the night, securing a generational talent in Reese who will be the face of their franchise for years to come.`,
+**12. Dolphins - Kadyn Proctor (OT, Alabama)**
+**Grade: B+**
+This is a projection pick. Massive upside, inconsistent tape. Miami is clearly thinking long-term here. It's a rebuilding era in Miami and this guy is the start.
+
+**13. Rams - Ty Simpson (QB, Alabama)**
+**Grade: C-**
+This feels like the clear miss of the first round. The plan is for Simpson to sit behind Stafford for a bit and develop to take over later. The Rams are in a win now position so I am completely confused why they did not get a win now player- especially with really impactful skill position players still on the board like Makai Lemon. McVay was visibly upset at the pick, but only time will tell if this was a complete disaster of a pick.
+
+**14. Ravens - Olaivavega Ioane (OG, Penn State)**
+**Grade: A**
+Classic Ravens pick. Physical, aggressive, built for their system. Not exciting, but exactly what they needed. The Ravens had terrible guard play last season, so it makes sense that they wanted to sure it up.
+
+**15. Buccaneers - Rueben Bain Jr. (EDGE, Miami)**
+**Grade: A+**
+This guy is an absolute beast. You can tell the kind of player he is going to be just by his walk down the tunnel. Already playing with a chip on his shoulder. Production and attitude are there. Arm length concerns pushed him down, but Tampa gets great value here. This could be one of the best picks of the draft.
+
+**16. Jets - Kenyon Sadiq (TE, Oregon)**
+**Grade: C+**
+I get what the Jets were thinking here, Sadiq is an awesome prospect, but he just doesn’t warrant this pick. With Geno Smith as the team's starting quarterback, there is a capped ceiling for what the Jets can do this season, but Sadiq is very talented and should be a solid pick long term. 
+
+**17. Lions - Blake Miller (OT, Clemson)**
+**Grade: B+**
+Miller started 54 games at Clemson and has proven to be steady. Detroit values reliability up front, and that’s what this is.
+
+**18. Vikings - Caleb Banks (DT, Florida)**
+**Grade: B-**
+This is a risky pick. The talent is real, but so are the injuries. Banks has hurt his foot multiple times and only played three games this season. Minnesota is betting on upside over certainty.
+
+**19. Panthers - Monroe Freeling (OT, Georgia)**
+**Grade: B+**
+A huge 6’7 frame gives Freeling a high ceiling, but he is not forced into starting immediately. This is a smart long term roster move.
+
+**20. Eagles - Makai Lemon (WR, USC)**
+**Grade: A+**
+This is a “how did he fall here” type of pick. Philly has been dealing with the whole AJ brown frenzy along with all of the Russini and Vrabel drama. This pick feels like the end of the AJ brown era. Lemon fits perfectly into what Philly does. Quick separation, tough over the middle. 2025 Biletnikoff Award winner, Lemon is a beast. The last time that Dallas traded down and the Eagles selected a first round WR it was in 2021 where Philly got Devonta Smith. 
+
+**21. Steelers - Max Iheanachor (OT, Arizona State)**
+**Grade: B+**
+The Steelers were literally on the phone with Lemon before they knew that the Eagles traded up to get him. This feels like a desperation pick but not a bad one at that. Pittsburgh needed a tackle and took a swing on upside.
+
+**22. Chargers - Akheem Mesidor (EDGE, Miami)**
+**Grade: B+**
+Age is a huge factor here, with Mesidor already being 25. Chargers needed pass rush help immediately, and this gives it to them, aside from the age this is a solid pick.
+
+**23. Cowboys - Malachi Lawrence (EDGE, UCF)**
+**Grade: A-**
+Dallas traded back and still got their guy. That’s a win. Speed rusher who fits their scheme. The last time the Cowboys traded back with the Eagles and selected an EDGE they got Micah Parsons.
+
+**24. Browns - KC Concepcion (WR, Texas A&M)**
+**Grade: A-**
+Explosive with the ball, but not flawless. Cleveland is clearly building an offense before locking in a QB long term, but this is a nice pick in trying to give Sanders some weapons.
+
+**25. Bears - Dillon Thieneman (S, Oregon)**
+**Grade: A-**
+The Bears got great value here. Thieneman is versatile, instinctive, and fills a real need. Quietly one of the better picks. Bears fans should be happy with this pick.
+
+**26. Texans - Keylan Rutledge (OG, Georgia Tech)**
+**Grade: B+**
+This guy is a nasty run blocker, but the fit is a little unclear. Still, his attitude fits Houston.
+
+**27. Dolphins - Chris Johnson (CB, San Diego State)**
+**Grade: A-**
+This is a bit of a reach, but the traits are there. Miami needed a CB1 and is betting he becomes that. His speed is impressive, running a 4.40 at the combine.
+
+**28. Patriots - Caleb Lomu (OT, Utah)**
+**Grade: B**
+Clean pass protector, still developing physically. Feels like a long-term play more than immediate help. Lomu has gone viral for his dance during the draft, but many are speculating that he might be dealt to the Eagles in return for veteran receiver AJ Brown.
+
+**29. Chiefs - Peter Woods (DT, Clemson)**
+**Grade: B+**
+With an aging line, KC is thinking ahead on the defensive line. Woods is not consistent yet, but the upside is obvious. 
+
+**30. Jets - Omar Cooper Jr. (WR, Indiana)**
+**Grade: A**
+This is a steal for New York. Dynamic, versatile, and exactly what their offense needed. One of the best value picks in the round. Again, with Geno Smith, there is only so much the Jets can do but this is a good pick.
+
+**31. Titans - Keldric Faulk (EDGE, Auburn)**
+**Grade: A-**
+Young, powerful, flexible, and electric athlete. Tennessee keeps building its defense with high-upside pieces.
+
+**32. Seahawks - Jadarian Price (RB, Notre Dame)**
+**Grade: B+**
+The second RB in Round 1 says a lot about this class. Jeremiah Love’s backup, Price is explosive, but it’s still a luxury pick. I also think that the impact of being behind Love is being underrated. Whatever the case, the reigning Super Bowl victor Seahawks replace their MVP in Kenneth Walker.`,
     date: "April 27, 2026",
     author: "Levi Brous-Light",
     category: "Opinion",
