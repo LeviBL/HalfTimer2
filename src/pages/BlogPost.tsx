@@ -9,6 +9,7 @@ import { Calendar, User, Share2, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import BlogPostCard from "@/components/BlogPostCard";
+import ReactMarkdown from "react-markdown";
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -72,7 +73,7 @@ const BlogPost: React.FC = () => {
               {post.excerpt}
             </p>
             <div className="whitespace-pre-wrap">
-              {post.content}
+              <ReactMarkdown>{post.content}</ReactMarkdown>
             </div>
           </div>
 

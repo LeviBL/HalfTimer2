@@ -16,24 +16,24 @@ export const blogPosts: BlogPost[] = [
     excerpt: "The NBA has officially narrowed the field for the 2025–2026 MVP award. While the finalist list is a trio, the race is a solo run.",
     content: `After one of the most skilled seasons in league history, the NBA has officially released its 2025–2026 MVP finalists. Shai Gilgeous-Alexander leads the charge, with Nikola Jokić and Victor Wembanyama right behind him.
 
-The Case Against Wembanyama
+**The Case Against Wembanyama**
 Victor Wembanyama does not deserve to be mentioned in the same sentence as Nikola Jokić and Shai Gilgeous-Alexander. He finished the season averaging 25 ppg, 11.5 rpg, and 3.1 apg. His offensive impact is laughable compared to the other candidates. He averages fewer points and assists while being significantly less efficient. 
 
 The only reason he’s in the MVP conversation is his impact on the defensive end. He averaged 3 blocks per game, which led the league. However, he has a worse defensive rating than both Shai and Jokić. He also has fewer defensive win shares than Shai. Victor’s relatively inadequate offense, combined with a defense that, while better, is not significantly better than the other MVP candidates, makes him a weak MVP candidate.
 
-The Brilliance of Shai Gilgeous-Alexander
+**The Brilliance of Shai Gilgeous-Alexander**
 Shai ended the season averaging 31.1 ppg, 4.3 rpg, and 6.6 apg. He did this while shooting 55.3% from the field and 38.6% from three. He had a historically efficient season, with the fourth-highest true shooting percentage among point guards of all time at 66.5%, trailing only Dave Twadrzik (1976–77) and Stephen Curry (2015–16, 2017–18). 
 
 He is also the best player on a historically great team; the Thunder are 68–14, putting them at the sixth-best win percentage of any team of all time. Additionally, he is one of the best defenders in the league, with a defensive rating of 108.7, only trailing his teammate Cason Wallace.
 
-The Statistical Immortality of Nikola Jokić
+**The Statistical Immortality of Nikola Jokić**
 However, all of that pales in comparison to Nikola Jokić. Jokić is having one of the greatest individual seasons of all time. He ended the season averaging a whopping 27.7 ppg, 12.9 rpg, and 10.7 apg. He is only the third player to have ever averaged a triple-double, and this is his second time doing it in his career. 
 
 In addition, he is having an incredibly efficient season, shooting 56.9% from the field, 38% from three, and 67% true shooting, narrowly edging out Shai in all but three-point percentage. He is also the first player to ever lead the league in both assists and rebounds, dominating every aspect of the game. 
 
 In addition, he has the highest single-season box plus/minus in NBA/ABA history at 14.20, surpassing multiple previous marks, many of which he already held. Jokić this season also holds the second-highest player efficiency rating in a single season, only behind himself in 2021. On the other side of the court, Nikola Jokić has a 4.08 defensive box plus/minus, which, according to basketball-reference.com, ranks 12th all-time in a single season. Jokić clearly surpasses Shai in every aspect of the game, effectively ending the debate for any other candidate.
 
-Conclusion: A Race of One
+**Conclusion: A Race of One**
 The debate over whether Shai Gilgeous-Alexander, Victor Wembanyama, or Nikola Jokić should win MVP misses the point entirely. Jokić isn’t just having a runaway MVP season; he’s producing one of the greatest individual seasons the NBA has ever seen. 
 
 The conversation shouldn’t be dragging him down to the level of the rest of the league, but rather raising him onto the pedestal of basketball immortality and testing him against the peaks of the greatest players to ever do it. To argue that anyone else should be in contention makes the MVP debate a laughingstock.`,
@@ -49,7 +49,7 @@ The conversation shouldn’t be dragging him down to the level of the rest of th
     content: `Halftime is supposed to reset the game. The data shows it does something else too. It separates players who can sustain scoring from those who rely on early rhythm.
 Using real second-half scoring data from StatMuse, you can clearly see which players elevate after halftime and which ones fade into the background.
 
-The Clear Pattern: The Best Players Score More Late
+**The Clear Pattern: The Best Players Score More Late**
 The most important stat is simple. The players who dominate the second half are almost always elite creators.
 According to StatMuse (2025–26 second-half scoring leaders):
 * Donovan Mitchell: 15.9 points per game in the second half
@@ -67,7 +67,7 @@ That is not random. These are all primary shot creators or offensive focal point
 They control possessions, take difficult shots, and can adjust when defenses change. That last part matters most. Halftime gives defenses time to game plan, so second-half scoring is harder. The players who still produce are the ones who can create offense without relying on structure.
 Mitchell and Shai both sitting at 15.9 is especially telling. That is essentially elite scoring output compressed into just two quarters. It means they are not just maintaining production, they are actively carrying offense late in games.
 
-What About Lower-End Players?
+**What About Lower-End Players?**
 The contrast becomes obvious when you look at players outside this tier.
 Second-half scoring drops off quickly once you move away from primary options. 
 Lets look at Deandre Ayton for example.
@@ -76,7 +76,7 @@ That gap is massive. It is not just about talent, it is about role.
 Players like Ayton depend on structure. They score off assists, offensive rebounds, and set plays. Those opportunities shrink as the game slows down and defenses tighten.
 So while stars maintain or increase scoring, role players often see a drop.
 
-Why Scoring Changes After Halftime
+**Why Scoring Changes After Halftime**
 The numbers reflect three real in-game changes.
 1. Defenses Lock In
 Coaches spend halftime adjusting coverages. If a player is scoring easily, they will see double teams, different matchups, or altered schemes in the second half.
@@ -86,7 +86,7 @@ Possessions become more deliberate. Less transition means fewer easy points, whi
 Late in games, offenses break down. Plays stop working cleanly. The ability to create your own shot becomes the most valuable skill on the court.
 That is why players like Mitchell, Shai, and Dončić stay productive. They do not depend on the system. They are the system.
 
-The Real Divide: Closers vs System Players
+**The Real Divide: Closers vs System Players**
 The data points to a simple conclusion.
 There are two types of scorers:
 Closers
@@ -99,7 +99,7 @@ System Players
 * Production declines relative to stars
 Second-half scoring is one of the clearest indicators of offensive independence.
 
-Final Takeaway
+**Final Takeaway**
 Halftime does not just split a game. It filters players.
 * The best scorers still produce when defenses adjust
 * Offensive responsibility concentrates among stars
