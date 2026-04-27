@@ -14,7 +14,7 @@ interface BlogPostCardProps {
 const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-gray-200 flex flex-col h-full group">
-      <div className="relative h-48 overflow-hidden">
+      <Link to={`/blog/${post.slug}`} className="relative h-48 overflow-hidden block">
         <img 
           src={post.image} 
           alt={post.title} 
@@ -23,7 +23,7 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
         <Badge className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-700">
           {post.category}
         </Badge>
-      </div>
+      </Link>
       <CardHeader className="p-6 pb-2">
         <div className="flex items-center gap-4 text-xs text-gray-500 mb-2">
           <span className="flex items-center gap-1">
@@ -35,9 +35,11 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
             {post.author}
           </span>
         </div>
-        <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">
-          {post.title}
-        </h3>
+        <Link to={`/blog/${post.slug}`}>
+          <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">
+            {post.title}
+          </h3>
+        </Link>
       </CardHeader>
       <CardContent className="p-6 pt-0 flex-grow">
         <p className="text-gray-600 text-sm line-clamp-3">

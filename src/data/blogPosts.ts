@@ -75,7 +75,7 @@ The numbers reflect three real in-game changes:
 2. The Game Slows Down: Possessions become more deliberate. Less transition means fewer easy points, which hurts players who rely on pace.
 3. Shot Creation Becomes Everything: Late in games, offenses break down. Plays stop working cleanly. The ability to create your own shot becomes the most valuable skill on the court.
 
-**The Real Divide: Closers vs System Players**
+The Real Divide: Closers vs System Players
 The data points to a simple conclusion. There are two types of scorers:
 * Closers: Maintain elite scoring after halftime and thrive against set defenses (e.g., Mitchell, Shai, Ant, Luka).
 * System Players: Depend more on structure and flow, seeing reduced opportunities as production declines relative to stars.
@@ -86,81 +86,6 @@ Halftime does not just split a game. It filters players. The best scorers still 
     author: "Levi Brous-Light",
     category: "NBA",
     image: "/blog/nba-fade.jpg"
-  },
-  {
-    slug: "rise-of-second-screen-viewing",
-    title: "The Rise of Second-Screen Sports Viewing and Why Timing Tools Matter",
-    excerpt: "Sports viewing is no longer a single-screen experience. Discover why precise timing is the key to balancing multiple streams of information.",
-    content: `Sports viewing has changed dramatically in the past decade. The traditional model of watching a single game without distraction is no longer the norm. Today, fans engage with multiple screens at once.
-
-This behavior is known as second-screen viewing. While the main game plays on a TV or stream, fans use their phones or computers to check stats, browse social media, or follow other games. This creates a more interactive but also more complex experience.
-
-**The Peak of Activity**
-Halftime is the peak of second-screen activity. With the game paused, fans shift their attention elsewhere. They might check fantasy scores, watch highlights, or place live bets. The challenge is knowing when to shift back.
-
-Without accurate timing, this becomes a guessing game. Fans either interrupt their second-screen activity too early or stay away too long and miss key moments.
-
-**The Solution**
-Timing tools solve this problem by providing real time updates. Instead of relying on assumptions, fans can see exactly when halftime is ending. This allows for better coordination between screens.
-
-The impact is significant. Fans stay more engaged because they do not miss important plays. They also use their time more efficiently during breaks.
-
-**A Digital Shift**
-This trend is especially relevant for younger audiences. Digital natives expect seamless integration between platforms. They want tools that enhance their experience rather than disrupt it.
-
-From a broader perspective, timing tools are part of a larger shift toward data driven sports consumption. Fans are no longer passive viewers. They are active participants who want control and precision.`,
-    date: "April 7, 2026",
-    author: "Levi Brous-Light",
-    category: "Sports Tech",
-    image: "https://images.unsplash.com/photo-1511886929837-354d827aae26?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    slug: "why-halftime-timing-is-broken",
-    title: "Why Halftime Timing Is Broken and How Real-Time Tracking Fixes It",
-    excerpt: "Halftime should be simple, but broadcast requirements and arena logistics make it unpredictable. We explore how real-time data solves the guessing game.",
-    content: `Halftime should be simple. The game stops, a clock runs, and the game resumes. In reality, halftime timing is inconsistent across nearly every major sport.
-
-**The Root of the Problem**
-The issue starts with official rules versus actual execution. Leagues publish fixed halftime durations, but broadcasts, timeouts, and arena events often extend or alter those windows. Fans are left guessing when the game will actually resume.
-
-Television is a major driver of this inconsistency. Networks insert commercials, analysis segments, and sponsor content into halftime. These additions are not always synchronized with the official clock. As a result, the real halftime duration becomes unpredictable.
-
-**Arena Logistics**
-In arena settings, halftime entertainment adds another layer. Performances, contests, and promotional events vary in length. Some run on schedule, while others extend beyond the planned window.
-
-For fans, this creates a fragmented experience. You either return too early and wait through filler content, or come back late and miss the start of the second half. Neither outcome is ideal.
-
-**The Real-Time Fix**
-Real time tracking addresses this problem directly. Instead of relying on static estimates, it uses live data to reflect the actual state of the game. This allows fans to see exactly how much time remains before play resumes.
-
-The advantage is precision. You are no longer dependent on guesswork. Whether you are watching from home or following multiple games, you can align your schedule with the actual flow of the event.`,
-    date: "March 3, 2026",
-    author: "Levi Brous-Light",
-    category: "Sports Tech",
-    image: "https://images.unsplash.com/photo-1501139083538-0139583c060f?q=80&w=800&auto=format&fit=crop"
-  },
-  {
-    slug: "guide-to-managing-game-intermissions",
-    title: "How to Never Miss a Tip-Off: A Guide to Managing Game Intermissions",
-    excerpt: "Modern sports fans are multitaskers. Learn how to manage your time during breaks without missing the most important moments of the game.",
-    content: `Modern sports fans do not watch games the way they used to. Watching a game now often means multitasking. You might be checking stats, replying to messages, or switching between multiple games. Halftime is the moment where that multitasking peaks.
-
-**The Uncertainty Gap**
-The problem is simple. Halftime is not as predictable as it seems. While leagues publish official durations, actual timing varies due to broadcasts, reviews, and in-game events. This creates a gap between expectation and reality.
-
-Many fans rely on rough estimates. They assume halftime will last about 15 minutes and set a mental timer. This approach works sometimes, but it often leads to missed plays or unnecessary waiting.
-
-**The Risk of Missing Out**
-The risk is missing the start of the third quarter. In basketball, this is one of the most important segments of the game. Teams come out with adjustments, and momentum can shift quickly. Missing even a minute can mean missing a scoring run or a key defensive change.
-
-**A Better Approach**
-A better approach is using real time halftime tracking. Instead of guessing, fans can rely on live countdowns that adjust based on actual game conditions. This removes uncertainty and allows for more efficient use of time.
-
-For example, instead of sitting through commercials, you can step away with confidence. Grab food, check another game, or take a break without worrying about missing action. When the countdown hits zero, you know the game is about to resume.`,
-    date: "January 28, 2026",
-    author: "Levi Brous-Light",
-    category: "Sports Analysis",
-    image: "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?q=80&w=800&auto=format&fit=crop"
   },
   {
     slug: "nfl-vs-nba-halftime-comparison",
