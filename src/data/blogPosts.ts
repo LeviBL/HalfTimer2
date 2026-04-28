@@ -162,7 +162,7 @@ The key to Minnesota closing out this series has nothing to do with star power a
     date: "April 26, 2026",
     author: "Ben Jacobson",
     category: "NBA",
-    image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=800&auto=format&fit=crop"
+    image: "/blog/wolves-injuries.webp"
   },
   {
     slug: "nikola-jokic-mvp-race",
@@ -191,7 +191,7 @@ In addition, he has the highest single-season box plus/minus in NBA/ABA history 
 The debate over whether Shai Gilgeous-Alexander, Victor Wembanyama, or Nikola Jokić should win MVP misses the point entirely. Jokić isn’t just having a runaway MVP season; he’s producing one of the greatest individual seasons the NBA has ever seen. 
 
 The conversation shouldn’t be dragging him down to the level of the rest of the league, but rather raising him onto the pedestal of basketball immortality and testing him against the peaks of the greatest players to ever do it. To argue that anyone else should be in contention makes the MVP debate a laughingstock.`,
-    date: "April 26, 2026",
+    date: "April 23, 2026",
     author: "Ben Jacobson",
     category: "Opinion",
     image: "/blog/jokic-mvp.jpg"
