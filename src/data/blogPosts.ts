@@ -149,6 +149,22 @@ The second RB in Round 1 says a lot about this class. Jeremiah Love’s backup, 
     image: "/blog/nfl-draft-2026.jpg"
   },
   {
+    slug: "wolves-one-win-away-injuries",
+    title: "Wolves One Win Away After Tough Injuries",
+    excerpt: "The Timberwolves are on the brink of advancing, but injuries to Anthony Edwards and Donte DiVincenzo have cast a shadow over their series lead.",
+    content: `During the Timberwolves’ commanding victory over the Nuggets to put them up 3-1 in the series, both Donte DiVincenzo and Anthony Edwards went down with injuries. Donte has been confirmed to have torn his Achilles tendon and will be out for the rest of the playoffs. Anthony Edwards hyperextended his left knee and will most likely miss the rest of this series and some of the next series. Both Anthony and Donte were key players for the Timberwolves, so what do their injuries mean for the rest of the series?
+
+The Timberwolves' key to success has not come from Edwards or Divincenzo, but rather Rudy Gobert and the depth of the rest of the team, mainly the bench. Rudy has held the best player in the world, Nikola Jokic, to 29% from the field in one-on-one matchups. Against the entire team, Jokic is still struggling, shooting 39.1% from the field and 18.5% from three. This regular season, Nikola Jokic has a 1-3 record when he shoots under 40% from the field. Gobert has completely shut down the engine of the Nuggets’ offense. In addition to shutting down the Nuggets' first option, the Timberwolves are making the life of Jamal Murray just as difficult. This series, he is shooting 37% from the field and 27% from three. The two stars combined are shooting 38% on 45 shots per game, only making 16.8 of them. The only other offensive threat that the Nuggets have is Aaron Gordon. However, he has been hurt in this series, missing game three, and has been ruled out for game 5. The injuries reflect in the games he's played, too. He is averaging 11 points on 40% from the field and 21% from three.
+
+In the first game of the series, the Timberwolves lost. In that game, the Timberwolves bench recorded 22 points, five rebounds, and five assists. In their 3 wins following that game, the bench averaged 47.3 points, 15 rebounds, and 12.3 assists. The Timberwolves being able to maintain a constant rotation of guys who can get on the court and be a problem for Denver allows Minnesota to lose its best offensive player and still be able to score at a proficient rate. Losing Anthony Edwards and Donte DiVincenzo will certainly make it harder. Still, as long as the bench keeps doing what they’ve been doing, the Wolves will be able to go 1-2 in the next 3 at the very worst, closing out the series and advancing to the next round.
+
+The key to Minnesota closing out this series has nothing to do with star power and hasn’t all series long. All the Wolves need to do is continue to grind on defense, giving nothing up easily, and for the bench to continue to step up the way that they have.`,
+    date: "April 26, 2026",
+    author: "Ben Jacobson",
+    category: "NBA",
+    image: "https://images.unsplash.com/photo-1504450758481-7338eba7524a?q=80&w=800&auto=format&fit=crop"
+  },
+  {
     slug: "nikola-jokic-mvp-race",
     title: "Nikola Jokić Stands Alone in the MVP Race",
     excerpt: "The NBA has officially narrowed the field for the 2025–2026 MVP award. While the finalist list is a trio, the race is a solo run.",
