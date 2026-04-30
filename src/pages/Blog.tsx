@@ -28,7 +28,7 @@ const Blog: React.FC = () => {
               <p className="text-lg text-gray-500 font-medium mt-2">
                 Deep dives into sports timing, analytics, and the fan experience.
               </p>
-              <p className="text-sm text-blue-600 font-semibold mt-1">
+              <p className="text-sm text-gray-500 font-semibold mt-1">
                 Get a quick read in while you wait for your game to come back
               </p>
             </div>
