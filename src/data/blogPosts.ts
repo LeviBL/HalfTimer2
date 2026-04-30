@@ -11,6 +11,52 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "can-76ers-comeback-3-1",
+    title: "Can the 76ers come back down 3-1?",
+    excerpt: "Two nights ago, that question felt dead. Down 3-1, blown out in Game 4, and with a bad shooting night, the Philadelphia 76ers looked finished. But Game 5 flipped the tone.",
+    content: `Two nights ago, that question felt dead. Down 3-1, blown out in Game 4, and with a bad shooting night, the Philadelphia 76ers looked finished.
+Call me a delusional Philly fan, but in my eyes this series is real again. And the shift is a man by the name of Joelle Embiid. 
+
+Game 5 flipped the tone of the series. The Sixers went into Boston and won 113-97, cutting the series to 3-2.  
+Embiid was the story… again. 
+33 points, 8 assists
+Dominant second half control
+Playing just 19 days after an emergency appendectomy  
+
+He’s a warrior. He continued to prove time and time again that when healthy, (and that’s a big when), he is one of the best in the world. His return timeline is absurd for an NBA player, especially in the playoffs. And you could see the difference. In Game 4, he was productive but clearly limited. In Game 5, he dictated the game.
+
+When Embiid aggressive, everything opens:
+Tyrese Maxey gets downhill (25 points, 10 rebounds in Game 5)  
+The offense runs through the post instead of isolation
+Boston’s defense has to collapse instead of staying home.. 
+
+The bigger story might actually be Boston. The Boston Celtics’ offense failed in game 5:
+They were outscored 28-11 in the 4th quarter  
+Shot 3-for-22 in that quarter  
+Missed their final 14 shots
+
+In my eyes one of their biggest issues is Derrick White. He’s been a major piece all year, but in this series he is 7-for-33 from three. Boston’s offense depends on spacing and secondary scoring. When White isn’t hitting, it compresses everything for Jayson Tatum and Jaylen Brown. 
+
+So… can Philly actually complete the comeback? In my eyes yes, but it’s still unlikely.
+Here’s what has to happen for the 76ers:
+
+1. **Embiid has to hold up physically**
+This is the entire series. If Embiid looks like Game 5 Embiid, Philly has a real chance. If he gets injured again or slows down a bit, Boston probably closes it.
+
+2. **Maxey has to stay aggressive**
+Boston will adjust to Embiid. Maxey is the pressure release. If he keeps attacking, the Celtics can’t load up. Maxey has a tendency to disappear at times in big games but they need him to step up. 
+
+3. **Role players must hit enough shots**
+Game 4 showed that Embiid alone isn’t enough. They need contributions across the board. Shoutout Grimes for a strong shooting night in game 5- they need him to step up again in the coming games.
+
+The 76ers have never come back down 3-1 before and the Celtics have never lost a series up 3-1 before. This would be a historic comeback- but something is in the air. 
+Game 6 in Philadelphia is the swing game. If the Sixers win, the pressure completely flips and the Sixers walk into game 7 with huge momentum.`,
+    date: "April 29, 2026",
+    author: "Levi Brous-Light",
+    category: "NBA",
+    image: "/blog/76ers-comeback.webp"
+  },
+  {
     slug: "2026-nfl-draft-round-1-breakdown",
     title: "2026 NFL Draft - Round 1 Breakdown (With Grades)",
     excerpt: "The 2026 NFL Draft is in the books. From the Raiders' calculated move at #1 to the late-round steals, we grade every major move from a wild opening night.",
