@@ -30,10 +30,14 @@ const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
             <Calendar className="h-3 w-3" />
             {post.date}
           </span>
-          <span className="flex items-center gap-1">
+          <Link 
+            to={`/blog/author/${post.author}`}
+            className="flex items-center gap-1 hover:text-blue-600 transition-colors relative z-10"
+            onClick={(e) => e.stopPropagation()}
+          >
             <User className="h-3 w-3" />
             {post.author}
-          </span>
+          </Link>
         </div>
         <Link to={`/blog/${post.slug}`}>
           <h3 className="text-xl font-bold text-gray-900 leading-tight group-hover:text-blue-600 transition-colors">

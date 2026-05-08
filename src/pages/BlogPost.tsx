@@ -59,9 +59,12 @@ const BlogPost: React.FC = () => {
                 <span className="flex items-center gap-2">
                   <Calendar className="h-4 w-4" /> {post.date}
                 </span>
-                <span className="flex items-center gap-2">
+                <Link 
+                  to={`/blog/author/${post.author}`}
+                  className="flex items-center gap-2 hover:text-blue-300 transition-colors"
+                >
                   <User className="h-4 w-4" /> {post.author}
-                </span>
+                </Link>
               </div>
             </div>
           </div>
