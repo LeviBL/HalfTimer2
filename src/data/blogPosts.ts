@@ -11,6 +11,50 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "nba-round-two-predictions",
+    title: "NBA Round Two Predictions",
+    excerpt: "The second round of the NBA playoffs is here. We break down the key matchups and predict who will advance to the Conference Finals.",
+    content: `### Cavaliers vs. Pistons
+The first two games of this series have been surprisingly one-sided, with Detroit taking both by double digits. Cleveland’s offense has looked completely out of rhythm, and the backcourt has not produced enough to keep up with Detroit’s physicality and pace. James Harden has struggled badly through two games, averaging more turnovers (5.5) than made field goals (4.5), and the Cavaliers as a whole have had trouble generating clean looks.
+
+Detroit deserves credit defensively too. The Pistons have pressured the ball, forced mistakes, and controlled the tempo for most of the series. Ausar Thompson has been a beast on the defensive side of the ball. Cade Cunningham has looked comfortable running the offense, and Detroit is finally playing like a one seed.
+
+The series shifting to Cleveland helps, but it is hard to trust the Cavaliers right now unless they show they can respond physically. Detroit just looks better.
+
+**Pistons in six.**
+
+### Lakers vs. Thunder
+This series has gone exactly how most people expected. Oklahoma City has simply been too deep, too athletic, and too consistent for Los Angeles to handle. Even with LeBron still playing at an incredibly high level, the Lakers have not been able to keep up with the Thunder’s pace or perimeter shooting.
+
+The absence of Luka has completely changed the ceiling of this team offensively. Too much of the burden has fallen on a 41 year old LeBron to create everything, and it is just not working. Probable MVP Shai Gilgeous-Alexander has controlled the series, and the Thunder role players have outplayed LA’s supporting cast in nearly every area. It certainly hasn’t helped that Austin Reaves has had a historically bad shooting start to the series.
+
+The Lakers have had stretches where they compete, but Oklahoma City always seems to respond with another run. Unless something dramatic changes, this series feels close to over already.
+
+**Thunder in four.**
+
+### Knicks vs. 76ers
+The scores in this series honestly do not tell the full story. Philadelphia has not played nearly as badly as the results suggest, especially offensively. In game one, the 76ers lost by 39 despite shooting well from deep and getting solid minutes from Joel Embiid in his return. The problem was that New York had one of those nights where everything fell. The Knicks shot over 60% from the field and over 50% from three. The 76ers were just a few days removed from an exhausting game seven victory over the Celtics, and the lack of energy showed in game one.
+
+Game two was far more competitive. With no Embiid, Philadelphia played better defense and kept the game within reach late, but the Knicks still looked like the more composed team down the stretch. Jalen Brunson has controlled the tempo of the series, and without Embiid the 76ers have no match for Karl Anthony-Towns.
+
+Heading home should help the 76ers, especially if Embiid’s conditioning improves as the series goes on. Still, the Knicks look deeper, more experienced, and more reliable in late-game situations. Philadelphia probably grabs a couple games at home, but New York still feels like the safer pick.
+
+**Knicks in seven.**
+
+### Timberwolves vs. Spurs
+This has easily been the most entertaining series of the opening round so far. 
+
+Anthony Edwards’ health is the biggest storyline for Minnesota. In game one, he came off the bench, only playing 25 minutes, and still made a huge impact, helping the Timberwolves steal a road win. In game two, though, he was a game-time decision, ended up playing, and clearly did not look fully comfortable. As a result Minnesota struggled badly. He needs to be good to go for the rest of the series to give the Wolves a fighting chance. 
+
+For the Spurs, it comes down to Wembanyama's motor on the offensive end. In their game one loss, Wemby took eight threes, not making a single one, and only nine two-pointers, making five of them. According to NBA.com, Wemby only got four paint touches in that game. For the Spurs to win this series, Victor needs to match the level of physicality coming from Minnesota's defense and stop being forced to settle for perimeter shots. However, Rudy Gobert, Julius Randle, and Jaden McDaniels will make that very difficult. 
+
+**Minnesota in seven.**`,
+    date: "May 8, 2026",
+    author: "Ben Jacobson",
+    category: "NBA",
+    image: "/blog/nba-round-2-predictions.jpg"
+  },
+  {
     slug: "can-76ers-comeback-3-1",
     title: "Can the 76ers come back down 3-1?",
     excerpt: "Two nights ago, that question felt dead. Down 3-1, blown out in Game 4, and with a bad shooting night, the Philadelphia 76ers looked finished. But Game 5 flipped the tone.",
@@ -92,7 +136,7 @@ This pick makes sense. Styles does everything from coverage to run support. Wash
 
 **8. Saints - Jordyn Tyson (WR, Arizona State)**
 **Grade: A-**
-Big body with high upside and a very real injury history. That’s the tradeoff. If he’s healthy, this gives the Saints a legit receiving duo. If not, it’s a miss. Simple as that. I like the saints building around Sough.
+Big body with high upside and a very real injury history. That’s the tradeoff. If he’s healthy, this gives the Saints a legit receiving duo. If not, it’s a miss. Simple as that. I like the saints around Sough.
 
 **9. Browns - Spencer Fano (OT, Utah)**
 **Grade: A-**
