@@ -9,6 +9,7 @@ import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import { Helmet } from "react-helmet-async";
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
@@ -108,7 +109,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     return new Set();
   });
 
-  // Sync activeSport state when defaultSport prop changes (e.g., via URL navigation)
   useEffect(() => {
     setActiveSport(defaultSport);
   }, [defaultSport]);
@@ -255,7 +255,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   const standardViewGames = useMemo(() => {
     return sortedGames.filter(game => {
       if (activeSport === 'ncaa') {
-        // Hide all games for NCAA as the season is over
         return false;
       }
       return true;
@@ -269,6 +268,11 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
+      <Helmet>
+        <title>HalfTimer | Live {activeSport.toUpperCase()} Halftime Countdown</title>
+        <meta name="description" content={`Live ${activeSport.toUpperCase()} halftime countdown to track every game and optimize your viewing. Skip the ads and never miss the second half.`} />
+      </Helmet>
+      
       <MobileNavMenu />
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
       <p className="text-lg text-gray-700 text-center mb-6">
