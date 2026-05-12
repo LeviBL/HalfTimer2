@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import BlogPostCard from "@/components/BlogPostCard";
 import ReactMarkdown from "react-markdown";
-import { Helmet } from "react-helmet-async";
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -34,16 +33,6 @@ const BlogPost: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
-      <Helmet>
-        <title>{post.title} | The Halftimer Journal</title>
-        <meta name="description" content={post.excerpt} />
-        <meta property="og:title" content={post.title} />
-        <meta property="og:description" content={post.excerpt} />
-        <meta property="og:image" content={post.image} />
-        <meta property="og:type" content="article" />
-        <link rel="canonical" href={`https://thehalftimer.com/blog/${post.slug}`} />
-      </Helmet>
-      
       <MobileNavMenu />
       
       <div className="max-w-3xl w-full mx-auto mb-4 flex justify-start">
