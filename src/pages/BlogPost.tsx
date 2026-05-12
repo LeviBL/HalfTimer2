@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import BlogPostCard from "@/components/BlogPostCard";
 import ReactMarkdown from "react-markdown";
+import SEO from "@/components/SEO";
 
 const BlogPost: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -31,8 +32,23 @@ const BlogPost: React.FC = () => {
     blogPosts[(currentIndex + 2) % blogPosts.length],
   ];
 
+  // Create a snippet for the meta description (approx 160 chars)
+  const metaDescription = post.excerpt.length > 160 
+    ? post.excerpt.substring(0, 157) + "..." 
+    : post.excerpt;
+
+  const canonicalUrl = `https://thehalftimer.com/blog/${post.slug}`;
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
+      <SEO 
+        title={post.title}
+        description={metaDescription}
+        canonicalUrl={canonicalUrl}
+        articleContent={post.content}
+        type="article"
+      />
+      
       <MobileNavMenu />
       
       <div className="max-w-3xl w-full mx-auto mb-4 flex justify-start">

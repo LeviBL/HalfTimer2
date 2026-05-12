@@ -9,6 +9,7 @@ import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
+import SEO from "@/components/SEO";
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
@@ -267,8 +268,28 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     return () => clearInterval(intervalId);
   }, [activeSport]);
 
+  const pageDescription = activeSport === 'nba' 
+    ? "Live NBA halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
+    : activeSport === 'nfl'
+    ? "Live NFL halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
+    : "Live March Madness halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half.";
+
+  const canonicalUrl = activeSport === 'nba' 
+    ? "https://thehalftimer.com/nba"
+    : activeSport === 'nfl'
+    ? "https://thehalftimer.com/nfl"
+    : activeSport === 'ncaa'
+    ? "https://thehalftimer.com/march-madness-halftime-timer"
+    : "https://thehalftimer.com/";
+
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
+      <SEO 
+        title={activeSport.toUpperCase() + " Halftime Timer"}
+        description={pageDescription}
+        canonicalUrl={canonicalUrl}
+      />
+      
       <MobileNavMenu />
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
       <p className="text-lg text-gray-700 text-center mb-6">
