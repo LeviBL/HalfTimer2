@@ -37,20 +37,27 @@ async function generate() {
         <p><strong>Author:</strong> ${post.author}</p>
         <p><strong>Date:</strong> ${post.date}</p>
         <p><strong>Category:</strong> ${post.category}</p>
-        <div className="content">
-          ${post.content.split('\n').map(p => `<p>${p}</p>`).join('')}
+        <div class="content">
+          ${post.content.split('\n').map(p => `<p>${p.trim()}</p>`).filter(p => p !== '<p></p>').join('')}
         </div>
       </article>
     </noscript>
     `;
 
-    // Inject metadata and content into the template
-    let html = template
-      .replace(/<title>.*?<\/title>/, `<title>${post.title} | The Halftimer</title>`)
-      // Replace or inject meta description
-      .replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${description}" />`)
-      // Inject the noscript content after the root div
-      .replace('<div id="root"></div>', `<div id="root"></div>${noscriptContent}`);
+    let html = template;
+
+    // Replace Title - using a more robust regex
+    html = html.replace(/<title>.*?<\/title>/, `<title>${post.title} | The Halftimer</title>`);
+
+    // Replace Description - using a more robust regex
+    html = html.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${description}" />`);
+
+    // Inject Noscript content after the root div
+    if (html.includes('<div id="root"></div>')) {
+      html = html.replace('<div id="root"></div>', `<div id="root"></div>${noscriptContent}`);
+    } else {
+      console.warn(`Warning: Could not find <div id="root"></div> in template for ${post.slug}`);
+    }
 
     // Handle Canonical URL
     const canonicalUrl = `https://thehalftimer.com/blog/${post.slug}`;
