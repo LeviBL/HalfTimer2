@@ -286,7 +286,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <SEO 
-        title={activeSport.toUpperCase() + " Halftime Timer"}
+        title="HalfTimer"
         description={pageDescription}
         canonicalUrl={canonicalUrl}
       />

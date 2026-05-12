@@ -18,8 +18,9 @@ const SEO: React.FC<SEOProps> = ({
   articleContent,
   type = "website" 
 }) => {
-  const siteTitle = "The Halftimer";
-  const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
+  const siteTitle = "HalfTimer";
+  // If the title is exactly "HalfTimer", we don't want to show "HalfTimer | HalfTimer"
+  const fullTitle = title === siteTitle ? siteTitle : `${title} | ${siteTitle}`;
 
   return (
     <Helmet>
