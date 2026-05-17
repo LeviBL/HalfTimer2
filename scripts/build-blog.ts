@@ -36,9 +36,11 @@ async function run() {
     </noscript>
   `;
 
-  // Inject the content into the placeholder
-  if (html.includes('<div id="seo-content-placeholder"></div>')) {
-    html = html.replace('<div id="seo-content-placeholder"></div>', seoContent);
+  // Inject the content into the placeholder - using a regex to match the div even with styles/attributes
+  const placeholderRegex = /<div id="seo-content-placeholder"[^>]*><\/div>/;
+  
+  if (placeholderRegex.test(html)) {
+    html = html.replace(placeholderRegex, seoContent);
     console.log('✅ Successfully injected blog content into index.html');
   } else {
     console.warn('⚠️ Warning: Could not find seo-content-placeholder in index.html');
