@@ -14,9 +14,7 @@ export const blogPosts: BlogPost[] = [
     slug: "lebron-james-uncertain-future",
     title: "What The Future Holds for Lebron",
     excerpt: "For nearly two decades, LeBron James has been the face of the NBA. But now, for the first time in his career, his future feels genuinely uncertain.",
-    content: `For nearly two decades, LeBron James has been the face of the NBA. But now, for the first time in his career, his future feels genuinely uncertain.
-
-At 41 years old, LeBron is still performing at an elite level, with season averages this year of 21 pts, 6 rbs, and 7 ast per game- really impressive numbers. These stats are impossible to comprehend considering the mileage on his body and the expectations placed on him since high school. Most players his age are long retired. Every #1 pick from 2004-2013 has retired. Despite this, LeBron is still expected to compete for championships. This season leading the Lakers to a first round win over the Rockets, and eventually falling to the juggernaut Thuner, questions about what comes next feel louder than ever.
+    content: `At 41 years old, LeBron is still performing at an elite level, with season averages this year of 21 pts, 6 rbs, and 7 ast per game- really impressive numbers. These stats are impossible to comprehend considering the mileage on his body and the expectations placed on him since high school. Most players his age are long retired. Every #1 pick from 2004-2013 has retired. Despite this, LeBron is still expected to compete for championships. This season leading the Lakers to a first round win over the Rockets, and eventually falling to the juggernaut Thuner, questions about what comes next feel louder than ever.
 
 In my eyes the most likely outcome is that LeBron stays in Los Angeles. His family is settled there, and the Lakers still offer the biggest spotlight in basketball. Even with big flaws on the roster, the organization should still try to build around him as long as he is willing to play. Staying with the Lakers would allow LeBron to continue chasing one final championship without completely uprooting his life late in his career.
 
