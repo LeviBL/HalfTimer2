@@ -11,6 +11,40 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "lebron-james-uncertain-future",
+    title: "LeBron James: The Uncertain Future of a Legend",
+    excerpt: "For nearly two decades, LeBron James has been the face of the NBA. But now, for the first time in his career, his future feels genuinely uncertain.",
+    content: `For nearly two decades, LeBron James has been the face of the NBA. But now, for the first time in his career, his future feels genuinely uncertain.
+
+For nearly two decades, LeBron James has been the face of the NBA. From Cleveland to Miami, back to Cleveland, and eventually Los Angeles, LeBron has shaped eras. But now, for the first time in his career, his future feels genuinely uncertain.
+
+At 41 years old, LeBron is still performing at an elite level, with season averages this year of 21 pts, 6 rbs, and 7 ast per game- really impressive numbers. These stats are impossible to comprehend considering the mileage on his body and the expectations placed on him since high school. Most players his age are long retired. Every #1 pick from 2004-2013 has retired. Despite this, LeBron is still expected to compete for championships. This season leading the Lakers to a first round win over the Rockets, and eventually falling to the juggernaut Thuner, questions about what comes next feel louder than ever.
+
+In my eyes the most likely outcome is that LeBron stays in Los Angeles. His family is settled there, and the Lakers still offer the biggest spotlight in basketball. Even with big flaws on the roster, the organization should still try to build around him as long as he is willing to play. Staying with the Lakers would allow LeBron to continue chasing one final championship without completely uprooting his life late in his career.
+
+Still, there is a growing sense that the Lakers may no longer be true contenders. The Western Conference keeps getting younger, faster, and deeper, while Los Angeles has struggled to build a team around LeBron. At some point, questions about if LA is the place to be arise.
+
+That is where the possibility of another team becomes interesting.
+
+The most fascinating fit may be the Golden State Warriors. Watching LeBron alongside Stephen Curry has always felt like a basketball fantasy, but the idea no longer seems that far fetched. Their Olympic chemistry reminded fans how dangerous two all-time great players could be together. Even at this stage of their careers, pairing Curry’s shooting with LeBron’s playmaking would instantly create one of the smartest offenses in NBA history.
+
+Another possibility is a return to the Cleveland Cavaliers. A final season in Cleveland would bring LeBron’s career full circle. The Cavaliers already have a good core, and bringing back the player who delivered the city its first championship would create a very emotional stories. Cleveland is tied 2-2 in the second round against Detriot right now, and they have an actual shot at making a run. If LeBron wants one final meaningful chapter without making it feel like a retirement tour, Cleveland may make the most sense.
+
+Then there is the surprise option: the New York Knicks or another random team. It sounds unlikely, but I wouldn’t completely rule it out.
+
+Of course, retirement remains the possibility that nobody wants to accept.
+
+LeBron has repeatedly said he does not want a long farewell tour. Unlike many legends before him, he may prefer to walk away quietly rather than spend an entire season celebrating the end. It would shock the sports world if LeBron suddenly announced his retirement, but at the same time, what does he really have left to prove?
+
+He already owns the all-time scoring record. He has won championships with multiple franchises. He is on almost every all time list. He became one of the greatest athletes in sports history while also building a billion-dollar brand off the court. Most importantly, he already accomplished one of his final personal goals by sharing the NBA stage with his son, Bronny.
+
+The safest prediction is still another season in Los Angeles. But for the first time in years, LeBron’s future does not feel planned out. It feels open. Whether he stays with the Lakers, chases one final ring elsewhere, or disappears into retirement without warning, the NBA is approaching the end of one of the greatest careers sports has ever seen.`,
+    date: "May 13, 2026",
+    author: "Levi Brous-Light",
+    category: "NBA",
+    image: "/blog/lebron-future.jpg"
+  },
+  {
     slug: "can-76ers-comeback-3-1",
     title: "Can the 76ers come back down 3-1?",
     excerpt: "Two nights ago, that question felt dead. Down 3-1, blown out in Game 4, and with a bad shooting night, the Philadelphia 76ers looked finished. But Game 5 flipped the tone.",
