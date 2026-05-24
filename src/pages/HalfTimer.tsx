@@ -96,6 +96,105 @@ interface HalfTimerProps {
 const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   const [activeSport, setActiveSport] = useState<'nfl' | 'nba' | 'ncaa'>(defaultSport);
   const [games, setGames] = useState<Game[]>([]);
+  const [loading, setLoading] = useState<dyad-write path="src/pages/HalfTimer.tsx" description="Updating the NFL season message text and completing the file.">
+"use client";
+
+import React, { useState, useEffect, useMemo } from "react";
+import GameCard from "@/components/GameCard";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
+import MobileNavMenu from "@/components/MobileNavMenu";
+import Footer from "@/components/Footer";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import SEO from "@/components/SEO";
+
+const API_ENDPOINTS = {
+  nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+  nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
+  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100&seasontype=3&limit=100&dates=20260317-20260407"
+};
+
+const REFRESH_INTERVAL = 20 * 1000;
+const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
+
+interface TeamData {
+  displayName: string;
+  logo: string;
+  score: string;
+  seed?: string;
+}
+
+interface CompetitionData {
+  id: string;
+  date: string;
+  bracketPosition?: number;
+  status: {
+    type: {
+      description: string;
+      state: "pre" | "in" | "post";
+      detail: string;
+      shortDetail: string;
+    };
+  };
+  competitors: Array<{
+    homeAway: "home" | "away";
+    score: string;
+    curatedRank?: { current: number };
+    seed?: string;
+    team: {
+      displayName: string;
+      logo: string;
+    };
+  }>;
+  notes?: Array<{ text: string }>;
+}
+
+interface EventData {
+  id: string;
+  name: string;
+  shortName: string;
+  date: string;
+  status: {
+    type: {
+      description: string;
+      state: "pre" | "in" | "post";
+      detail: string;
+      shortDetail: string;
+    };
+  };
+  competitions: CompetitionData[];
+}
+
+export interface Game {
+  id: string;
+  name: string;
+  shortName: string;
+  date: string;
+  status: {
+    type: {
+      description: string;
+      state: "pre" | "in" | "post";
+      detail?: string;
+      shortDetail?: string;
+    };
+  };
+  competitors: {
+    home: TeamData;
+    away: TeamData;
+  };
+  round?: number;
+  bracketPosition?: number;
+}
+
+interface HalfTimerProps {
+  defaultSport?: 'nfl' | 'nba' | 'ncaa';
+}
+
+const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
+  const [activeSport, setActiveSport] = useState<'nfl' | 'nba' | 'ncaa'>(defaultSport);
+  const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -309,7 +408,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       {activeSport === 'nfl' && (
         <div className="w-full max-w-[600px] mb-8 p-6 bg-blue-50 border border-blue-200 rounded-xl text-center shadow-sm">
           <p className="text-xl font-semibold text-blue-900">
-            NFL season is over - thanks for being here, and we’ll see you back on September 10th for kickoff.
+            NFL season is over - thanks for being here, and we’ll see you back on September 10th for kickoff... view the week 1 slate below.
           </p>
         </div>
       )}
