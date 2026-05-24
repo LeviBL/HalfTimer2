@@ -10,7 +10,6 @@ import Footer from "@/components/Footer";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
-import BlogWelcomeModal from "@/components/BlogWelcomeModal";
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
@@ -290,8 +289,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         description={pageDescription}
         canonicalUrl={canonicalUrl}
       />
-      
-      <BlogWelcomeModal />
       
       <MobileNavMenu />
       <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
