@@ -312,7 +312,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       {activeSport === 'nfl' && (
         <div className="w-full max-w-[600px] mb-8 p-6 bg-blue-50 border border-blue-200 rounded-xl text-center shadow-sm">
           <p className="text-xl font-semibold text-blue-900">
-            NFL season is over - thanks for being here, and we’ll see you back on September 10th for kickoff.
+            NFL season is over - thanks for being here, and we’ll see you back on September 10th for kickoff... view the week 1 slate below.
           </p>
         </div>
       )}
