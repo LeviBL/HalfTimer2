@@ -30,12 +30,14 @@ const Contact: React.FC = () => {
 
         <div className="w-full max-w-sm mx-auto my-6 p-4 bg-slate-900/50 backdrop-blur rounded-xl border border-slate-800 flex flex-col items-center justify-center not-prose">
           <p className="text-xs text-slate-400 font-medium mb-3">Enjoying the clocks? Buy me a coffee via BTC</p>
-          <iframe 
-            src="https://buymeabitcoffee.vercel.app/btc/bc1qcvvkf92dzh49mlx3uw9lpk4s3l00660rxvr0h2?identifier=LeviBL"
-            className="w-full h-[450px] rounded-lg border-0 bg-transparent"
-            title="Buy Me A Bitcoin Coffee"
-            scrolling="no"
-          />
+          <div className="w-full h-[520px] overflow-hidden rounded-lg">
+            <iframe 
+              src="https://buymeabitcoffee.vercel.app/btc/bc1qcvvkf92dzh49mlx3uw9lpk4s3l00660rxvr0h2?identifier=LeviBL"
+              className="w-full h-full border-0 bg-transparent"
+              title="Buy Me A Bitcoin Coffee"
+              scrolling="no"
+            />
+          </div>
         </div>
       </div>
       <Footer />

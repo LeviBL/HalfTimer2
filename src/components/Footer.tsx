@@ -3,14 +3,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
-import { Heart } from "lucide-react";
 
 const Footer: React.FC = () => {
-  const handleSupportClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    window.dispatchEvent(new CustomEvent("open-support-modal"));
-  };
-
   return (
     <footer className="w-full bg-white border-t border-gray-200 mt-12 py-8 px-4">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
@@ -41,13 +35,6 @@ const Footer: React.FC = () => {
             >
               GitHub
             </a>
-            <button 
-              onClick={handleSupportClick}
-              className="text-gray-400 hover:text-blue-600 transition-colors p-1"
-              aria-label="Support the developer"
-            >
-              <Heart className="h-4 w-4" />
-            </button>
           </div>
         </nav>
       </div>
