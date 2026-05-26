@@ -28,16 +28,29 @@ const Contact: React.FC = () => {
           </a>
         </p>
 
-        <div className="w-full max-w-md mx-auto my-6 p-4 bg-slate-900/50 backdrop-blur rounded-xl border border-slate-800 flex flex-col items-center justify-center not-prose">
+        <div className="w-full max-w-md mx-auto my-6 p-4 bg-slate-900/50 backdrop-blur rounded-xl border border-slate-800 flex flex-col items-center justify-center not-prose overflow-hidden">
           <p className="text-xs text-slate-400 font-medium mb-3">Enjoying the clocks? Buy me a coffee via BTC</p>
-          <div className="w-full h-[1030px] overflow-hidden rounded-lg">
-            <iframe 
-              src="https://buymeabitcoffee.vercel.app/btc/bc1qcvvkf92dzh49mlx3uw9lpk4s3l00660rxvr0h2?identifier=LeviBL"
-              className="w-full h-full border-0 bg-transparent"
-              title="Buy Me A Bitcoin Coffee"
-              scrolling="no"
-            />
+          
+          {/* Container that handles the scaling for mobile */}
+          <div className="w-full flex justify-center overflow-hidden" style={{ height: 'calc(1030px * 0.85)' }}>
+            <div className="origin-top scale-[0.85] sm:scale-100 w-[400px] h-[1030px]">
+              <iframe 
+                src="https://buymeabitcoffee.vercel.app/btc/bc1qcvvkf92dzh49mlx3uw9lpk4s3l00660rxvr0h2?identifier=LeviBL"
+                className="w-full h-full border-0 bg-transparent"
+                title="Buy Me A Bitcoin Coffee"
+                scrolling="no"
+              />
+            </div>
           </div>
+          
+          {/* Desktop fallback height adjustment via CSS media query would be cleaner but this works for the immediate fix */}
+          <style dangerouslySetInnerHTML={{ __html: `
+            @media (min-width: 640px) {
+              div[style*="calc(1030px * 0.85)"] {
+                height: 1030px !important;
+              }
+            }
+          `}} />
         </div>
       </div>
       <Footer />
