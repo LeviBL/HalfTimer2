@@ -19,7 +19,7 @@ const SupportModal = () => {
       const timer = setTimeout(() => {
         setIsOpen(true);
         localStorage.setItem("hasSeenSupportModal", "true");
-      }, 2000);
+      }, 100); // Reduced delay to 100ms for near-instant appearance
       return () => clearTimeout(timer);
     }
   }, []);
@@ -44,7 +44,7 @@ const SupportModal = () => {
             <Button 
               variant="ghost" 
               onClick={() => setIsOpen(false)}
-              className="flex-1 h-12 text-base font-semibold text-gray-500 bg-gray-100 hover:bg-gray-200 rounded-2xl transition-all"
+              className="flex-1 h-12 text-base font-semibold text-gray-500 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-2xl transition-all"
             >
               Maybe Later
             </Button>
