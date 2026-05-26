@@ -3,8 +3,14 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
+import { Heart } from "lucide-react";
 
 const Footer: React.FC = () => {
+  const handleSupportClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    window.dispatchEvent(new CustomEvent("open-support-modal"));
+  };
+
   return (
     <footer className="w-full bg-white border-t border-gray-200 mt-12 py-8 px-4">
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
@@ -18,7 +24,7 @@ const Footer: React.FC = () => {
           </p>
         </div>
 
-        <nav className="flex flex-wrap justify-center gap-6 text-sm font-medium text-gray-600">
+        <nav className="flex flex-wrap justify-center gap-6 text-sm font-medium text-gray-600 items-center">
           <Link to="/" className="hover:text-blue-600 transition-colors">Home</Link>
           <Link to="/about" className="hover:text-blue-600 transition-colors">About</Link>
           <Link to="/faq" className="hover:text-blue-600 transition-colors">FAQ</Link>
@@ -26,14 +32,23 @@ const Footer: React.FC = () => {
           <Link to="/privacy" className="hover:text-blue-600 transition-colors">Privacy Policy</Link>
           <Link to="/terms" className="hover:text-blue-600 transition-colors">Terms of Service</Link>
           <Link to="/contact" className="hover:text-blue-600 transition-colors">Contact</Link>
-          <a 
-            href="https://github.com/LeviBL/HalfTimer2" 
-            target="_blank" 
-            rel="noopener noreferrer" 
-            className="hover:text-gray-900 transition-colors"
-          >
-            GitHub
-          </a>
+          <div className="flex items-center gap-4">
+            <a 
+              href="https://github.com/LeviBL/HalfTimer2" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-gray-900 transition-colors"
+            >
+              GitHub
+            </a>
+            <button 
+              onClick={handleSupportClick}
+              className="text-gray-400 hover:text-blue-600 transition-colors p-1"
+              aria-label="Support the developer"
+            >
+              <Heart className="h-4 w-4" />
+            </button>
+          </div>
         </nav>
       </div>
       <div className="max-w-3xl mx-auto mt-8 text-center text-xs text-gray-400">
