@@ -28,7 +28,7 @@ const Contact: React.FC = () => {
           </a>
         </p>
 
-        <div className="w-full max-w-sm mx-auto my-6 p-4 bg-slate-900/50 backdrop-blur rounded-xl border border-slate-800 flex flex-col items-center justify-center not-prose">
+        <div className="w-full max-w-md mx-auto my-6 p-4 bg-slate-900/50 backdrop-blur rounded-xl border border-slate-800 flex flex-col items-center justify-center not-prose">
           <p className="text-xs text-slate-400 font-medium mb-3">Enjoying the clocks? Buy me a coffee via BTC</p>
           <div className="w-full h-[1050px] overflow-hidden rounded-lg">
             <iframe 

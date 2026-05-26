@@ -26,29 +26,29 @@ const SupportModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-[400px] rounded-[28px] border-none p-0 overflow-hidden bg-white/95 backdrop-blur-xl shadow-2xl">
+      <DialogContent className="w-[90%] max-w-[360px] rounded-[28px] border-none p-0 overflow-hidden bg-white/95 backdrop-blur-xl shadow-2xl">
         <div className="p-8 pt-12">
           <DialogHeader className="space-y-4 text-center">
-            <DialogTitle className="text-3xl font-bold text-black tracking-tight leading-tight">
+            <DialogTitle className="text-2xl sm:text-3xl font-bold text-black tracking-tight leading-tight">
               Love The HalfTimer?
             </DialogTitle>
           </DialogHeader>
 
           <div className="mt-4 text-center">
-            <p className="text-gray-600 text-base font-medium leading-relaxed px-2">
+            <p className="text-gray-600 text-sm sm:text-base font-medium leading-relaxed px-2">
               Keep the clocks fast and the servers running. Support the project by buying us a coffee!
             </p>
           </div>
 
-          <div className="mt-10 flex gap-3">
+          <div className="mt-10 flex flex-col sm:flex-row gap-3">
             <Button 
               variant="ghost" 
               onClick={() => setIsOpen(false)}
-              className="flex-1 h-12 text-base font-semibold text-gray-500 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-2xl transition-all"
+              className="flex-1 h-12 text-base font-semibold text-gray-500 bg-gray-100 hover:bg-gray-200 border border-gray-200 rounded-2xl transition-all order-2 sm:order-1"
             >
               Maybe Later
             </Button>
-            <Link to="/contact" className="flex-1" onClick={() => setIsOpen(false)}>
+            <Link to="/contact" className="flex-1 order-1 sm:order-2" onClick={() => setIsOpen(false)}>
               <Button className="w-full h-12 text-base font-semibold bg-blue-600 hover:bg-blue-700 text-white rounded-2xl transition-all shadow-md">
                 Support
               </Button>
