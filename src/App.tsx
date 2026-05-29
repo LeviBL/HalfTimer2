@@ -16,7 +16,6 @@ import Blog from "./pages/Blog";
 import BlogPost from "./pages/BlogPost";
 import AuthorPosts from "./pages/AuthorPosts";
 import ScrollToTop from "./components/ScrollToTop";
-import SupportModal from "./components/SupportModal";
 
 const queryClient = new QueryClient();
 
@@ -38,7 +37,6 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <ScrollToTop />
-            <SupportModal />
             <Routes>
               <Route path="/" element={<HalfTimer />} />
               <Route path="/home" element={<Navigate to="/" replace />} />
