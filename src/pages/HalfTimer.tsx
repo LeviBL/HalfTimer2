@@ -16,6 +16,25 @@ import SponsorshipPlaceholder from "@/components/SponsorshipPlaceholder";
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
+  nba: "https://site.api.espn.com<dyad-write path="src/pages/HalfTimer.tsx" description="Restricting the visibility of the sponsorship placeholder to the NBA tab only.">
+"use client";
+
+import React, { useState, useEffect, useMemo } from "react";
+import GameCard from "@/components/GameCard";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
+import { Loader2 } from "lucide-react";
+import MobileNavMenu from "@/components/MobileNavMenu";
+import Footer from "@/components/Footer";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { cn } from "@/lib/utils";
+import SEO from "@/components/SEO";
+import BlogWelcomeModal from "@/components/BlogWelcomeModal";
+import AnnouncementBar from "@/components/AnnouncementBar";
+import SponsorshipPlaceholder from "@/components/SponsorshipPlaceholder";
+
+const API_ENDPOINTS = {
+  nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
   ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100&seasontype=3&limit=100&dates=20260317-20260407"
 };
@@ -406,17 +425,21 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           </div>
 
           {/* Desktop Sponsorship Sidebar - Static positioning, stays on right for longer */}
-          <div className="hidden lg:block absolute right-12 top-0 h-full">
-            <div className="pl-2">
-              <SponsorshipPlaceholder />
+          {activeSport === 'nba' && (
+            <div className="hidden lg:block absolute right-12 top-0 h-full">
+              <div className="pl-2">
+                <SponsorshipPlaceholder />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Mobile/Tablet Sponsorship Bottom - Shown when screen is not wide enough for sidebar */}
-        <div className="lg:hidden mt-12 w-full flex justify-center">
-          <SponsorshipPlaceholder />
-        </div>
+        {activeSport === 'nba' && (
+          <div className="lg:hidden mt-12 w-full flex justify-center">
+            <SponsorshipPlaceholder />
+          </div>
+        )}
       </div>
 
       <Footer />
