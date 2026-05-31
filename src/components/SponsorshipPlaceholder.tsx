@@ -11,7 +11,7 @@ export default function SponsorshipPlaceholder() {
       href={`mailto:${email}?subject=${subject}`}
       className="group block w-full max-w-sm mx-auto border-2 border-dashed border-[#cfcfcf] bg-neutral-50/50 hover:bg-neutral-50 hover:border-[#9281c7] p-6 rounded-2xl transition-all duration-200 ease-in-out text-center shadow-sm"
     >
-      <div className="flex flex-col items-center justify-center space-y-3 py-4">
+      <div className="flex flex-col items-center justify-center space-y-6 py-10">
         {/* Animated Radio Pulse using branding color #9281c7 */}
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
@@ -29,7 +29,7 @@ export default function SponsorshipPlaceholder() {
         </h4>
         
         {/* Subtle CTA Link using accent color */}
-        <div className="text-xs font-semibold text-[#9281c7] group-hover:underline pt-2">
+        <div className="text-xs font-semibold text-[#9281c7] group-hover:underline pt-4">
           Lock In This Spot &rarr;
         </div>
       </div>
