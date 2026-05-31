@@ -338,7 +338,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         )}
 
         {/* Main Content Layout Wrapper */}
-        <div className="w-full max-w-[1200px] relative">
+        <div className="w-full max-w-[1400px] relative">
           <div className="flex flex-col items-center w-full">
             {loading ? (
               <div className="grid grid-cols-1 min-[720px]:grid-cols-2 gap-2 w-full max-w-[720px] mx-auto">
@@ -405,16 +405,16 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
             )}
           </div>
 
-          {/* Desktop Sponsorship Sidebar */}
-          <div className="hidden lg:block absolute right-0 top-0 h-full">
-            <div className="sticky top-24 pl-4">
+          {/* Desktop Sponsorship Sidebar - Only shown on very wide screens to prevent overlap */}
+          <div className="hidden 2xl:block absolute right-0 top-0 h-full">
+            <div className="sticky top-24 pl-8">
               <SponsorshipPlaceholder />
             </div>
           </div>
         </div>
 
-        {/* Mobile Sponsorship Bottom */}
-        <div className="lg:hidden mt-12 w-full flex justify-center">
+        {/* Mobile/Tablet Sponsorship Bottom - Shown when screen is not wide enough for sidebar */}
+        <div className="2xl:hidden mt-12 w-full flex justify-center">
           <SponsorshipPlaceholder />
         </div>
       </div>
