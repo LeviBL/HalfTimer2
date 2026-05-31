@@ -9,9 +9,9 @@ export default function SponsorshipPlaceholder() {
   return (
     <a 
       href={`mailto:${email}?subject=${subject}`}
-      className="group block w-full max-w-sm mx-auto border-2 border-dashed border-[#cfcfcf] bg-neutral-50/50 hover:bg-neutral-50 hover:border-[#9281c7] p-6 rounded-2xl transition-all duration-200 ease-in-out text-center shadow-sm"
+      className="group block w-full max-w-[320px] mx-auto border-2 border-dashed border-[#cfcfcf] bg-neutral-50/50 hover:bg-neutral-50 hover:border-[#9281c7] p-6 rounded-2xl transition-all duration-200 ease-in-out text-center shadow-sm"
     >
-      <div className="flex flex-col items-center justify-center space-y-6 py-10">
+      <div className="flex flex-col items-center justify-center space-y-8 py-16">
         {/* Animated Radio Pulse using branding color #9281c7 */}
         <div className="flex items-center gap-2">
           <span className="relative flex h-2 w-2">
@@ -24,7 +24,7 @@ export default function SponsorshipPlaceholder() {
         </div>
         
         {/* Main Pitch */}
-        <h4 className="text-sm font-bold text-neutral-800 transition-colors leading-snug max-w-[220px]">
+        <h4 className="text-sm font-bold text-neutral-800 transition-colors leading-snug max-w-[200px]">
           Reach live sports fans right during commercial breaks.
         </h4>
         
