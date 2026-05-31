@@ -11,6 +11,32 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "the-greatest-peak-in-nba-history",
+    title: "The Greatest Peak in NBA History",
+    excerpt: "When basketball fans debate greatness, the conversation usually centers around careers. But what if we judged players by a single season? If we're looking for the greatest individual season in NBA history, my answer is simple: 2006 Dwyane Wade.",
+    content: `When basketball fans debate greatness, the conversation usually centers around careers. Michael Jordan's six championships. LeBron James' longevity. Kareem Abdul-Jabbar's decades of dominance. Steph Curry’s modern dominance. But what if we judged players by a single season? If we're looking for the greatest individual season in NBA history, my answer is simple: 2006 Dwyane Wade. 
+
+In just his third season, Wade carried a starting 5 of James Posey, Udonis Haslem, an older Shaquille O’Neal, and Jason Williams to an NBA championship, the first in franchise history. In Michael Jordan's third year, it was a first-round sweep. In LeBron James’s third year, it was a loss to the Pistons, the very team that Wade eliminated, averaging 27 Points, 5.2 Rebounds, 5.5 Assists, 3.3 STOCKS (Steals + Blocks) while shooting 63% from the field. Kobe Bryant’s third year ended in a second-round sweep.
+
+After a dismantling of the Bulls in round one, Wade propelled the Heat to a 4-1 series win over Vince Carter, Jason Kidd, and Richard Jefferson's New Jersey Nets. Then Wade humiliated the Pistons, who were coming off back-to-back finals appearances, including one championship, and a 64-win regular season.
+
+Then came the NBA finals. Opening up as heavy underdogs to the Dirk Nowitzki-led Mavericks, who just defeated the reigning champions, hanging a banner in Miami didn't seem too likely. Despite putting up 28 and 23, the Heat scored only 80 and 85 heading into game three, down 0-2.
+
+It was here that Wade cemented the greatest single season of all time. Back home down 0-2, he exploded in the Wadelike fashion we know him for.  Entering the fourth down 9, Wade scored 15, adding a game-winning steal as time expired to win by two in a nail-biting finish. He finished this game with 42 points, 13 rebounds, one of the greatest Finals performances the league has ever seen.
+
+Holding the Mavericks to seven points in the fourth quarter, Game 4 ended as a blowout. In a game where Wade didn't even need to play 40 minutes, he put up 36 points and 6 rebounds on amazing efficiency.
+
+Tied 2-2, game 5 was a must-win. Wade put up 17 points in the fourth quarter, and sent the thriller to overtime. Fouled with one second left in OT, down one, Wade exhibited the poise that your favorite player wishes he had. Making both free throws, the Heat upset in a 101-100 victory, backed by a nuclear 43-point outing from yours truly, Dwyane Wade.
+
+Now, with a championship on the line, under all the pressure in the world, Wade secured the 5th youngest finals MVP by a player in NBA history. A 36-point, 10-rebound, 5-assist, 4-steal, and 3-block outing gave Miami the first banner in franchise history and made Wade a hero, all at the age of 24.
+
+Although Shaquille O'Neal was still an All-Star, he averaged just 13.7 points per game in the Finals. Wade’s 33.8 PER (Player Efficiency Rating) over the NBA finals remains the highest of all time, and his 39.3 PPG over a four-game stretch remains the highest in modern-era finals history. This playoff run, and this season as a whole, can be remembered as the greatest performance by any single player in NBA history, a performance bringing home finals MVP and an NBA championship. This was the performance of my GOAT, Dwyane “Flash” Wade.`,
+    date: "May 31, 2026",
+    author: "Nathaniel Kurzban",
+    category: "NBA",
+    image: "/blog/wade-peak.jpg"
+  },
+  {
     slug: "2026-nba-finals-preview-knicks-vs-spurs",
     title: "2026 NBA Finals Preview: Knicks vs. Spurs",
     excerpt: "For the first time in decades, the New York Knicks are back on the NBA’s biggest stage. Waiting for them are the San Antonio Spurs, a young team that just survived a brutal seven-game war with Oklahoma City.",
@@ -97,7 +123,7 @@ Embiid was the story… again.
 Dominant second half control
 Playing just 19 days after an emergency appendectomy  
 
-He’s a warrior. He continued to prove time and time again that when healthy, (and that’s a big when), he is one of the best in the world. His return timeline is absurd for an NBA player, especially in the playoffs. And you could see the difference. In Game 4, he was productive but clearly limited. In Game 5, he dictated the game.
+He’s a warrior. He continued to prove time and time again that when healthy, (and that’s a big when), he is one of the best in the world. His return timeline is absurd for an NBA player, especially in the playoffs. and you could see the difference. In Game 4, he was productive but clearly limited. In Game 5, he dictated the game.
 
 When Embiid aggressive, everything opens:
 Tyrese Maxey gets downhill (25 points, 10 rebounds in Game 5)  
