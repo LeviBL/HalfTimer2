@@ -18,18 +18,18 @@ export default function SponsorshipPlaceholder() {
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#9281c7] opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#9281c7]"></span>
           </span>
-          <p className="text-xs font-bold tracking-widest text-neutral-500 uppercase">
+          <p className="text-sm font-bold tracking-widest text-neutral-500 uppercase">
             Sponsorship
           </p>
         </div>
         
         {/* Main Pitch */}
-        <h4 className="text-sm font-bold text-neutral-800 transition-colors leading-snug max-w-[220px]">
+        <h4 className="text-lg font-bold text-neutral-800 transition-colors leading-snug max-w-[220px]">
           Reach live sports fans right during commercial breaks.
         </h4>
         
         {/* Subtle CTA Link using accent color */}
-        <div className="text-xs font-semibold text-[#9281c7] group-hover:underline pt-4">
+        <div className="text-sm font-semibold text-[#9281c7] group-hover:underline pt-4">
           Lock In This Spot &rarr;
         </div>
       </div>
