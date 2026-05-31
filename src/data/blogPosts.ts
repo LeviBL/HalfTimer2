@@ -14,9 +14,7 @@ export const blogPosts: BlogPost[] = [
     slug: "the-greatest-peak-in-nba-history",
     title: "The Greatest Peak in NBA History",
     excerpt: "When basketball fans debate greatness, the conversation usually centers around careers. But what if we judged players by a single season? If we're looking for the greatest individual season in NBA history, my answer is simple: 2006 Dwyane Wade.",
-    content: `When basketball fans debate greatness, the conversation usually centers around careers. Michael Jordan's six championships. LeBron James' longevity. Kareem Abdul-Jabbar's decades of dominance. Steph Curry’s modern dominance. But what if we judged players by a single season? If we're looking for the greatest individual season in NBA history, my answer is simple: 2006 Dwyane Wade. 
-
-In just his third season, Wade carried a starting 5 of James Posey, Udonis Haslem, an older Shaquille O’Neal, and Jason Williams to an NBA championship, the first in franchise history. In Michael Jordan's third year, it was a first-round sweep. In LeBron James’s third year, it was a loss to the Pistons, the very team that Wade eliminated, averaging 27 Points, 5.2 Rebounds, 5.5 Assists, 3.3 STOCKS (Steals + Blocks) while shooting 63% from the field. Kobe Bryant’s third year ended in a second-round sweep.
+    content: `In just his third season, Wade carried a starting 5 of James Posey, Udonis Haslem, an older Shaquille O’Neal, and Jason Williams to an NBA championship, the first in franchise history. In Michael Jordan's third year, it was a first-round sweep. In LeBron James’s third year, it was a loss to the Pistons, the very team that Wade eliminated, averaging 27 Points, 5.2 Rebounds, 5.5 Assists, 3.3 STOCKS (Steals + Blocks) while shooting 63% from the field. Kobe Bryant’s third year ended in a second-round sweep.
 
 After a dismantling of the Bulls in round one, Wade propelled the Heat to a 4-1 series win over Vince Carter, Jason Kidd, and Richard Jefferson's New Jersey Nets. Then Wade humiliated the Pistons, who were coming off back-to-back finals appearances, including one championship, and a 64-win regular season.
 
@@ -33,7 +31,7 @@ Now, with a championship on the line, under all the pressure in the world, Wade 
 Although Shaquille O'Neal was still an All-Star, he averaged just 13.7 points per game in the Finals. Wade’s 33.8 PER (Player Efficiency Rating) over the NBA finals remains the highest of all time, and his 39.3 PPG over a four-game stretch remains the highest in modern-era finals history. This playoff run, and this season as a whole, can be remembered as the greatest performance by any single player in NBA history, a performance bringing home finals MVP and an NBA championship. This was the performance of my GOAT, Dwyane “Flash” Wade.`,
     date: "May 31, 2026",
     author: "Nathaniel Kurzban",
-    category: "NBA",
+    category: "Opinion",
     image: "/blog/wade-peak.jpg"
   },
   {
