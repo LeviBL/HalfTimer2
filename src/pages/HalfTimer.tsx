@@ -406,17 +406,21 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           </div>
 
           {/* Desktop Sponsorship Sidebar - Static positioning, stays on right for longer */}
-          <div className="hidden lg:block absolute right-12 top-0 h-full">
-            <div className="pl-2">
-              <SponsorshipPlaceholder />
+          {activeSport === 'nba' && (
+            <div className="hidden lg:block absolute right-12 top-0 h-full">
+              <div className="pl-2">
+                <SponsorshipPlaceholder />
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Mobile/Tablet Sponsorship Bottom - Shown when screen is not wide enough for sidebar */}
-        <div className="lg:hidden mt-12 w-full flex justify-center">
-          <SponsorshipPlaceholder />
-        </div>
+        {activeSport === 'nba' && (
+          <div className="lg:hidden mt-12 w-full flex justify-center">
+            <SponsorshipPlaceholder />
+          </div>
+        )}
       </div>
 
       <Footer />
