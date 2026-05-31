@@ -16,25 +16,6 @@ import SponsorshipPlaceholder from "@/components/SponsorshipPlaceholder";
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
-  nba: "https://site.api.espn.com<dyad-write path="src/pages/HalfTimer.tsx" description="Restricting the visibility of the sponsorship placeholder to the NBA tab only.">
-"use client";
-
-import React, { useState, useEffect, useMemo } from "react";
-import GameCard from "@/components/GameCard";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Card, CardContent } from "@/components/ui/card";
-import { Loader2 } from "lucide-react";
-import MobileNavMenu from "@/components/MobileNavMenu";
-import Footer from "@/components/Footer";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { cn } from "@/lib/utils";
-import SEO from "@/components/SEO";
-import BlogWelcomeModal from "@/components/BlogWelcomeModal";
-import AnnouncementBar from "@/components/AnnouncementBar";
-import SponsorshipPlaceholder from "@/components/SponsorshipPlaceholder";
-
-const API_ENDPOINTS = {
-  nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
   ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100&seasontype=3&limit=100&dates=20260317-20260407"
 };
@@ -131,7 +112,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     return new Set();
   });
 
-  // Sync activeSport state when defaultSport prop changes (e.g., via URL navigation)
   useEffect(() => {
     setActiveSport(defaultSport);
   }, [defaultSport]);
@@ -278,7 +258,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
   const standardViewGames = useMemo(() => {
     return sortedGames.filter(game => {
       if (activeSport === 'ncaa') {
-        // Hide all games for NCAA as the season is over
         return false;
       }
       return true;
@@ -356,7 +335,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           </div>
         )}
 
-        {/* Main Content Layout Wrapper */}
         <div className="w-full max-w-[1400px] relative">
           <div className="flex flex-col items-center w-full">
             {loading ? (
@@ -424,7 +402,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
             )}
           </div>
 
-          {/* Desktop Sponsorship Sidebar - Static positioning, stays on right for longer */}
           {activeSport === 'nba' && (
             <div className="hidden lg:block absolute right-12 top-0 h-full">
               <div className="pl-2">
@@ -434,7 +411,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           )}
         </div>
 
-        {/* Mobile/Tablet Sponsorship Bottom - Shown when screen is not wide enough for sidebar */}
         {activeSport === 'nba' && (
           <div className="lg:hidden mt-12 w-full flex justify-center">
             <SponsorshipPlaceholder />
