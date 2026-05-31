@@ -11,6 +11,52 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "2026-nba-finals-preview-knicks-vs-spurs",
+    title: "2026 NBA Finals Preview: Knicks vs. Spurs",
+    excerpt: "For the first time in decades, the New York Knicks are back on the NBA’s biggest stage. Waiting for them are the San Antonio Spurs, a young team that just survived a brutal seven-game war with Oklahoma City.",
+    content: `For the first time in decades, the New York Knicks are back on the NBA’s biggest stage. Waiting for them are the San Antonio Spurs, a young team that just survived a brutal seven-game war with Oklahoma City. 
+
+Both teams arrived here differently. The Knicks have bulldozed through the Eastern Conference with crazy momentum. The Spurs have fought through the tough West, but now, after two completely different playoff paths, everything comes down to four wins.
+
+The Knicks entered the season with pressure. After years of building around Jalen Brunson, New York pushed its chips in by surrounding him with a deeper, more versatile roster. Had New York fallen short earlier in the playoffs, serious questions about the future of this core may have followed.
+
+During the regular season, the Knicks established themselves as one of the league’s toughest two-way teams. Brunson controlled the offense, Karl-Anthony Towns stretched defenses, and a wing-heavy lineup built around Mikal Bridges and OG Anunoby gave New York elite defensive flexibility. 
+
+New York swept Cleveland in the Eastern Conference Finals, extending its postseason winning streak to 11 games and dominating the Cavaliers the entire series. The Knicks’ offense has become unstoppable when momentum is on their side. Multiple games during the postseason featured explosive stretches where New York turned close contests into blowouts within minutes.
+
+Brunson has been the engine. He won Eastern Conference Finals MVP after averaging elite numbers while controlling the tempo in nearly every fourth quarter. Around him, the Knicks have received contributions from everywhere. Towns has lived up to expectations, Bridges and OG have taken on larger roles, and the rest of the team is stepping up at the right moment.
+
+And now they are in their first NBA Finals since 1999.
+
+The Spurs’ rise happened faster than expected.
+
+After winning just 34 games last season, San Antonio exploded into contention behind the evolution of Victor Wembanyama. Already one of (if not) the best players in the world, Wembanyama transformed and took this team to the next level.
+
+The Western Conference Finals against Oklahoma City felt like the moment the league officially became his. The Spurs survived a seven-game battle against the defending champion Thunder, closing the series with a 111-103 win in Game 7. 
+
+The Spurs have received major contributions from young guards, role players, and elite shooting around their star. It was Julian Champagnie’s shooting in Game 7, while De’Aaron Fox, Dylan Harper, and Stephon Castle among others have all delivered key moments throughout the postseason.
+
+With Game 1 set for Wednesday, one question for the Spurs is how well they can recover physically and prepare for the series ahead.
+
+The Knicks want to overwhelm opponents with physicality, pace, and offensive runs. When New York gets stops, they become extremely difficult to slow down. Their wing defenders also give them multiple options against San Antonio’s perimeter players.
+
+The Spurs are more methodical. Everything begins with Wembanyama’s gravity. Defensively, he changes every drive near the rim. Offensively, his combination of size, mobility, and shot creation forces defenses into difficult decisions.
+
+The biggest question may be whether New York can consistently score inside against San Antonio’s rim protection. Towns will need to stretch Wembanyama away from the basket, while Brunson must continue creating efficient offense.
+
+**Prediction**
+
+The Knicks enter the Finals as the hotter and more rested team, but the Spurs survived the tougher path to reach this point. New York’s offense will make life difficult for San Antonio, but Wemby may simply be the best player in the series.
+
+If the Knicks can consistently force the ball out of his hands and control the glass, they have a real chance to bring a championship back to Madison Square Garden.
+
+Prediction: Spurs in 7.`,
+    date: "May 30, 2026",
+    author: "Levi Brous-Light",
+    category: "NBA",
+    image: "/blog/finals-preview.jpg"
+  },
+  {
     slug: "lebron-james-uncertain-future",
     title: "What The Future Holds for Lebron",
     excerpt: "For nearly two decades, LeBron James has been the face of the NBA. But now, for the first time in his career, his future feels genuinely uncertain.",
