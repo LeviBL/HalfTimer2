@@ -406,15 +406,15 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           </div>
 
           {/* Desktop Sponsorship Sidebar - Only shown on very wide screens to prevent overlap */}
-          <div className="hidden xl:block absolute right-0 top-0 h-full">
-            <div className="sticky top-24 pl-8">
+          <div className="hidden 2xl:block absolute right-12 top-0 h-full">
+            <div className="pl-8">
               <SponsorshipPlaceholder />
             </div>
           </div>
         </div>
 
         {/* Mobile/Tablet Sponsorship Bottom - Shown when screen is not wide enough for sidebar */}
-        <div className="xl:hidden mt-12 w-full flex justify-center">
+        <div className="2xl:hidden mt-12 w-full flex justify-center">
           <SponsorshipPlaceholder />
         </div>
       </div>
