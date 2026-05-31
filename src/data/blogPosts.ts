@@ -14,9 +14,7 @@ export const blogPosts: BlogPost[] = [
     slug: "2026-nba-finals-preview-knicks-vs-spurs",
     title: "2026 NBA Finals Preview: Knicks vs. Spurs",
     excerpt: "For the first time in decades, the New York Knicks are back on the NBA’s biggest stage. Waiting for them are the San Antonio Spurs, a young team that just survived a brutal seven-game war with Oklahoma City.",
-    content: `For the first time in decades, the New York Knicks are back on the NBA’s biggest stage. Waiting for them are the San Antonio Spurs, a young team that just survived a brutal seven-game war with Oklahoma City. 
-
-Both teams arrived here differently. The Knicks have bulldozed through the Eastern Conference with crazy momentum. The Spurs have fought through the tough West, but now, after two completely different playoff paths, everything comes down to four wins.
+    content: `Both teams arrived here differently. The Knicks have bulldozed through the Eastern Conference with crazy momentum. The Spurs have fought through the tough West, but now, after two completely different playoff paths, everything comes down to four wins.
 
 The Knicks entered the season with pressure. After years of building around Jalen Brunson, New York pushed its chips in by surrounding him with a deeper, more versatile roster. Had New York fallen short earlier in the playoffs, serious questions about the future of this core may have followed.
 
