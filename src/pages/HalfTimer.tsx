@@ -13,6 +13,7 @@ import SEO from "@/components/SEO";
 import BlogWelcomeModal from "@/components/BlogWelcomeModal";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import SponsorshipPlaceholder from "@/components/SponsorshipPlaceholder";
+import TimeSavedCalculator from "@/components/TimeSavedCalculator";
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
@@ -329,9 +330,12 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
         )}
 
         {lastUpdated && (
-          <div className="absolute top-4 right-4 text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2">
-            Last Updated: {lastUpdated}
-            {isRefreshing && <Loader2 className="h-4 w-4 animate-spin text-blue-500" />}
+          <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
+            <div className="text-sm text-gray-700 bg-white/70 backdrop-blur-sm px-3 py-1 rounded-full shadow-sm flex items-center gap-2">
+              Last Updated: {lastUpdated}
+              {isRefreshing && <Loader2 className="h-4 w-4 animate-spin text-blue-500" />}
+            </div>
+            <TimeSavedCalculator />
           </div>
         )}
 
