@@ -14,10 +14,12 @@ interface BlogPostCardProps {
 const BlogPostCard: React.FC<BlogPostCardProps> = ({ post }) => {
   return (
     <Card className="overflow-hidden hover:shadow-xl transition-all duration-300 border-gray-200 flex flex-col h-full group">
-      <Link to={`/blog/${post.slug}`} className="relative h-48 overflow-hidden block">
+      <Link to={`/blog/${post.slug}`} className="relative h-48 overflow-hidden block bg-gray-100">
         <img 
           src={post.image} 
           alt={post.title} 
+          loading="lazy"
+          decoding="async"
           className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
         <Badge className="absolute top-4 left-4 bg-blue-600 hover:bg-blue-700">

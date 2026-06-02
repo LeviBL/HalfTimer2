@@ -60,10 +60,12 @@ const BlogPost: React.FC = () => {
       </div>
 
       <article className="max-w-3xl w-full mx-auto bg-white rounded-2xl shadow-xl overflow-hidden mb-12">
-        <div className="relative h-[300px] md:h-[400px]">
+        <div className="relative h-[300px] md:h-[400px] bg-gray-200">
           <img 
             src={post.image} 
             alt={post.title} 
+            fetchPriority="high"
+            decoding="async"
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
