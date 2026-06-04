@@ -11,6 +11,36 @@ export interface BlogPost {
 
 export const blogPosts: BlogPost[] = [
   {
+    slug: "aj-brown-patriots-trade",
+    title: "The Inevitable Finally Happened: A.J. Brown Is a Patriot",
+    excerpt: "For months, everybody around the NFL has like this was inevitable. Every report about tension behind the scenes in Philadelphia felt like it lead toward the same ending. On June 1, it finally happened.",
+    content: `For months, everybody around the NFL has like this was inevitable. Every report about tension behind the scenes in Philadelphia felt like it lead toward the same ending. On June 1, it finally happened. The Philadelphia Eagles traded star wide receiver A.J. Brown to the New England Patriots in exchange for a 2028 first-round pick and a 2027 fifth-round pick.
+
+The timing mattered. Once the calendar flipped to June, the Eagles could spread out the dead cap hit and finally make the deal work financially. That date had been circled for weeks across league circles.
+
+The relationship between Brown and Philadelphia had clearly deteriorated. Publicly, he still said the right things often enough, but it was clear that something was up. Reports and rumors surrounding locker room frustrations, issues involving Haason Reddick, personal disputes, and off-field drama had become impossible to ignore. The stories ranged from arguments over loyalty and respect to crazy X-rated rumors involving a masseuse situation that turned into a huge drama. Add in the whole Vrabel/Russini drama and the reported friction involving Jalen Hurts’ inner circle and wife, and it became obvious that the Eagles were managing far more than football.
+
+Which honestly makes Hurts look even better. Because through all of it, the Eagles kept winning. That is the biggest takeaway from this entire saga. Hurts spent the last two years balancing a locker room full of massive personalities, public drama, injuries, expectations, and nonstop media attention, yet the Eagles still stayed together long enough to compete at the highest level. It is easy to criticize Hurts for not being publicly vocal enough, but maybe that calmness was exactly why the whole thing did not completely collapse earlier.
+
+Now Philadelphia moves forward, and the Eagles already seem prepared for life after Brown. DeVonta Smith now becomes the unquestioned WR1, which feels overdue. Smith has always been one of the cleanest route runners in football, and now the offense belongs to him. Meanwhile, first-round rookie WR Makai Lemon gives Philadelphia another explosive weapon with long-term upside. The Eagles clearly believed they could survive this transition before making the move.
+
+The Patriots, meanwhile, finally get what they have desperately lacked for years: a true wide receiver one. For Drake Maye, this is enormous. Brown is still one of the NFL’s most physically dominant wide receivers when healthy. Even during a frustrating 2025 season filled with trade rumors and injuries, he still produced over 1,000 receiving yards and 7 touchdowns on 78 receptions.
+
+That “when healthy” part matters though. Brown’s knee issues have quietly become a real concern. The explosiveness is still there, but not always consistently. Over the last few seasons, lower-body injuries, hamstring problems, and lingering knee trouble have started stacking up. At almost 29 years old with a heavily physical play style, durability very important.
+
+Still, the Patriots needed to take this swing. Mike Vrabel knows Brown well from Tennessee, and New England desperately needed a receiver capable of changing defensive coverages by himself. Brown gives them exactly that. He brings toughness, physicality, red-zone dominance, and an actual WR1 presence that defenses have to respect and plan for.
+
+AJ Brown's tenure with the Eagles cannot be understated. 2 super bowl appearances in 4 years bringing one back to Philly, all while being a top 5-8 producing receiver in the league the whole time. In the end, the Eagles got rid of the problem in their locker room while getting solid draft compensation.
+
+The Patriots are betting that A.J. Brown still has elite football left.
+
+After months of rumors, leaks, drama, and speculation, the NFL finally got its answer on June 1.`,
+    date: "June 3, 2026",
+    author: "Levi Brous-Light",
+    category: "NFL",
+    image: "/blog/aj-brown-patriots.png"
+  },
+  {
     slug: "rams-go-all-in-for-myles-garrett",
     title: "Rams Go All-In for Myles Garrett",
     excerpt: "The Los Angeles Rams have traded for two-time NFL Defensive Player of the Year Myles Garrett.",
