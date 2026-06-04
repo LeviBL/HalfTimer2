@@ -30,7 +30,7 @@ That “when healthy” part matters though. Brown’s knee issues have quietly 
 
 Still, the Patriots needed to take this swing. Mike Vrabel knows Brown well from Tennessee, and New England desperately needed a receiver capable of changing defensive coverages by himself. Brown gives them exactly that. He brings toughness, physicality, red-zone dominance, and an actual WR1 presence that defenses have to respect and plan for.
 
-AJ Brown's tenure with the Eagles cannot be understated. 2 super bowl appearances in 4 years bringing one back to Philly, all while being a top 5-8 producing receiver in the league the whole time. In the end, the Eagles got rid of the problem in their locker room while getting solid draft compensation.
+AJ Brown's tenure with the Eagles cannot be understated. 2 Super Bowl appearances in 4 years, bringing one back to Philly, all while being a top 5-8 producing receiver in the league the whole time. In the end, the Eagles got rid of the problem in their locker room while getting solid draft compensation.
 
 The Patriots are betting that A.J. Brown still has elite football left.
 
