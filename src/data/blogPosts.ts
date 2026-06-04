@@ -13,7 +13,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "aj-brown-patriots-trade",
     title: "The Inevitable Finally Happened: A.J. Brown Is a Patriot",
-    excerpt: "For months, everybody around the NFL has like this was inevitable. Every report about tension behind the scenes in Philadelphia felt like it lead toward the same ending. On June 1, it finally happened.",
+    excerpt: "For months, everybody around the NFL has acted like this was inevitable. Every report about tension behind the scenes in Philadelphia felt like it lead toward the same ending. On June 1, it finally happened.",
     content: `The Philadelphia Eagles traded star wide receiver A.J. Brown to the New England Patriots in exchange for a 2028 first-round pick and a 2027 fifth-round pick.
 
 The timing mattered. Once the calendar flipped to June, the Eagles could spread out the dead cap hit and finally make the deal work financially. That date had been circled for weeks across league circles.
