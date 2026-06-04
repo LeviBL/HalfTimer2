@@ -34,7 +34,7 @@ AJ Brown's tenure with the Eagles cannot be understated. 2 super bowl appearance
 
 The Patriots are betting that A.J. Brown still has elite football left.
 
-After months of rumors, drama, and speculation, the NFL finally got its answer on June 1.`,
+After months of rumors, leaks, drama, and speculation, the NFL finally got its answer on June 1.`,
     date: "June 3, 2026",
     author: "Levi Brous-Light",
     category: "NFL",
