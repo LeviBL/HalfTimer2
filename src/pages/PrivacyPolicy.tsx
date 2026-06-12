@@ -4,10 +4,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 
 const PrivacyPolicy: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
+      <SEO 
+        title="Privacy Policy"
+        description="Learn how we handle your data and protect your privacy at The Halftimer."
+        canonicalUrl="https://thehalftimer.com/privacy"
+      />
       <MobileNavMenu />
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg prose prose-sm sm:prose lg:prose-lg">
         <div className="flex items-center justify-center gap-4 mb-6">

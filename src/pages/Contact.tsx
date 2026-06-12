@@ -3,10 +3,16 @@
 import React from "react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
+import SEO from "@/components/SEO";
 
 const Contact: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
+      <SEO 
+        title="Contact"
+        description="Get in touch with The Halftimer team for feedback, questions, or sponsorship inquiries."
+        canonicalUrl="https://thehalftimer.com/contact"
+      />
       <MobileNavMenu />
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg prose prose-sm sm:prose lg:prose-lg">
         <div className="flex items-center justify-center gap-4 mb-6">
