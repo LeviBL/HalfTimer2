@@ -9,7 +9,6 @@ import BlogPostCard from "@/components/BlogPostCard";
 import { blogPosts } from "@/data/blogPosts";
 import { ArrowLeft, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import SEO from "@/components/SEO";
 
 const AuthorPosts: React.FC = () => {
   const { authorName } = useParams<{ authorName: string }>();
@@ -22,11 +21,6 @@ const AuthorPosts: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-[#fcfcfc] text-gray-900 relative">
-      <SEO 
-        title={`Articles by ${displayName}`}
-        description={`Read all articles written by ${displayName} on The Halftimer Journal.`}
-        canonicalUrl={`https://thehalftimer.com/blog/author/${authorName}`}
-      />
       <MobileNavMenu />
       
       <div className="w-full max-w-6xl mx-auto px-4 pt-24 pb-12">

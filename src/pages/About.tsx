@@ -4,16 +4,10 @@ import React from "react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
-import SEO from "@/components/SEO";
 
 const About: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
-      <SEO 
-        title="About"
-        description="Learn more about The Halftimer and how we help sports fans optimize their viewing experience."
-        canonicalUrl="https://thehalftimer.com/about"
-      />
       <MobileNavMenu />
       <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
         <div className="flex items-center justify-center gap-4 mb-6">

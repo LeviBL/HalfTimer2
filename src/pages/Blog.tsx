@@ -6,7 +6,6 @@ import Footer from "@/components/Footer";
 import Logo from "@/components/Logo";
 import BlogPostCard from "@/components/BlogPostCard";
 import { blogPosts } from "@/data/blogPosts";
-import SEO from "@/components/SEO";
 
 const Blog: React.FC = () => {
   // Sort posts by date (descending)
@@ -16,11 +15,6 @@ const Blog: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-[#fcfcfc] text-gray-900 relative">
-      <SEO 
-        title="The Journal"
-        description="Deep dives into sports timing, analytics, and the fan experience. Get a quick read in while you wait for your game to come back."
-        canonicalUrl="https://thehalftimer.com/blog"
-      />
       <MobileNavMenu />
       
       <div className="w-full max-w-6xl mx-auto px-4 pt-24 pb-12">

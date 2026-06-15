@@ -3,7 +3,6 @@
 import React from "react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
-import SEO from "@/components/SEO";
 import {
   Accordion,
   AccordionContent,
@@ -88,11 +87,6 @@ const FAQ: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
-      <SEO 
-        title="FAQ"
-        description="Frequently asked questions about The Halftimer, our halftime countdowns, and supported sports."
-        canonicalUrl="https://thehalftimer.com/faq"
-      />
       <MobileNavMenu />
       <div className="max-w-3xl w-full mx-auto bg-white p-8 rounded-lg shadow-lg">
         <div className="flex items-center justify-center gap-4 mb-8">
