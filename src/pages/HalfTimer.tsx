@@ -260,11 +260,15 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'ncaa' }) => {
     return () => clearInterval(intervalId);
   }, [activeSport]);
 
+  const pageTitle = activeSport === 'ncaa' 
+    ? "World Cup Live Halftime Countdown & Clock"
+    : "HalfTimer";
+
   const pageDescription = activeSport === 'nba' 
     ? "Live NBA halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
     : activeSport === 'nfl'
     ? "Live NFL halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
-    : "Live World Cup halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half.";
+    : "Track the exact time left in World Cup halftimes live. Know the exact second the second half kicks off so you can skip the commercial breaks.";
 
   const canonicalUrl = activeSport === 'nba' 
     ? "https://thehalftimer.com/nba"
@@ -277,7 +281,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'ncaa' }) => {
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 text-gray-800 relative">
       <SEO 
-        title="HalfTimer"
+        title={pageTitle}
         description={pageDescription}
         canonicalUrl={canonicalUrl}
       />
