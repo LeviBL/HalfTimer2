@@ -62,7 +62,7 @@ interface GameCardProps {
 const DURATIONS = {
   nfl: 12 * 60 + 20, // 12:20
   nba: 14 * 60 + 30, // 14:30
-  ncaa: 14 * 60 + 25, // 14:25
+  ncaa: 14 * 60 + 30, // 14:30 (Soccer/World Cup)
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
@@ -74,13 +74,14 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   const gameId = game.id;
   const halftimeDuration = DURATIONS[sport];
 
-  const isHalftime = gameStatusDescription === "Halftime";
+  // Soccer often uses "HT" for halftime
+  const isHalftime = gameStatusDescription === "Halftime" || gameStatusDescription === "HT";
   const isScheduled = game.status.type.state === "pre";
   const isFinal = game.status.type.state === "post";
   const isInProgress = game.status.type.state === "in" && !isHalftime;
 
   useEffect(() => {
-    const isCurrentlyHalftime = gameStatusDescription === "Halftime";
+    const isCurrentlyHalftime = gameStatusDescription === "Halftime" || gameStatusDescription === "HT";
 
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
