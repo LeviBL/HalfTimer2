@@ -10,7 +10,6 @@ import Footer from "@/components/Footer";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
-import BlogWelcomeModal from "@/components/BlogWelcomeModal";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import TimeSavedCalculator from "@/components/TimeSavedCalculator";
 
@@ -289,8 +288,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'ncaa' }) => {
       <AnnouncementBar />
       
       <div className="w-full flex flex-col items-center p-4 pt-16 relative">
-        <BlogWelcomeModal />
-        
         <MobileNavMenu />
         <h1 className="text-5xl font-extrabold text-gray-900 mb-2 text-center drop-shadow-md">HalfTimer</h1>
         <p className="text-lg text-gray-700 text-center mb-6">
