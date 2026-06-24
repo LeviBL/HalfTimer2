@@ -9,7 +9,7 @@ const corsHeaders = {
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100",
+  ncaa: "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard", // Pivoted to World Cup
 };
 
 serve(async (req) => {
@@ -38,7 +38,9 @@ serve(async (req) => {
 
       for (const event of data.events) {
         const gameId = event.id;
-        const isCurrentlyHalftime = event.status.type.description === "Halftime";
+        const statusDesc = event.status.type.description;
+        // Soccer often uses "HT" for halftime
+        const isCurrentlyHalftime = statusDesc === "Halftime" || statusDesc === "HT";
 
         if (isCurrentlyHalftime) {
           currentHalftimeGameIds.add(gameId);
