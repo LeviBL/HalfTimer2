@@ -68,7 +68,7 @@ const DURATIONS = {
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
   const [halftimeRemainingSeconds, setHalftimeRemainingSeconds] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { getHalftimeStartTime, setHalftimeStartTime, clearHalftimeStartTime, isLoading: isHalftimeTimersLoading } = useHalftimeTimers();
+  const { getHalftimeStartTime, isLoading: isHalftimeTimersLoading } = useHalftimeTimers();
 
   const gameStatusDescription = game.status.type.description;
   const gameId = game.id;
@@ -96,11 +96,8 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
     if (isCurrentlyHalftime) {
       let effectiveHalftimeStartTime = getHalftimeStartTime(gameId);
 
-      // Distributed Sync: If no start time exists in DB, the first client to see it sets it.
       if (effectiveHalftimeStartTime === undefined) {
-        const now = Date.now();
-        effectiveHalftimeStartTime = now;
-        setHalftimeStartTime(gameId, now);
+        effectiveHalftimeStartTime = Date.now();
       }
 
       const calculateCurrentRemaining = () => {
@@ -120,14 +117,6 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       }, 1000);
     } else {
       setHalftimeRemainingSeconds(null);
-      
-      // Cleanup: If the game is no longer in halftime but a timer exists in DB, clear it.
-      if (isInProgress || isFinal) {
-        const existingTime = getHalftimeStartTime(gameId);
-        if (existingTime !== undefined) {
-          clearHalftimeStartTime(gameId);
-        }
-      }
     }
 
     return () => {
@@ -135,7 +124,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
         clearInterval(intervalRef.current);
       }
     };
-  }, [gameStatusDescription, gameId, getHalftimeStartTime, setHalftimeStartTime, clearHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration, isInProgress, isFinal]);
+  }, [gameStatusDescription, gameId, getHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
 
   const handleShare = () => {
     const shareUrl = window.location.origin + (sport === 'ncaa' ? '/march-madness-halftime-timer' : '/');
