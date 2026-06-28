@@ -58,10 +58,11 @@ interface GameCardProps {
   sport: 'nfl' | 'nba' | 'ncaa';
 }
 
+// DurATIONS in seconds
 const DURATIONS = {
-  nfl: 12 * 60 + 20,
-  nba: 14 * 60 + 30,
-  ncaa: 14 * 60 + 30, // World Cup / Soccer
+  nfl: 12 * 60 + 20, // 12:20
+  nba: 14 * 60 + 30, // 14:30
+  ncaa: 14 * 60 + 25, // 14:25
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
@@ -73,12 +74,14 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   const gameId = game.id;
   const halftimeDuration = DURATIONS[sport];
 
-  const isHalftime = gameStatusDescription === "Halftime" || gameStatusDescription === "HT";
+  const isHalftime = gameStatusDescription === "Halftime";
   const isScheduled = game.status.type.state === "pre";
   const isFinal = game.status.type.state === "post";
   const isInProgress = game.status.type.state === "in" && !isHalftime;
 
   useEffect(() => {
+    const isCurrentlyHalftime = gameStatusDescription === "Halftime";
+
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -89,29 +92,28 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       return;
     }
 
-    if (isHalftime) {
-      const startTime = getHalftimeStartTime(gameId);
+    if (isCurrentlyHalftime) {
+      let effectiveHalftimeStartTime = getHalftimeStartTime(gameId);
 
-      if (startTime) {
-        const calculateCurrentRemaining = () => {
-          const elapsed = Math.floor((Date.now() - startTime) / 1000);
-          return Math.max(0, halftimeDuration - elapsed);
-        };
-
-        setHalftimeRemainingSeconds(calculateCurrentRemaining());
-
-        intervalRef.current = setInterval(() => {
-          const currentRemaining = calculateCurrentRemaining();
-          setHalftimeRemainingSeconds(currentRemaining);
-          if (currentRemaining <= 0) {
-            clearInterval(intervalRef.current!);
-            intervalRef.current = null;
-          }
-        }, 1000);
-      } else {
-        // If not in DB yet, we wait for the crawler to write it
-        setHalftimeRemainingSeconds(null);
+      if (effectiveHalftimeStartTime === undefined) {
+        effectiveHalftimeStartTime = Date.now();
       }
+
+      const calculateCurrentRemaining = () => {
+        const elapsed = Math.floor((Date.now() - effectiveHalftimeStartTime!) / 1000);
+        return Math.max(0, halftimeDuration - elapsed);
+      };
+
+      setHalftimeRemainingSeconds(calculateCurrentRemaining());
+
+      intervalRef.current = setInterval(() => {
+        const currentRemaining = calculateCurrentRemaining();
+        setHalftimeRemainingSeconds(currentRemaining);
+        if (currentRemaining <= 0) {
+          clearInterval(intervalRef.current!);
+          intervalRef.current = null;
+        }
+      }, 1000);
     } else {
       setHalftimeRemainingSeconds(null);
     }
@@ -121,11 +123,12 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
         clearInterval(intervalRef.current);
       }
     };
-  }, [isHalftime, gameId, getHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
+  }, [gameStatusDescription, gameId, getHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
 
   const handleShare = () => {
     const shareUrl = window.location.origin + (sport === 'ncaa' ? '/march-madness-halftime-timer' : '/');
     const shareText = `Check out the live halftime countdown for ${game.competitors.away.displayName} vs ${game.competitors.home.displayName} on The Halftimer!`;
+    
     navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
     toast.success("Link copied to clipboard!");
   };
@@ -197,7 +200,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
               ) : (
                 <div className="flex items-center justify-center text-gray-700">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span>Waiting for Sync...</span>
+                  <span>Halftime (Initializing Timer...)</span>
                 </div>
               )
             ) : isInProgress && game.status.type.shortDetail ? (
