@@ -58,11 +58,11 @@ interface GameCardProps {
   sport: 'nfl' | 'nba' | 'ncaa';
 }
 
-// DurATIONS in seconds
+// Durations in seconds
 const DURATIONS = {
   nfl: 12 * 60 + 20, // 12:20
   nba: 14 * 60 + 30, // 14:30
-  ncaa: 14 * 60 + 25, // 14:25
+  ncaa: 14 * 60 + 30, // World Cup (14:30 loop)
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
@@ -74,14 +74,13 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   const gameId = game.id;
   const halftimeDuration = DURATIONS[sport];
 
-  const isHalftime = gameStatusDescription === "Halftime";
+  // Soccer often uses "HT" for halftime
+  const isHalftime = gameStatusDescription === "Halftime" || gameStatusDescription === "HT";
   const isScheduled = game.status.type.state === "pre";
   const isFinal = game.status.type.state === "post";
   const isInProgress = game.status.type.state === "in" && !isHalftime;
 
   useEffect(() => {
-    const isCurrentlyHalftime = gameStatusDescription === "Halftime";
-
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
@@ -92,28 +91,28 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       return;
     }
 
-    if (isCurrentlyHalftime) {
-      let effectiveHalftimeStartTime = getHalftimeStartTime(gameId);
+    if (isHalftime) {
+      const startTime = getHalftimeStartTime(gameId);
 
-      if (effectiveHalftimeStartTime === undefined) {
-        effectiveHalftimeStartTime = Date.now();
+      if (startTime) {
+        const calculateCurrentRemaining = () => {
+          const elapsed = Math.floor((Date.now() - startTime) / 1000);
+          return Math.max(0, halftimeDuration - elapsed);
+        };
+
+        setHalftimeRemainingSeconds(calculateCurrentRemaining());
+
+        intervalRef.current = setInterval(() => {
+          const currentRemaining = calculateCurrentRemaining();
+          setHalftimeRemainingSeconds(currentRemaining);
+          if (currentRemaining <= 0) {
+            clearInterval(intervalRef.current!);
+            intervalRef.current = null;
+          }
+        }, 1000);
+      } else {
+        setHalftimeRemainingSeconds(null);
       }
-
-      const calculateCurrentRemaining = () => {
-        const elapsed = Math.floor((Date.now() - effectiveHalftimeStartTime!) / 1000);
-        return Math.max(0, halftimeDuration - elapsed);
-      };
-
-      setHalftimeRemainingSeconds(calculateCurrentRemaining());
-
-      intervalRef.current = setInterval(() => {
-        const currentRemaining = calculateCurrentRemaining();
-        setHalftimeRemainingSeconds(currentRemaining);
-        if (currentRemaining <= 0) {
-          clearInterval(intervalRef.current!);
-          intervalRef.current = null;
-        }
-      }, 1000);
     } else {
       setHalftimeRemainingSeconds(null);
     }
@@ -123,7 +122,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
         clearInterval(intervalRef.current);
       }
     };
-  }, [gameStatusDescription, gameId, getHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
+  }, [isHalftime, gameId, getHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
 
   const handleShare = () => {
     const shareUrl = window.location.origin + (sport === 'ncaa' ? '/march-madness-halftime-timer' : '/');
@@ -200,7 +199,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
               ) : (
                 <div className="flex items-center justify-center text-gray-700">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span>Halftime (Initializing Timer...)</span>
+                  <span>Waiting for Sync...</span>
                 </div>
               )
             ) : isInProgress && game.status.type.shortDetail ? (

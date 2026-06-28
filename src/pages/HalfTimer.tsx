@@ -12,13 +12,12 @@ import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
 import BlogWelcomeModal from "@/components/BlogWelcomeModal";
 import AnnouncementBar from "@/components/AnnouncementBar";
-import SponsorshipPlaceholder from "@/components/SponsorshipPlaceholder";
 import TimeSavedCalculator from "@/components/TimeSavedCalculator";
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  ncaa: "https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/scoreboard?groups=100&seasontype=3&limit=100&dates=20260317-20260407"
+  ncaa: "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard" // World Cup Pivot
 };
 
 const REFRESH_INTERVAL = 20 * 1000;
@@ -97,7 +96,7 @@ interface HalfTimerProps {
   defaultSport?: 'nfl' | 'nba' | 'ncaa';
 }
 
-const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
+const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'ncaa' }) => {
   const [activeSport, setActiveSport] = useState<'nfl' | 'nba' | 'ncaa'>(defaultSport);
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -166,34 +165,11 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
           const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
 
-          let round = 1;
-          if (activeSport === 'ncaa') {
-            const note = (competition.notes?.[0]?.text || "").toUpperCase();
-            const desc = (event.status.type.description || "").toUpperCase();
-            const name = (event.name || "").toUpperCase();
-            const combined = `${note} ${desc} ${name}`;
-
-            if (combined.includes("1ST ROUND") || combined.includes("FIRST ROUND") || combined.includes("ROUND OF 64")) round = 1;
-            else if (combined.includes("2ND ROUND") || combined.includes("SECOND ROUND") || combined.includes("ROUND OF 32")) round = 2;
-            else if (combined.includes("SWEET 16") || combined.includes("REGIONAL SEMIFINAL")) round = 3;
-            else if (combined.includes("ELITE 8") || combined.includes("REGIONAL FINAL")) round = 4;
-            else if (combined.includes("FINAL FOUR") || combined.includes("NATIONAL SEMIFINAL")) round = 5;
-            else if (combined.includes("CHAMPIONSHIP") || combined.includes("NATIONAL CHAMPIONSHIP")) round = 6;
-            else if (combined.includes("FIRST FOUR") || combined.includes("OPENING ROUND")) round = 0;
-            else round = 1;
-          }
-
-          const getSeed = (comp: any) => {
-            const s = comp?.seed || comp?.curatedRank?.current?.toString() || "";
-            return s === "99" ? "" : s;
-          };
-
           return {
             id: event.id,
             name: event.name,
             shortName: event.shortName,
             date: event.date,
-            round,
             bracketPosition: competition.bracketPosition || index,
             status: {
               type: {
@@ -208,13 +184,11 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
                 displayName: homeCompetitor?.team.displayName || "TBD",
                 logo: homeCompetitor?.team.logo || "/placeholder.svg",
                 score: homeCompetitor?.score || "0",
-                seed: getSeed(homeCompetitor),
               },
               away: {
                 displayName: awayCompetitor?.team.displayName || "TBD",
                 logo: awayCompetitor?.team.logo || "/placeholder.svg",
                 score: awayCompetitor?.score || "0",
-                seed: getSeed(awayCompetitor),
               },
             },
           };
@@ -244,7 +218,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
       if (!aIsFavorited && bIsFavorited) return 1;
 
       const getStatePriority = (state: string, desc: string) => {
-        if (desc === "Halftime" || state === "in") return 0;
+        if (desc === "Halftime" || desc === "HT" || state === "in") return 0;
         if (state === "pre") return 1;
         return 2;
       };
@@ -256,15 +230,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     });
   }, [games, favoriteGameIds]);
 
-  const standardViewGames = useMemo(() => {
-    return sortedGames.filter(game => {
-      if (activeSport === 'ncaa') {
-        return false;
-      }
-      return true;
-    });
-  }, [sortedGames, activeSport]);
-
   useEffect(() => {
     const intervalId = setInterval(() => fetchGames(false), REFRESH_INTERVAL);
     return () => clearInterval(intervalId);
@@ -274,14 +239,14 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
     ? "Live NBA halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
     : activeSport === 'nfl'
     ? "Live NFL halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
-    : "Live March Madness halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half.";
+    : "Live World Cup halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half.";
 
   const canonicalUrl = activeSport === 'nba' 
     ? "https://thehalftimer.com/nba"
     : activeSport === 'nfl'
     ? "https://thehalftimer.com/nfl"
     : activeSport === 'ncaa'
-    ? "https://thehalftimer.com/march-madness-halftime-timer"
+    ? "https://thehalftimer.com/world-cup"
     : "https://thehalftimer.com/";
 
   return (
@@ -308,7 +273,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
             <TabsList className="grid w-full grid-cols-3 h-12 p-1 bg-gray-200/50 backdrop-blur-sm rounded-xl">
               <TabsTrigger value="nfl" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all">NFL</TabsTrigger>
               <TabsTrigger value="nba" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all">NBA</TabsTrigger>
-              <TabsTrigger value="ncaa" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all whitespace-nowrap">NCAAM</TabsTrigger>
+              <TabsTrigger value="ncaa" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all whitespace-nowrap">World Cup</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
@@ -317,14 +282,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
           <div className="w-full max-w-[600px] mb-8 p-6 bg-blue-50 border border-blue-200 rounded-xl text-center shadow-sm">
             <p className="text-xl font-semibold text-blue-900">
               NFL season is over - thanks for being here, and we’ll see you back on September 10th for kickoff... view the week 1 slate below.
-            </p>
-          </div>
-        )}
-
-        {activeSport === 'ncaa' && (
-          <div className="w-full max-w-[600px] mb-8 p-6 bg-orange-50 border border-orange-200 rounded-xl text-center shadow-sm">
-            <p className="text-xl font-semibold text-orange-900">
-              March Madness is over- see you for the start of the next season on November 2, 2026.
             </p>
           </div>
         )}
@@ -372,10 +329,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
             ) : (
               <div className={cn(
                 "w-full max-w-[720px] mx-auto",
-                standardViewGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
+                sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
               )}>
-                {standardViewGames.length > 0 ? (
-                  standardViewGames.map((game) => (
+                {sortedGames.length > 0 ? (
+                  sortedGames.map((game) => (
                     <GameCard
                       key={game.id}
                       game={game}
@@ -385,41 +342,25 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nba' }) => {
                     />
                   ))
                 ) : (
-                  activeSport !== 'ncaa' && <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
+                  <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport === 'ncaa' ? 'World Cup' : activeSport.toUpperCase()} games currently available.</p>
                 )}
               </div>
             )}
 
-            {activeSport !== 'ncaa' && (
-              <div className="mt-12 p-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-md text-gray-800 flex flex-col items-center">
-                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center text-xs font-medium">
-                  <p className="flex items-center gap-2">
-                    <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full shadow-sm"></span>
-                    <span>= Live Game</span>
-                  </p>
-                  <p className="flex items-center gap-2">
-                    <span className="inline-block w-5 h-5 bg-amber-400 rounded-full shadow-sm"></span>
-                    <span>= Halftime</span>
-                  </p>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {activeSport === 'nba' && (
-            <div className="hidden lg:block absolute right-12 top-0 h-full">
-              <div className="pl-2">
-                <SponsorshipPlaceholder />
+            <div className="mt-12 p-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-md text-gray-800 flex flex-col items-center">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-center justify-center text-xs font-medium">
+                <p className="flex items-center gap-2">
+                  <span className="inline-block w-5 h-5 bg-emerald-500 rounded-full shadow-sm"></span>
+                  <span>= Live Game</span>
+                </p>
+                <p className="flex items-center gap-2">
+                  <span className="inline-block w-5 h-5 bg-amber-400 rounded-full shadow-sm"></span>
+                  <span>= Halftime</span>
+                </p>
               </div>
             </div>
-          )}
-        </div>
-
-        {activeSport === 'nba' && (
-          <div className="lg:hidden mt-12 w-full flex justify-center">
-            <SponsorshipPlaceholder />
           </div>
-        )}
+        </div>
       </div>
 
       <Footer />
