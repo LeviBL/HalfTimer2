@@ -38,11 +38,10 @@ const App = () => {
           <BrowserRouter>
             <ScrollToTop />
             <Routes>
-              <Route path="/" element={<HalfTimer defaultSport="ncaa" />} />
+              <Route path="/" element={<HalfTimer defaultSport="nfl" />} />
               <Route path="/home" element={<Navigate to="/" replace />} />
               <Route path="/nba" element={<HalfTimer defaultSport="nba" />} />
               <Route path="/nfl" element={<HalfTimer defaultSport="nfl" />} />
-              <Route path="/march-madness-halftime-timer" element={<HalfTimer defaultSport="ncaa" />} />
               <Route path="/about" element={<About />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/blog" element={<Blog />} />

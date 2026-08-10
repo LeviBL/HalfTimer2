@@ -17,7 +17,6 @@ import TimeSavedCalculator from "@/components/TimeSavedCalculator";
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
   nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-  ncaa: "https://site.api.espn.com/apis/site/v2/sports/soccer/fifa.world/scoreboard" // World Cup Pivot
 };
 
 const REFRESH_INTERVAL = 20 * 1000;
@@ -93,11 +92,11 @@ export interface Game {
 }
 
 interface HalfTimerProps {
-  defaultSport?: 'nfl' | 'nba' | 'ncaa';
+  defaultSport?: 'nfl' | 'nba';
 }
 
-const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'ncaa' }) => {
-  const [activeSport, setActiveSport] = useState<'nfl' | 'nba' | 'ncaa'>(defaultSport);
+const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
+  const [activeSport, setActiveSport] = useState<'nfl' | 'nba'>(defaultSport);
   const [games, setGames] = useState<Game[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
@@ -237,16 +236,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'ncaa' }) => {
 
   const pageDescription = activeSport === 'nba' 
     ? "Live NBA halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
-    : activeSport === 'nfl'
-    ? "Live NFL halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
-    : "Live World Cup halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half.";
+    : "Live NFL halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half.";
 
   const canonicalUrl = activeSport === 'nba' 
     ? "https://thehalftimer.com/nba"
-    : activeSport === 'nfl'
-    ? "https://thehalftimer.com/nfl"
-    : activeSport === 'ncaa'
-    ? "https://thehalftimer.com/world-cup"
     : "https://thehalftimer.com/";
 
   return (
@@ -268,12 +261,11 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'ncaa' }) => {
           Track live scores and see exactly how much halftime is left so you can skip ads.
         </p>
 
-        <div className="w-full max-w-[500px] mb-8 px-2">
-          <Tabs value={activeSport} className="w-full" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba' | 'ncaa')}>
-            <TabsList className="grid w-full grid-cols-3 h-12 p-1 bg-gray-200/50 backdrop-blur-sm rounded-xl">
+        <div className="w-full max-w-[400px] mb-8 px-2">
+          <Tabs value={activeSport} className="w-full" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba')}>
+            <TabsList className="grid w-full grid-cols-2 h-12 p-1 bg-gray-200/50 backdrop-blur-sm rounded-xl">
               <TabsTrigger value="nfl" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all">NFL</TabsTrigger>
               <TabsTrigger value="nba" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all">NBA</TabsTrigger>
-              <TabsTrigger value="ncaa" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all whitespace-nowrap">World Cup</TabsTrigger>
             </TabsList>
           </Tabs>
         </div>
@@ -281,7 +273,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'ncaa' }) => {
         {activeSport === 'nfl' && (
           <div className="w-full max-w-[600px] mb-8 p-6 bg-blue-50 border border-blue-200 rounded-xl text-center shadow-sm">
             <p className="text-xl font-semibold text-blue-900">
-              NFL season is over - thanks for being here, and we’ll see you back on September 10th for kickoff... view the week 1 slate below.
+              NFL is back! Tune in for preseason games below...
             </p>
           </div>
         )}
@@ -342,7 +334,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'ncaa' }) => {
                     />
                   ))
                 ) : (
-                  <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport === 'ncaa' ? 'World Cup' : activeSport.toUpperCase()} games currently available.</p>
+                  <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
                 )}
               </div>
             )}

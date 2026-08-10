@@ -55,14 +55,13 @@ interface GameCardProps {
   game: Game;
   isFavorited: boolean;
   onToggleFavorite: (gameId: string) => void;
-  sport: 'nfl' | 'nba' | 'ncaa';
+  sport: 'nfl' | 'nba';
 }
 
 // Durations in seconds
 const DURATIONS = {
   nfl: 12 * 60 + 20, // 12:20
   nba: 14 * 60 + 30, // 14:30
-  ncaa: 14 * 60 + 30, // World Cup (14:30 loop)
 };
 
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
@@ -74,7 +73,6 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   const gameId = game.id;
   const halftimeDuration = DURATIONS[sport];
 
-  // Soccer often uses "HT" for halftime
   const isHalftime = gameStatusDescription === "Halftime" || gameStatusDescription === "HT";
   const isScheduled = game.status.type.state === "pre";
   const isFinal = game.status.type.state === "post";
@@ -125,7 +123,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   }, [isHalftime, gameId, getHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
 
   const handleShare = () => {
-    const shareUrl = window.location.origin + (sport === 'ncaa' ? '/march-madness-halftime-timer' : '/');
+    const shareUrl = window.location.origin + (sport === 'nfl' ? '/nfl' : '/nba');
     const shareText = `Check out the live halftime countdown for ${game.competitors.away.displayName} vs ${game.competitors.home.displayName} on The Halftimer!`;
     
     navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
