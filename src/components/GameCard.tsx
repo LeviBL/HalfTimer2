@@ -67,7 +67,7 @@ const DURATIONS = {
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
   const [halftimeRemainingSeconds, setHalftimeRemainingSeconds] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { getHalftimeStartTime, isLoading: isHalftimeTimersLoading } = useHalftimeTimers();
+  const { getHalftimeStartTime, setHalftimeStartTime, isLoading: isHalftimeTimersLoading } = useHalftimeTimers();
 
   const gameStatusDescription = game.status.type.description;
   const gameId = game.id;
@@ -84,43 +84,46 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       intervalRef.current = null;
     }
 
-    if (isHalftimeTimersLoading) {
+    if (!isHalftime) {
       setHalftimeRemainingSeconds(null);
       return;
     }
 
-    if (isHalftime) {
-      const startTime = getHalftimeStartTime(gameId);
-
-      if (startTime) {
-        const calculateCurrentRemaining = () => {
-          const elapsed = Math.floor((Date.now() - startTime) / 1000);
-          return Math.max(0, halftimeDuration - elapsed);
-        };
-
-        setHalftimeRemainingSeconds(calculateCurrentRemaining());
-
-        intervalRef.current = setInterval(() => {
-          const currentRemaining = calculateCurrentRemaining();
-          setHalftimeRemainingSeconds(currentRemaining);
-          if (currentRemaining <= 0) {
-            clearInterval(intervalRef.current!);
-            intervalRef.current = null;
-          }
-        }, 1000);
-      } else {
-        setHalftimeRemainingSeconds(null);
-      }
-    } else {
-      setHalftimeRemainingSeconds(null);
+    if (isHalftimeTimersLoading) {
+      return;
     }
+
+    let startTime = getHalftimeStartTime(gameId);
+
+    // If game is in halftime but no database timestamp exists yet, initialize it immediately
+    if (!startTime) {
+      const now = Date.now();
+      setHalftimeStartTime(gameId, now);
+      startTime = now;
+    }
+
+    const calculateCurrentRemaining = () => {
+      const elapsed = Math.floor((Date.now() - startTime!) / 1000);
+      return Math.max(0, halftimeDuration - elapsed);
+    };
+
+    setHalftimeRemainingSeconds(calculateCurrentRemaining());
+
+    intervalRef.current = setInterval(() => {
+      const currentRemaining = calculateCurrentRemaining();
+      setHalftimeRemainingSeconds(currentRemaining);
+      if (currentRemaining <= 0) {
+        clearInterval(intervalRef.current!);
+        intervalRef.current = null;
+      }
+    }, 1000);
 
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isHalftime, gameId, getHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
+  }, [isHalftime, gameId, getHalftimeStartTime, setHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
 
   const handleShare = () => {
     const shareUrl = window.location.origin + (sport === 'nfl' ? '/nfl' : '/nba');
@@ -197,7 +200,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
               ) : (
                 <div className="flex items-center justify-center text-gray-700">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span>Waiting for Sync...</span>
+                  <span>Starting Countdown...</span>
                 </div>
               )
             ) : isInProgress && game.status.type.shortDetail ? (

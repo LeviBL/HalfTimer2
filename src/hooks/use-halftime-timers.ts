@@ -4,7 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 interface HalftimeTimerEntry {
   game_id: string;
   halftime_start_timestamp: number;
-  user_id?: string; // Optional, as RLS is broad for this table
+  user_id?: string;
 }
 
 export function useHalftimeTimers() {
@@ -12,26 +12,26 @@ export function useHalftimeTimers() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    let isMounted = true;
+
     const fetchInitialTimers = async () => {
       setIsLoading(true);
-      console.log("[useHalftimeTimers] Starting initial fetch for halftime timers...");
       const { data, error } = await supabase
         .from('halftime_timers')
         .select('game_id, halftime_start_timestamp');
 
       if (error) {
         console.error("[useHalftimeTimers] Error fetching initial halftime timers:", error);
-      } else if (data) {
+      } else if (data && isMounted) {
         const initialMap = new Map<string, number>();
         data.forEach(entry => {
-          initialMap.set(entry.game_id, entry.halftime_start_timestamp);
+          initialMap.set(entry.game_id, Number(entry.halftime_start_timestamp));
         });
         setHalftimeStartTimes(initialMap);
-        console.log("[useHalftimeTimers] Initial fetch complete. Data received:", data);
-        console.log("[useHalftimeTimers] Initial halftimeStartTimes map:", Array.from(initialMap.entries()));
       }
-      setIsLoading(false);
-      console.log("[useHalftimeTimers] Initial fetch finished. isLoading set to false.");
+      if (isMounted) {
+        setIsLoading(false);
+      }
     };
 
     fetchInitialTimers();
@@ -43,16 +43,16 @@ export function useHalftimeTimers() {
         { event: '*', schema: 'public', table: 'halftime_timers' },
         (payload) => {
           const { eventType, new: newRecord, old: oldRecord } = payload;
-          console.log(`[useHalftimeTimers] Realtime change detected: ${eventType}`, payload);
-
           setHalftimeStartTimes(prev => {
             const newMap = new Map(prev);
             if (eventType === 'INSERT' || eventType === 'UPDATE') {
-              newMap.set(newRecord.game_id, newRecord.halftime_start_timestamp);
-              console.log(`[useHalftimeTimers] Realtime ${eventType} for ${newRecord.game_id}. New Map:`, Array.from(newMap.entries()));
+              if (newRecord?.game_id && newRecord?.halftime_start_timestamp) {
+                newMap.set(newRecord.game_id, Number(newRecord.halftime_start_timestamp));
+              }
             } else if (eventType === 'DELETE') {
-              newMap.delete(oldRecord.game_id);
-              console.log(`[useHalftimeTimers] Realtime ${eventType} for ${oldRecord.game_id}. New Map:`, Array.from(newMap.entries()));
+              if (oldRecord?.game_id) {
+                newMap.delete(oldRecord.game_id);
+              }
             }
             return newMap;
           });
@@ -61,32 +61,39 @@ export function useHalftimeTimers() {
       .subscribe();
 
     return () => {
+      isMounted = false;
       supabase.removeChannel(channel);
-      console.log("[useHalftimeTimers] Supabase channel unsubscribed.");
     };
   }, []);
 
   const getHalftimeStartTime = useCallback((gameId: string): number | undefined => {
-    const time = halftimeStartTimes.get(gameId);
-    console.log(`[useHalftimeTimers] getHalftimeStartTime called for ${gameId}. Returning: ${time}`);
-    return time;
+    return halftimeStartTimes.get(gameId);
   }, [halftimeStartTimes]);
 
   const setHalftimeStartTime = useCallback(async (gameId: string, timestamp: number) => {
-    console.log(`[useHalftimeTimers] Attempting to upsert halftime start time for ${gameId} to ${timestamp}`);
+    // Optimistically update local state so countdown begins immediately
+    setHalftimeStartTimes(prev => {
+      const newMap = new Map(prev);
+      newMap.set(gameId, timestamp);
+      return newMap;
+    });
+
     const { error } = await supabase
       .from('halftime_timers')
       .upsert({ game_id: gameId, halftime_start_timestamp: timestamp }, { onConflict: 'game_id' });
 
     if (error) {
       console.error("[useHalftimeTimers] Error upserting halftime start time:", error);
-    } else {
-      console.log(`[useHalftimeTimers] Successfully upserted halftime start time for ${gameId}`);
     }
   }, []);
 
   const clearHalftimeStartTime = useCallback(async (gameId: string) => {
-    console.log(`[useHalftimeTimers] Attempting to delete halftime start time for ${gameId}`);
+    setHalftimeStartTimes(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(gameId);
+      return newMap;
+    });
+
     const { error } = await supabase
       .from('halftime_timers')
       .delete()
@@ -94,8 +101,6 @@ export function useHalftimeTimers() {
 
     if (error) {
       console.error("[useHalftimeTimers] Error deleting halftime start time:", error);
-    } else {
-      console.log(`[useHalftimeTimers] Successfully deleted halftime start time for ${gameId}`);
     }
   }, []);
 
