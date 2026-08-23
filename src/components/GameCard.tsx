@@ -58,7 +58,6 @@ interface GameCardProps {
   sport: 'nfl' | 'nba';
 }
 
-// Durations in seconds
 const DURATIONS = {
   nfl: 12 * 60 + 20, // 12:20
   nba: 14 * 60 + 30, // 14:30
@@ -67,7 +66,7 @@ const DURATIONS = {
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
   const [halftimeRemainingSeconds, setHalftimeRemainingSeconds] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { getHalftimeStartTime, setHalftimeStartTime, isLoading: isHalftimeTimersLoading } = useHalftimeTimers();
+  const { getHalftimeStartTime, ensureHalftimeTimer, clearHalftimeStartTime } = useHalftimeTimers();
 
   const gameStatusDescription = game.status.type.description;
   const gameId = game.id;
@@ -78,41 +77,42 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   const isFinal = game.status.type.state === "post";
   const isInProgress = game.status.type.state === "in" && !isHalftime;
 
+  const startTime = getHalftimeStartTime(gameId);
+
+  // If game is in halftime and no timer exists yet, ensure the single authoritative timer is registered
+  useEffect(() => {
+    if (isHalftime && !startTime) {
+      ensureHalftimeTimer(gameId);
+    } else if (isFinal || (!isHalftime && !isScheduled && game.status.type.state === "in")) {
+      // If game has moved past halftime, clean up
+      if (startTime) {
+        clearHalftimeStartTime(gameId);
+      }
+    }
+  }, [isHalftime, startTime, gameId, ensureHalftimeTimer, isFinal, isScheduled, game.status.type.state, clearHalftimeStartTime]);
+
   useEffect(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
 
-    if (!isHalftime) {
+    if (!isHalftime || !startTime) {
       setHalftimeRemainingSeconds(null);
       return;
     }
 
-    if (isHalftimeTimersLoading) {
-      return;
-    }
-
-    let startTime = getHalftimeStartTime(gameId);
-
-    // If game is in halftime but no database timestamp exists yet, initialize it immediately
-    if (!startTime) {
-      const now = Date.now();
-      setHalftimeStartTime(gameId, now);
-      startTime = now;
-    }
-
-    const calculateCurrentRemaining = () => {
-      const elapsed = Math.floor((Date.now() - startTime!) / 1000);
+    const calculateRemaining = () => {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
       return Math.max(0, halftimeDuration - elapsed);
     };
 
-    setHalftimeRemainingSeconds(calculateCurrentRemaining());
+    setHalftimeRemainingSeconds(calculateRemaining());
 
     intervalRef.current = setInterval(() => {
-      const currentRemaining = calculateCurrentRemaining();
-      setHalftimeRemainingSeconds(currentRemaining);
-      if (currentRemaining <= 0) {
+      const remaining = calculateRemaining();
+      setHalftimeRemainingSeconds(remaining);
+      if (remaining <= 0) {
         clearInterval(intervalRef.current!);
         intervalRef.current = null;
       }
@@ -123,7 +123,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
         clearInterval(intervalRef.current);
       }
     };
-  }, [isHalftime, gameId, getHalftimeStartTime, setHalftimeStartTime, isHalftimeTimersLoading, halftimeDuration]);
+  }, [isHalftime, startTime, halftimeDuration]);
 
   const handleShare = () => {
     const shareUrl = window.location.origin + (sport === 'nfl' ? '/nfl' : '/nba');
@@ -200,7 +200,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
               ) : (
                 <div className="flex items-center justify-center text-gray-700">
                   <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                  <span>Starting Countdown...</span>
+                  <span>Syncing Countdown...</span>
                 </div>
               )
             ) : isInProgress && game.status.type.shortDetail ? (
