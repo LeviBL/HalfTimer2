@@ -1,23 +1,12 @@
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { HelmetProvider } from "react-<dyad-write path="src/App.tsx" description="Fix App.tsx syntax error and wrap the app in HalftimeTimersProvider">
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes,<dyad-write path="src/App.tsx" description="Fix App.tsx syntax error and wrap the app in HalftimeTimersProvider">
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
 import HalfTimer from "./pages/HalfTimer";
 import NotFound from "./pages/NotFound";
-import React, { useEffect } from "react";
 import About from "./pages/About";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
@@ -36,7 +25,7 @@ const App = () => {
     // Remove static SEO elements once React has taken over
     const seoFooter = document.getElementById("seo-footer");
     if (seoFooter) seoFooter.remove();
-    
+
     const seoPlaceholder = document.getElementById("seo-content-placeholder");
     if (seoPlaceholder) seoPlaceholder.remove();
   }, []);
