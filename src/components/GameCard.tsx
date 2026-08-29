@@ -7,7 +7,7 @@ import { getAbbreviatedTeamName as getNflAbbreviation } from "@/utils/nflTeamAbb
 import { getAbbreviatedNbaTeamName as getNbaAbbreviation } from "@/utils/nbaTeamAbbreviations";
 import { ProgressWithIndicator } from "@/components/ProgressWithIndicator";
 import { Star, Loader2, Share2 } from "lucide-react";
-import { useHalftimeTimers } from "@/hooks/use-halftime-timers";
+import { useHalftimeTimers, HALFTIME_DURATIONS } from "@/hooks/use-halftime-timers";
 import { toast } from "sonner";
 
 const formatCountdown = (seconds: number): string => {
@@ -58,11 +58,6 @@ interface GameCardProps {
   sport: 'nfl' | 'nba';
 }
 
-const DURATIONS = {
-  nfl: 12 * 60 + 20, // 12:20
-  nba: 14 * 60 + 30, // 14:30
-};
-
 const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
   const [halftimeRemainingSeconds, setHalftimeRemainingSeconds] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -70,7 +65,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
 
   const gameStatusDescription = game.status.type.description;
   const gameId = game.id;
-  const halftimeDuration = DURATIONS[sport];
+  const halftimeDuration = HALFTIME_DURATIONS[sport];
 
   const isHalftime = gameStatusDescription === "Halftime" || gameStatusDescription === "HT";
   const isScheduled = game.status.type.state === "pre";
