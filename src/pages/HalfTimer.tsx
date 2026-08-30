@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import TimeSavedCalculator from "@/components/TimeSavedCalculator";
+import NFLCountdownBanner from "@/components/NFLCountdownBanner";
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
@@ -267,13 +268,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
           </Tabs>
         </div>
 
-        {activeSport === 'nfl' && (
-          <div className="w-full max-w-[600px] mb-8 p-6 bg-blue-50 border border-blue-200 rounded-xl text-center shadow-sm">
-            <p className="text-xl font-semibold text-blue-900">
-              NFL is back! Tune in for preseason games below...
-            </p>
-          </div>
-        )}
+        {activeSport === 'nfl' && <NFLCountdownBanner />}
 
         {lastUpdated && (
           <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
