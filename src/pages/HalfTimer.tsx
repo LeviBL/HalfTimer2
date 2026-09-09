@@ -283,15 +283,9 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
           </div>
         )}
 
-        <div className="w-full max-w-[1400px] relative">
-          {SHOW_SPONSOR_AD && activeSport === 'nfl' && (
-            <div className="hidden min-[720px]:block absolute top-0 right-0 w-[340px] h-full z-10">
-              <div className="sticky top-6">
-                <TrophySmackAdCard />
-              </div>
-            </div>
-          )}
-          <div className="flex flex-col items-center w-full">
+        <div className="w-full max-w-[1100px] mx-auto px-4">
+          <div className="flex flex-row gap-8 justify-center">
+            <div className="w-full max-w-[720px]">
             {loading ? (
               <div className="grid grid-cols-1 min-[720px]:grid-cols-2 gap-2 w-full max-w-[720px] mx-auto">
                 {[...Array(6)].map((_, i) => (
@@ -335,7 +329,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
                         sport={activeSport}
                       />
                       {SHOW_SPONSOR_AD && activeSport === 'nfl' && index === 1 && (
-                        <div className="min-[720px]:hidden my-4">
+                        <div className="min-[1100px]:hidden my-4">
                           <TrophySmackAdCard />
                         </div>
                       )}
@@ -359,6 +353,14 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
                 </p>
               </div>
             </div>
+            </div>
+            {SHOW_SPONSOR_AD && activeSport === 'nfl' && (
+              <div className="hidden min-[1100px]:block w-[340px] flex-shrink-0">
+                <div className="sticky top-6">
+                  <TrophySmackAdCard />
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
