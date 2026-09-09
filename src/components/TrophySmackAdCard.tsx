@@ -15,8 +15,8 @@ const TrophySmackAdCard: React.FC = () => {
         <div className="p-6">
           <p className="text-center text-purple-800 text-xs font-bold tracking-widest mb-4">GAME DAY PARTNER</p>
           <div className="flex justify-center mb-4">
-            <img 
-              src="https://www.trophysmack.com/cdn/shop/files/ts-logo-2021-main-solid-color-new-football-spike_2x_6903399f-2493-4394-9374-100c3359d7d3.png?v=1692376194&width=500"
+            <img
+              src="/assets/trophysmack-logo.png"
               alt="Trophy Smack Logo"
               className="w-32"
             />

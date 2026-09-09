@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import TimeSavedCalculator from "@/components/TimeSavedCalculator";
-import NFLCountdownBanner from "@/components/NFLCountdownBanner";
 import TrophySmackAdCard from '@/components/TrophySmackAdCard';
 
 const SHOW_SPONSOR_AD = true;
@@ -271,7 +270,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
           </Tabs>
         </div>
 
-        {activeSport === 'nfl' && <NFLCountdownBanner />}
 
         {lastUpdated && (
           <div className="absolute top-4 right-4 flex flex-col items-end gap-2">
