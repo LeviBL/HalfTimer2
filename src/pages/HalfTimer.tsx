@@ -13,6 +13,9 @@ import SEO from "@/components/SEO";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import TimeSavedCalculator from "@/components/TimeSavedCalculator";
 import NFLCountdownBanner from "@/components/NFLCountdownBanner";
+import TrophySmackAdCard from '@/components/TrophySmackAdCard';
+
+const SHOW_SPONSOR_AD = true;
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
@@ -281,6 +284,13 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
         )}
 
         <div className="w-full max-w-[1400px] relative">
+          {SHOW_SPONSOR_AD && activeSport === 'nfl' && (
+            <div className="hidden min-[720px]:block absolute top-0 right-0 w-[340px] h-full z-10">
+              <div className="sticky top-6">
+                <TrophySmackAdCard />
+              </div>
+            </div>
+          )}
           <div className="flex flex-col items-center w-full">
             {loading ? (
               <div className="grid grid-cols-1 min-[720px]:grid-cols-2 gap-2 w-full max-w-[720px] mx-auto">
@@ -316,18 +326,25 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
                 sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
               )}>
                 {sortedGames.length > 0 ? (
-                  sortedGames.map((game) => (
-                    <GameCard
-                      key={game.id}
-                      game={game}
-                      isFavorited={favoriteGameIds.has(game.id)}
-                      onToggleFavorite={toggleFavorite}
-                      sport={activeSport}
-                    />
+                  sortedGames.map((game, index) => (
+                    <React.Fragment key={game.id}>
+                      <GameCard
+                        game={game}
+                        isFavorited={favoriteGameIds.has(game.id)}
+                        onToggleFavorite={toggleFavorite}
+                        sport={activeSport}
+                      />
+                      {SHOW_SPONSOR_AD && activeSport === 'nfl' && index === 1 && (
+                        <div className="min-[720px]:hidden my-4">
+                          <TrophySmackAdCard />
+                        </div>
+                      )}
+                    </React.Fragment>
                   ))
                 ) : (
                   <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
                 )}
+              </div>
               </div>
             )}
 
