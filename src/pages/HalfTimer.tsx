@@ -345,7 +345,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
                   <p className="col-span-full text-center text-gray-600 text-2xl">No {activeSport.toUpperCase()} games currently available.</p>
                 )}
               </div>
-              </div>
             )}
 
             <div className="mt-12 p-6 bg-white/70 backdrop-blur-sm rounded-xl shadow-md text-gray-800 flex flex-col items-center">
