@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
-import { Award } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { ArrowRight } from 'lucide-react';
 
 const TrophySmackAdCard: React.FC = () => {
   return (
@@ -8,15 +9,26 @@ const TrophySmackAdCard: React.FC = () => {
       href="https://www.trophysmack.com/collections/fantasy-football-trophies"
       target="_blank"
       rel="noopener noreferrer"
-      className="block w-full transition-transform transform hover:-translate-y-1"
+      className="block w-full"
     >
-      <Card className="bg-gradient-to-br from-gray-900 to-gray-800 text-white overflow-hidden rounded-xl shadow-lg hover:shadow-2xl transition-shadow duration-300 w-full">
-        <CardContent className="p-6 flex flex-col items-center justify-center text-center">
-          <Award className="w-12 h-12 text-amber-400 mb-4" />
-          <h3 className="text-xl font-bold mb-2">Fantasy Football Trophies</h3>
-          <p className="text-sm text-gray-300 mb-4">The best trophies, rings, and belts for your fantasy league.</p>
-          <div className="text-xs font-semibold text-amber-400 tracking-wider uppercase">TrophySmack.com</div>
-        </CardContent>
+      <Card className="w-full max-w-[340px] mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
+        <div className="p-6">
+          <p className="text-center text-purple-800 text-xs font-bold tracking-widest mb-4">GAME DAY PARTNER</p>
+          <div className="flex justify-center mb-4">
+            <img 
+              src="https://www.trophysmack.com/cdn/shop/files/ts-logo-2021-main-solid-color-new-football-spike_2x_6903399f-2493-4394-9374-100c3359d7d3.png?v=1692376194&width=500"
+              alt="Trophy Smack Logo"
+              className="w-32"
+            />
+          </div>
+          <h2 className="text-2xl font-bold text-center text-gray-900 mb-2">Make your league win mean something.</h2>
+          <p className="text-center text-gray-600 mb-6">Fantasy football trophies, championship belts, and gear made for the group chat.</p>
+          <Button className="w-full bg-[#E56A40] hover:bg-[#d45f3a] text-white font-bold py-3 rounded-lg text-base">
+            Shop Fantasy Football Trophies
+            <ArrowRight className="ml-2 h-5 w-5" />
+          </Button>
+          <p className="text-center text-gray-400 text-xs mt-4">Sponsored placement - linked to TrophySmack.com</p>
+        </div>
       </Card>
     </a>
   );
