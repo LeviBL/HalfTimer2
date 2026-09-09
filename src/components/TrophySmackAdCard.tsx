@@ -6,7 +6,7 @@ import { ArrowRight } from 'lucide-react';
 const TrophySmackAdCard: React.FC = () => {
   return (
     <a
-      href="https://www.trophysmack.com/collections/fantasy-football-trophies"
+      href="https://www.trophysmack.com/collections/fantasy-football-trophies?utm_source=thehalftimer"
       target="_blank"
       rel="noopener noreferrer"
       className="block w-full"
