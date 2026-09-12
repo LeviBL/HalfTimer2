@@ -7,12 +7,8 @@ import { getAbbreviatedTeamName as getNflAbbreviation } from "@/utils/nflTeamAbb
 import { getAbbreviatedNbaTeamName as getNbaAbbreviation } from "@/utils/nbaTeamAbbreviations";
 import { ProgressWithIndicator } from "@/components/ProgressWithIndicator";
 import { Star, Loader2, Share2 } from "lucide-react";
+import { useHalftimeTimers, HALFTIME_DURATIONS } from "@/hooks/use-halftime-timers";
 import { toast } from "sonner";
-
-export const HALFTIME_DURATIONS = {
-  nfl: 12 * 60 + 20, // 12 minutes and 20 seconds
-  nba: 14 * 60 + 20, // 14 minutes and 20 seconds
-};
 
 const formatCountdown = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60);
@@ -60,14 +56,15 @@ interface GameCardProps {
   isFavorited: boolean;
   onToggleFavorite: (gameId: string) => void;
   sport: 'nfl' | 'nba';
-  halftimeStartTime: number | undefined;
 }
 
-const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport, halftimeStartTime }) => {
+const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport }) => {
   const [halftimeRemainingSeconds, setHalftimeRemainingSeconds] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const { getHalftimeStartTime, ensureHalftimeTimer, clearHalftimeStartTime } = useHalftimeTimers();
 
   const gameStatusDescription = game.status.type.description;
+  const gameId = game.id;
   const halftimeDuration = HALFTIME_DURATIONS[sport];
 
   const isHalftime = gameStatusDescription === "Halftime" || gameStatusDescription === "HT";
@@ -75,19 +72,33 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
   const isFinal = game.status.type.state === "post";
   const isInProgress = game.status.type.state === "in" && !isHalftime;
 
+  const startTime = getHalftimeStartTime(gameId);
+
+  // If game is in halftime and no timer exists yet, ensure the single authoritative timer is registered
+  useEffect(() => {
+    if (isHalftime && !startTime) {
+      ensureHalftimeTimer(gameId);
+    } else if (isFinal || (!isHalftime && !isScheduled && game.status.type.state === "in")) {
+      // If game has moved past halftime, clean up
+      if (startTime) {
+        clearHalftimeStartTime(gameId);
+      }
+    }
+  }, [isHalftime, startTime, gameId, ensureHalftimeTimer, isFinal, isScheduled, game.status.type.state, clearHalftimeStartTime]);
+
   useEffect(() => {
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
 
-    if (!isHalftime || !halftimeStartTime) {
+    if (!isHalftime || !startTime) {
       setHalftimeRemainingSeconds(null);
       return;
     }
 
     const calculateRemaining = () => {
-      const elapsed = Math.floor((Date.now() - halftimeStartTime) / 1000);
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
       return Math.max(0, halftimeDuration - elapsed);
     };
 
@@ -107,7 +118,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
         clearInterval(intervalRef.current);
       }
     };
-  }, [isHalftime, halftimeStartTime, halftimeDuration]);
+  }, [isHalftime, startTime, halftimeDuration]);
 
   const handleShare = () => {
     const shareUrl = window.location.origin + (sport === 'nfl' ? '/nfl' : '/nba');
