@@ -172,6 +172,8 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       );
 
       if (!response.ok) {
+        const errorBody = await response.text();
+        console.error("[HalfTimer] Fetch error body:", errorBody);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const { gameData, halftimeTimers } = await response.json();
