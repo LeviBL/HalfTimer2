@@ -138,11 +138,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     }
   }, [favoriteGameIds, activeSport]);
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(`${HALFTIME_START_TIMES_KEY_PREFIX}${activeSport}`, JSON.stringify(halftimeStartTimes));
-    }
-  }, [halftimeStartTimes, activeSport]);
 
   const toggleFavorite = (gameId: string) => {
     setFavoriteGameIds(prevFavorites => {
@@ -164,31 +159,28 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     }
 
     try {
-      const response = await fetch(API_ENDPOINTS[activeSport]);
+      const response = await fetch(
+        `https://wapnpuwtfzteavchdxzv.supabase.co/functions/v1/fetch-game-data`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhcG5wdXd0Znp0ZWF2Y2hkeHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxOTEyNDksImV4cCI6MjA3NDc2NzI0OX0.tNthlJkR6xIMNxxMhinqy_HLHD4uvXvXZZl06mlUYXE',
+          },
+          body: JSON.stringify({ sport: activeSport }),
+        }
+      );
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const data = await response.json();
+      const { gameData, halftimeTimers } = await response.json();
 
-      const now = Date.now();
-      const newStartTimes = { ...halftimeStartTimes };
-      let startTimesChanged = false;
-
-      const processedGames: Game[] = (data.events || [])
+      const processedGames: Game[] = (gameData.events || [])
         .map((event: EventData, index: number) => {
           const competition = event.competitions[0];
           const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
           const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
-
-          const isHalftime = (event.status.type.description === "Halftime" || event.status.type.shortDetail === "HT");
-
-          if (isHalftime && !newStartTimes[event.id]) {
-            newStartTimes[event.id] = now;
-            startTimesChanged = true;
-          } else if (!isHalftime && newStartTimes[event.id]) {
-            delete newStartTimes[event.id];
-            startTimesChanged = true;
-          }
 
           return {
             id: event.id,
@@ -219,10 +211,12 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
           };
         });
 
-      if (startTimesChanged) {
-        setHalftimeStartTimes(newStartTimes);
-      }
+      const newStartTimes = halftimeTimers.reduce((acc: Record<string, number>, timer: { game_id: string; start_time: string }) => {
+        acc[timer.game_id] = new Date(timer.start_time).getTime();
+        return acc;
+      }, {});
 
+      setHalftimeStartTimes(newStartTimes);
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
