@@ -155,26 +155,13 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     }
 
     try {
-      const response = await fetch(
-        `https://wapnpuwtfzteavchdxzv.supabase.co/functions/v1/fetch-game-data`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhcG5wdXd0Znp0ZWF2Y2hkeHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxOTEyNDksImV4cCI6MjA3NDc2NzI0OX0.tNthlJkR6xIMNxxMhinqy_HLHD4uvXvXZZl06mlUYXE',
-          },
-          body: JSON.stringify({ sport: activeSport }),
-        }
-      );
-
+      const response = await fetch(API_ENDPOINTS[activeSport]);
       if (!response.ok) {
-        const errorBody = await response.text();
-        console.error("[HalfTimer] Fetch error body:", errorBody);
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      const { gameData, halftimeTimers } = await response.json();
+      const data = await response.json();
 
-      const processedGames: Game[] = (gameData.events || [])
+      const processedGames: Game[] = (data.events || [])
         .map((event: EventData, index: number) => {
           const competition = event.competitions[0];
           const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
@@ -209,12 +196,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
           };
         });
 
-      const newStartTimes = halftimeTimers.reduce((acc: Record<string, number>, timer: { game_id: string; start_time: string }) => {
-        acc[timer.game_id] = new Date(timer.start_time).getTime();
-        return acc;
-      }, {});
-
-      setHalftimeStartTimes(newStartTimes);
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
@@ -254,6 +235,33 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
   useEffect(() => {
     const intervalId = setInterval(() => fetchGames(false), REFRESH_INTERVAL);
     return () => clearInterval(intervalId);
+  }, [activeSport]);
+
+  useEffect(() => {
+    const fetchHalftimeData = async () => {
+      try {
+        const response = await fetch(`https://wapnpuwtfzteavchdxzv.supabase.co/rest/v1/halftime_timers?sport=eq.${activeSport}`,
+        {
+          headers: {
+            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhcG5wdXd0Znp0ZWF2Y2hkeHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxOTEyNDksImV4cCI6MjA3NDc2NzI0OX0.tNthlJkR6xIMNxxMhinqy_HLHD4uvXvXZZl06mlUYXE',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhcG5wdXd0Znp0ZWF2Y2hkeHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxOTEyNDksImV4cCI6MjA3NDc2NzI0OX0.tNthlJkR6xIMNxxMhinqy_HLHD4uvXvXZZl06mlUYXE'
+          }
+        });
+        const timers = await response.json();
+        const newStartTimes = timers.reduce((acc: Record<string, number>, timer: { game_id: string; start_time: string }) => {
+          acc[timer.game_id] = new Date(timer.start_time).getTime();
+          return acc;
+        }, {});
+        setHalftimeStartTimes(newStartTimes);
+      } catch (error) {
+        console.error("[HalfTimer] Failed to fetch halftime timers:", error);
+      }
+    };
+
+    fetchHalftimeData();
+    const halftimeInterval = setInterval(fetchHalftimeData, 10000); // Fetch every 10 seconds
+
+    return () => clearInterval(halftimeInterval);
   }, [activeSport]);
 
   const pageDescription = activeSport === 'nba' 
