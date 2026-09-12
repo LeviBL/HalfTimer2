@@ -23,6 +23,7 @@ const API_ENDPOINTS = {
 
 const REFRESH_INTERVAL = 20 * 1000;
 const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
+const HALFTIME_START_TIMES_KEY_PREFIX = "halftimeStartTimes_";
 
 interface TeamData {
   displayName: string;
@@ -104,6 +105,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [halftimeStartTimes, setHalftimeStartTimes] = useState<Record<string, number>>({});
   
   const [favoriteGameIds, setFavoriteGameIds] = useState<Set<string>>(() => {
     if (typeof window !== "undefined") {
@@ -124,6 +126,8 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     if (typeof window !== "undefined") {
       const storedFavorites = localStorage.getItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`);
       setFavoriteGameIds(storedFavorites ? new Set(JSON.parse(storedFavorites)) : new Set());
+      const storedStartTimes = localStorage.getItem(`${HALFTIME_START_TIMES_KEY_PREFIX}${activeSport}`);
+      setHalftimeStartTimes(storedStartTimes ? JSON.parse(storedStartTimes) : {});
     }
     fetchGames(true);
   }, [activeSport]);
@@ -133,6 +137,12 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       localStorage.setItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`, JSON.stringify(Array.from(favoriteGameIds)));
     }
   }, [favoriteGameIds, activeSport]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(`${HALFTIME_START_TIMES_KEY_PREFIX}${activeSport}`, JSON.stringify(halftimeStartTimes));
+    }
+  }, [halftimeStartTimes, activeSport]);
 
   const toggleFavorite = (gameId: string) => {
     setFavoriteGameIds(prevFavorites => {
@@ -160,11 +170,25 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       }
       const data = await response.json();
 
+      const now = Date.now();
+      const newStartTimes = { ...halftimeStartTimes };
+      let startTimesChanged = false;
+
       const processedGames: Game[] = (data.events || [])
         .map((event: EventData, index: number) => {
           const competition = event.competitions[0];
           const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
           const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
+
+          const isHalftime = (event.status.type.description === "Halftime" || event.status.type.shortDetail === "HT");
+
+          if (isHalftime && !newStartTimes[event.id]) {
+            newStartTimes[event.id] = now;
+            startTimesChanged = true;
+          } else if (!isHalftime && newStartTimes[event.id]) {
+            delete newStartTimes[event.id];
+            startTimesChanged = true;
+          }
 
           return {
             id: event.id,
@@ -194,6 +218,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
             },
           };
         });
+
+      if (startTimesChanged) {
+        setHalftimeStartTimes(newStartTimes);
+      }
 
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
@@ -325,6 +353,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
                         isFavorited={favoriteGameIds.has(game.id)}
                         onToggleFavorite={toggleFavorite}
                         sport={activeSport}
+                        halftimeStartTime={halftimeStartTimes[game.id]}
                       />
                       {SHOW_SPONSOR_AD && activeSport === 'nfl' && index === 1 && (
                         <div className="min-[1100px]:hidden my-4">
