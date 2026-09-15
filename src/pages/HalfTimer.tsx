@@ -104,7 +104,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
-  const [halftimeStartTimes, setHalftimeStartTimes] = useState<Record<string, number>>({});
   
   const [favoriteGameIds, setFavoriteGameIds] = useState<Set<string>>(() => {
     if (typeof window !== "undefined") {
@@ -237,33 +236,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     return () => clearInterval(intervalId);
   }, [activeSport]);
 
-  useEffect(() => {
-    const fetchHalftimeData = async () => {
-      try {
-        const response = await fetch(`https://wapnpuwtfzteavchdxzv.supabase.co/rest/v1/halftime_timers?sport=eq.${activeSport}`,
-        {
-          headers: {
-            'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhcG5wdXd0Znp0ZWF2Y2hkeHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxOTEyNDksImV4cCI6MjA3NDc2NzI0OX0.tNthlJkR6xIMNxxMhinqy_HLHD4uvXvXZZl06mlUYXE',
-            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndhcG5wdXd0Znp0ZWF2Y2hkeHp2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkxOTEyNDksImV4cCI6MjA3NDc2NzI0OX0.tNthlJkR6xIMNxxMhinqy_HLHD4uvXvXZZl06mlUYXE'
-          }
-        });
-        const timers = await response.json();
-        const newStartTimes = timers.reduce((acc: Record<string, number>, timer: { game_id: string; start_time: string }) => {
-          acc[timer.game_id] = new Date(timer.start_time).getTime();
-          return acc;
-        }, {});
-        setHalftimeStartTimes(newStartTimes);
-      } catch (error) {
-        console.error("[HalfTimer] Failed to fetch halftime timers:", error);
-      }
-    };
-
-    fetchHalftimeData();
-    const halftimeInterval = setInterval(fetchHalftimeData, 10000); // Fetch every 10 seconds
-
-    return () => clearInterval(halftimeInterval);
-  }, [activeSport]);
-
   const pageDescription = activeSport === 'nba' 
     ? "Live NBA halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
     : "Live NFL halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half.";
@@ -353,7 +325,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
                         isFavorited={favoriteGameIds.has(game.id)}
                         onToggleFavorite={toggleFavorite}
                         sport={activeSport}
-                        halftimeStartTime={halftimeStartTimes[game.id]}
                       />
                       {SHOW_SPONSOR_AD && activeSport === 'nfl' && index === 1 && (
                         <div className="min-[1100px]:hidden my-4">
