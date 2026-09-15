@@ -104,6 +104,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [lastUpdated, setLastUpdated] = useState<string | null>(null);
+  const [halftimeStartTimes, setHalftimeStartTimes] = useState<Record<string, number>>({});
   
   const [favoriteGameIds, setFavoriteGameIds] = useState<Set<string>>(() => {
     if (typeof window !== "undefined") {
@@ -160,11 +161,25 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       }
       const data = await response.json();
 
+      const now = Date.now();
+      const newStartTimes = { ...halftimeStartTimes };
+      let startTimesChanged = false;
+
       const processedGames: Game[] = (data.events || [])
         .map((event: EventData, index: number) => {
           const competition = event.competitions[0];
           const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
           const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
+
+          const isHalftime = (event.status.type.description === "Halftime" || event.status.type.shortDetail === "HT");
+
+          if (isHalftime && !newStartTimes[event.id]) {
+            newStartTimes[event.id] = now;
+            startTimesChanged = true;
+          } else if (!isHalftime && newStartTimes[event.id]) {
+            delete newStartTimes[event.id];
+            startTimesChanged = true;
+          }
 
           return {
             id: event.id,
@@ -194,6 +209,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
             },
           };
         });
+
+      if (startTimesChanged) {
+        setHalftimeStartTimes(newStartTimes);
+      }
 
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
@@ -325,6 +344,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
                         isFavorited={favoriteGameIds.has(game.id)}
                         onToggleFavorite={toggleFavorite}
                         sport={activeSport}
+                        halftimeStartTime={halftimeStartTimes[game.id]}
                       />
                       {SHOW_SPONSOR_AD && activeSport === 'nfl' && index === 1 && (
                         <div className="min-[1100px]:hidden my-4">
