@@ -13,7 +13,6 @@ import SEO from "@/components/SEO";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import TimeSavedCalculator from "@/components/TimeSavedCalculator";
 import TrophySmackAdCard from '@/components/TrophySmackAdCard';
-import { supabase } from "@/integrations/supabase/client";
 
 const SHOW_SPONSOR_AD = true;
 
@@ -24,6 +23,7 @@ const API_ENDPOINTS = {
 
 const REFRESH_INTERVAL = 20 * 1000;
 const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
+const HALFTIME_START_TIMES_KEY_PREFIX = "halftimeStartTimes_";
 
 interface TeamData {
   displayName: string;
@@ -126,6 +126,8 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     if (typeof window !== "undefined") {
       const storedFavorites = localStorage.getItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`);
       setFavoriteGameIds(storedFavorites ? new Set(JSON.parse(storedFavorites)) : new Set());
+      const storedStartTimes = localStorage.getItem(`${HALFTIME_START_TIMES_KEY_PREFIX}${activeSport}`);
+      setHalftimeStartTimes(storedStartTimes ? JSON.parse(storedStartTimes) : {});
     }
     fetchGames(true);
   }, [activeSport]);
@@ -135,6 +137,12 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       localStorage.setItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`, JSON.stringify(Array.from(favoriteGameIds)));
     }
   }, [favoriteGameIds, activeSport]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(`${HALFTIME_START_TIMES_KEY_PREFIX}${activeSport}`, JSON.stringify(halftimeStartTimes));
+    }
+  }, [halftimeStartTimes, activeSport]);
 
   const toggleFavorite = (gameId: string) => {
     setFavoriteGameIds(prevFavorites => {
@@ -162,6 +170,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       }
       const data = await response.json();
 
+      const now = Date.now();
+      const newStartTimes = { ...halftimeStartTimes };
+      let startTimesChanged = false;
+
       const processedGames: Game[] = (data.events || [])
         .map((event: EventData, index: number) => {
           const competition = event.competitions[0];
@@ -170,15 +182,12 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
 
           const isHalftime = (event.status.type.description === "Halftime" || event.status.type.shortDetail === "HT");
 
-          if (isHalftime) {
-            // Attempt to insert the start time. The database will enforce uniqueness.
-            supabase.from('halftime_timers').insert([
-              { game_id: event.id, sport: activeSport, start_time: new Date().toISOString() }
-            ]).then(({ error }) => {
-              if (error && error.code !== '23505') { // 23505 is the code for unique violation
-                console.error('Error setting halftime start time:', error);
-              }
-            });
+          if (isHalftime && !newStartTimes[event.id]) {
+            newStartTimes[event.id] = now;
+            startTimesChanged = true;
+          } else if (!isHalftime && newStartTimes[event.id]) {
+            delete newStartTimes[event.id];
+            startTimesChanged = true;
           }
 
           return {
@@ -210,6 +219,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
           };
         });
 
+      if (startTimesChanged) {
+        setHalftimeStartTimes(newStartTimes);
+      }
+
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
       setError(null);
@@ -225,32 +238,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       }
     }
   };
-
-  useEffect(() => {
-    const fetchHalftimeData = async () => {
-      const { data, error } = await supabase
-        .from('halftime_timers')
-        .select('game_id, start_time')
-        .eq('sport', activeSport);
-
-      if (error) {
-        console.error('Error fetching halftime start times:', error);
-        return;
-      }
-
-      const newStartTimes = data.reduce((acc: Record<string, number>, timer: { game_id: string; start_time: string }) => {
-        acc[timer.game_id] = new Date(timer.start_time).getTime();
-        return acc;
-      }, {});
-
-      setHalftimeStartTimes(newStartTimes);
-    };
-
-    const interval = setInterval(fetchHalftimeData, 10000); // Poll every 10 seconds
-    fetchHalftimeData();
-
-    return () => clearInterval(interval);
-  }, [activeSport]);
 
   const sortedGames = useMemo(() => {
     return [...games].sort((a, b) => {
