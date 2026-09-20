@@ -148,6 +148,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     });
   };
 
+  // Fetches live game data from ESPN
   const fetchGames = async (initialLoad: boolean = false) => {
     if (initialLoad) setLoading(true);
     else setIsRefreshing(true);
@@ -157,23 +158,10 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
 
-      const halftimeGamesToInsert: { game_id: string; sport: string; start_time: string; }[] = [];
-
       const processedGames: Game[] = (data.events || []).map((event: EventData, index: number) => {
         const competition = event.competitions[0];
         const home = competition.competitors.find(c => c.homeAway === "home");
         const away = competition.competitors.find(c => c.homeAway === "away");
-
-        const isHalftime = (event.status.type.description === "Halftime" || event.status.type.shortDetail === "HT");
-
-        if (isHalftime) {
-          halftimeGamesToInsert.push({
-            game_id: event.id,
-            sport: activeSport,
-            start_time: new Date().toISOString(),
-          });
-        }
-
         return {
           id: event.id,
           name: event.name,
@@ -187,15 +175,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
           },
         };
       });
-
-      // Atomically insert all new halftime games. The database will ignore any duplicates.
-      if (halftimeGamesToInsert.length > 0) {
-        supabase.from('halftime_timers').insert(halftimeGamesToInsert, { onConflict: 'game_id' }).then(({ error }) => {
-          if (error && error.code !== '23505') { // 23505 is unique_violation
-            console.error('Error setting halftime start time:', error);
-          }
-        });
-      }
 
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
