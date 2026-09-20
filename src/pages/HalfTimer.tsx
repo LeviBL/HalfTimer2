@@ -13,6 +13,7 @@ import SEO from "@/components/SEO";
 import AnnouncementBar from "@/components/AnnouncementBar";
 import TimeSavedCalculator from "@/components/TimeSavedCalculator";
 import TrophySmackAdCard from '@/components/TrophySmackAdCard';
+import { supabase } from "@/integrations/supabase/client";
 
 const SHOW_SPONSOR_AD = true;
 
@@ -23,7 +24,6 @@ const API_ENDPOINTS = {
 
 const REFRESH_INTERVAL = 20 * 1000;
 const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
-const HALFTIME_START_TIMES_KEY_PREFIX = "halftimeStartTimes_";
 
 interface TeamData {
   displayName: string;
@@ -126,8 +126,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     if (typeof window !== "undefined") {
       const storedFavorites = localStorage.getItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`);
       setFavoriteGameIds(storedFavorites ? new Set(JSON.parse(storedFavorites)) : new Set());
-      const storedStartTimes = localStorage.getItem(`${HALFTIME_START_TIMES_KEY_PREFIX}${activeSport}`);
-      setHalftimeStartTimes(storedStartTimes ? JSON.parse(storedStartTimes) : {});
     }
     fetchGames(true);
   }, [activeSport]);
@@ -137,12 +135,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       localStorage.setItem(`${FAVORITE_GAMES_STORAGE_KEY_PREFIX}${activeSport}`, JSON.stringify(Array.from(favoriteGameIds)));
     }
   }, [favoriteGameIds, activeSport]);
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      localStorage.setItem(`${HALFTIME_START_TIMES_KEY_PREFIX}${activeSport}`, JSON.stringify(halftimeStartTimes));
-    }
-  }, [halftimeStartTimes, activeSport]);
 
   const toggleFavorite = (gameId: string) => {
     setFavoriteGameIds(prevFavorites => {
@@ -156,72 +148,33 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     });
   };
 
+  // Fetches live game data from ESPN
   const fetchGames = async (initialLoad: boolean = false) => {
-    if (initialLoad) {
-      setLoading(true);
-    } else {
-      setIsRefreshing(true);
-    }
+    if (initialLoad) setLoading(true);
+    else setIsRefreshing(true);
 
     try {
       const response = await fetch(API_ENDPOINTS[activeSport]);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
 
-      const now = Date.now();
-      const newStartTimes = { ...halftimeStartTimes };
-      let startTimesChanged = false;
-
-      const processedGames: Game[] = (data.events || [])
-        .map((event: EventData, index: number) => {
-          const competition = event.competitions[0];
-          const homeCompetitor = competition.competitors.find(c => c.homeAway === "home");
-          const awayCompetitor = competition.competitors.find(c => c.homeAway === "away");
-
-          const isHalftime = (event.status.type.description === "Halftime" || event.status.type.shortDetail === "HT");
-
-          if (isHalftime && !newStartTimes[event.id]) {
-            newStartTimes[event.id] = now;
-            startTimesChanged = true;
-          } else if (!isHalftime && newStartTimes[event.id]) {
-            delete newStartTimes[event.id];
-            startTimesChanged = true;
-          }
-
-          return {
-            id: event.id,
-            name: event.name,
-            shortName: event.shortName,
-            date: event.date,
-            bracketPosition: competition.bracketPosition || index,
-            status: {
-              type: {
-                description: event.status.type.description,
-                state: event.status.type.state,
-                detail: event.status.type.detail,
-                shortDetail: event.status.type.shortDetail,
-              },
-            },
-            competitors: {
-              home: {
-                displayName: homeCompetitor?.team.displayName || "TBD",
-                logo: homeCompetitor?.team.logo || "/placeholder.svg",
-                score: homeCompetitor?.score || "0",
-              },
-              away: {
-                displayName: awayCompetitor?.team.displayName || "TBD",
-                logo: awayCompetitor?.team.logo || "/placeholder.svg",
-                score: awayCompetitor?.score || "0",
-              },
-            },
-          };
-        });
-
-      if (startTimesChanged) {
-        setHalftimeStartTimes(newStartTimes);
-      }
+      const processedGames: Game[] = (data.events || []).map((event: EventData, index: number) => {
+        const competition = event.competitions[0];
+        const home = competition.competitors.find(c => c.homeAway === "home");
+        const away = competition.competitors.find(c => c.homeAway === "away");
+        return {
+          id: event.id,
+          name: event.name,
+          shortName: event.shortName,
+          date: event.date,
+          bracketPosition: competition.bracketPosition || index,
+          status: event.status,
+          competitors: {
+            home: { displayName: home?.team.displayName || "TBD", logo: home?.team.logo || "/placeholder.svg", score: home?.score || "0" },
+            away: { displayName: away?.team.displayName || "TBD", logo: away?.team.logo || "/placeholder.svg", score: away?.score || "0" },
+          },
+        };
+      });
 
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
@@ -231,13 +184,43 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       setError(`Failed to load ${activeSport.toUpperCase()} game data.`);
       setGames([]);
     } finally {
-      if (initialLoad) {
-        setLoading(false);
-      } else {
-        setIsRefreshing(false);
-      }
+      if (initialLoad) setLoading(false);
+      else setIsRefreshing(false);
     }
   };
+
+  // Fetches the universal halftime start times from our database
+  useEffect(() => {
+    const fetchHalftimeData = async () => {
+      const { data, error } = await supabase
+        .from('halftime_timers')
+        .select('game_id, start_time')
+        .eq('sport', activeSport);
+
+      if (error) {
+        console.error('Error fetching halftime start times:', error);
+        return;
+      }
+
+      const newStartTimes = data.reduce((acc: Record<string, number>, timer: { game_id: string; start_time: string }) => {
+        acc[timer.game_id] = new Date(timer.start_time).getTime();
+        return acc;
+      }, {});
+
+      setHalftimeStartTimes(newStartTimes);
+    };
+
+    const interval = setInterval(fetchHalftimeData, 10000); // Poll every 10 seconds
+    fetchHalftimeData();
+
+    return () => clearInterval(interval);
+  }, [activeSport]);
+
+  // Main game data refresh loop
+  useEffect(() => {
+    const intervalId = setInterval(() => fetchGames(false), REFRESH_INTERVAL);
+    return () => clearInterval(intervalId);
+  }, [activeSport]);
 
   const sortedGames = useMemo(() => {
     return [...games].sort((a, b) => {
@@ -258,11 +241,6 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     });
   }, [games, favoriteGameIds]);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => fetchGames(false), REFRESH_INTERVAL);
-    return () => clearInterval(intervalId);
-  }, [activeSport]);
 
   const pageDescription = activeSport === 'nba' 
     ? "Live NBA halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
