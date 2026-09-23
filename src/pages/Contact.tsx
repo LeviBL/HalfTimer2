@@ -1,31 +1,11 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
+import { Coffee } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
 
 const Contact: React.FC = () => {
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.dataset.name = "BMC-Widget";
-    script.dataset.cfasync = "false";
-    script.src = "https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js";
-    script.dataset.id = "LeviBL";
-    script.dataset.description = "Support The Halftimer!";
-    script.dataset.message = "Enjoying The Halftimer? Help keep it free.";
-    script.dataset.color = "#5F7FFF";
-    script.dataset.position = "Right";
-    script.dataset.x_margin = "18";
-    script.dataset.y_margin = "18";
-    document.body.appendChild(script);
-
-    return () => {
-      script.remove();
-      document.getElementById("bmc-wbtn")?.remove();
-      document.querySelectorAll('[class*="bmc-widget"], iframe[src*="buymeacoffee.com"]').forEach((element) => element.remove());
-    };
-  }, []);
-
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 p-4 pt-20 text-gray-800 relative">
       <MobileNavMenu />
@@ -48,6 +28,21 @@ const Contact: React.FC = () => {
             contacthalftimer@gmail.com
           </a>
         </p>
+
+        <div className="not-prose mt-8 border-t border-gray-200 pt-6 text-center">
+          <p className="mb-4 text-sm text-gray-600">
+            Enjoying The Halftimer? Help keep it free.
+          </p>
+          <a
+            href="https://www.buymeacoffee.com/LeviBL"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#5F7FFF] px-5 py-3 font-semibold text-white shadow-sm transition-colors hover:bg-[#4f6fe8] focus:outline-none focus:ring-2 focus:ring-[#5F7FFF] focus:ring-offset-2"
+          >
+            <Coffee className="h-5 w-5" />
+            Support The Halftimer
+          </a>
+        </div>
       </div>
       <Footer />
     </div>
