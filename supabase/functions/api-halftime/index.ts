@@ -1,72 +1,54 @@
 import { serve } from "https://deno.land/std@0.190.0/http/server.ts";
-
-const API_ENDPOINTS = {
-  nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
-  nba: "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard",
-};
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2.58.0";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
 };
 
-async function fetchAndProcessSport(sport: 'nfl' | 'nba') {
-  try {
-    const response = await fetch(API_ENDPOINTS[sport]);
-    if (!response.ok) {
-      console.error(`[api-halftime] Error fetching ${sport} data: ${response.statusText}`);
-      return [];
-    }
-    const data = await response.json();
-    const halftimeGames = [];
-
-    for (const event of data.events) {
-      const isHalftime = (event.status.type.description === "Halftime" || event.status.type.shortDetail === "HT");
-      if (isHalftime) {
-        const competition = event.competitions[0];
-        const home = competition.competitors.find((c: any) => c.homeAway === 'home');
-        const away = competition.competitors.find((c: any) => c.homeAway === 'away');
-
-        halftimeGames.push({
-          gameId: event.id,
-          sport: sport.toUpperCase(),
-          homeTeam: home?.team?.displayName || 'TBD',
-          awayTeam: away?.team?.displayName || 'TBD',
-          homeScore: parseInt(home?.score || '0', 10),
-          awayScore: parseInt(away?.score || '0', 10),
-          status: 'halftime',
-        });
-      }
-    }
-    return halftimeGames;
-  } catch (error) {
-    console.error(`[api-halftime] Exception fetching ${sport} data:`, error);
-    return [];
-  }
-}
-
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
+  if (req.method !== "GET") {
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { ...corsHeaders, "Content-Type": "application/json", Allow: "GET" },
+    });
+  }
+
   try {
-    console.log("[api-halftime] Fetching halftime games...");
-    const nflHalftimeGames = await fetchAndProcessSport('nfl');
-    const nbaHalftimeGames = await fetchAndProcessSport('nba');
+    const supabaseUrl = Deno.env.get("SUPABASE_URL")!;
+    const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    const allHalftimeGames = [...nflHalftimeGames, ...nbaHalftimeGames];
-    console.log(`[api-halftime] Found ${allHalftimeGames.length} games in halftime.`);
+    const { data, error } = await supabase
+      .from("halftime_timers")
+      .select("game_data")
+      .order("start_time", { ascending: true });
 
-    return new Response(JSON.stringify(allHalftimeGames), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    if (error) {
+      console.error("[api-halftime] Failed to read halftime timers", { error });
+      return new Response(JSON.stringify({ error: "Unable to load halftime games" }), {
+        status: 500,
+        headers: { ...corsHeaders, "Content-Type": "application/json" },
+      });
+    }
+
+    const games = (data ?? []).map(({ game_data }) => game_data);
+    console.log("[api-halftime] Returned authoritative halftime games", { count: games.length });
+
+    return new Response(JSON.stringify(games), {
       status: 200,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   } catch (error) {
-    console.error("[api-halftime] An unexpected error occurred:", error);
-    return new Response(JSON.stringify({ error: error.message }), {
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+    console.error("[api-halftime] Unexpected error", { error });
+    return new Response(JSON.stringify({ error: "Unable to load halftime games" }), {
       status: 500,
+      headers: { ...corsHeaders, "Content-Type": "application/json" },
     });
   }
 });
