@@ -7,7 +7,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2 } from "lucide-react";
 import MobileNavMenu from "@/components/MobileNavMenu";
 import Footer from "@/components/Footer";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import SEO from "@/components/SEO";
 import AnnouncementBar from "@/components/AnnouncementBar";
@@ -246,14 +246,14 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
     ? "Live NBA halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half."
     : "Live NFL halftime countdown. Track every game and optimize your viewing. Skip the ads and never miss the second half.";
 
-  const canonicalUrl = activeSport === 'nba' 
+  const canonicalUrl = activeSport === 'nba'
     ? "https://thehalftimer.com/nba"
     : "https://thehalftimer.com/";
 
   return (
     <div className="min-h-screen flex flex-col items-center bg-gray-50 text-gray-800 relative">
-      <SEO 
-        title="HalfTimer"
+      <SEO
+        title={`${activeSport.toUpperCase()} Halftime Timer & Live Scores`}
         description={pageDescription}
         canonicalUrl={canonicalUrl}
       />
@@ -268,12 +268,18 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
         </p>
 
         <div className="w-full max-w-[400px] mb-8 px-2">
-          <Tabs value={activeSport} className="w-full" onValueChange={(v) => setActiveSport(v as 'nfl' | 'nba')}>
-            <TabsList className="grid w-full grid-cols-2 h-12 p-1 bg-gray-200/50 backdrop-blur-sm rounded-xl">
-              <TabsTrigger value="nfl" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all">NFL</TabsTrigger>
-              <TabsTrigger value="nba" className="text-sm sm:text-base font-bold rounded-lg data-[state=active]:bg-white data-[state=active]:shadow-sm transition-all">NBA</TabsTrigger>
-            </TabsList>
-          </Tabs>
+          <nav aria-label="Choose sport" className="grid w-full grid-cols-2 h-12 p-1 bg-gray-200/50 backdrop-blur-sm rounded-xl">
+            <Link
+              to="/"
+              aria-current={activeSport === 'nfl' ? 'page' : undefined}
+              className={cn("inline-flex items-center justify-center px-3 py-1.5 text-sm sm:text-base font-bold rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", activeSport === 'nfl' ? "bg-white text-foreground shadow-sm" : "text-muted-foreground")}
+            >NFL</Link>
+            <Link
+              to="/nba"
+              aria-current={activeSport === 'nba' ? 'page' : undefined}
+              className={cn("inline-flex items-center justify-center px-3 py-1.5 text-sm sm:text-base font-bold rounded-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring", activeSport === 'nba' ? "bg-white text-foreground shadow-sm" : "text-muted-foreground")}
+            >NBA</Link>
+          </nav>
         </div>
 
 
