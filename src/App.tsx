@@ -17,6 +17,7 @@ import BlogPost from "./pages/BlogPost";
 import AuthorPosts from "./pages/AuthorPosts";
 import ScrollToTop from "./components/ScrollToTop";
 import { HalftimeTimersProvider } from "./hooks/use-halftime-timers";
+import GamePage from "./pages/GamePage";
 
 const queryClient = new QueryClient();
 
@@ -44,6 +45,8 @@ const App = () => {
                 <Route path="/home" element={<Navigate to="/" replace />} />
                 <Route path="/nba" element={<HalfTimer defaultSport="nba" />} />
                 <Route path="/nfl" element={<HalfTimer defaultSport="nfl" />} />
+                <Route path="/nfl/:gameId" element={<GamePage sport="nfl" />} />
+                <Route path="/nba/:gameId" element={<GamePage sport="nba" />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/faq" element={<FAQ />} />
                 <Route path="/blog" element={<Blog />} />

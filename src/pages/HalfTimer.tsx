@@ -14,6 +14,7 @@ import AnnouncementBar from "@/components/AnnouncementBar";
 import TimeSavedCalculator from "@/components/TimeSavedCalculator";
 import TrophySmackAdCard from '@/components/TrophySmackAdCard';
 import { supabase } from "@/integrations/supabase/client";
+import { mapEspnEvent } from "@/utils/gameData";
 
 const SHOW_SPONSOR_AD = true;
 
@@ -26,6 +27,9 @@ const REFRESH_INTERVAL = 20 * 1000;
 const FAVORITE_GAMES_STORAGE_KEY_PREFIX = "favoriteGameIds_";
 
 interface TeamData {
+  id?: string;
+  color?: string;
+  abbreviation?: string;
   displayName: string;
   logo: string;
   score: string;
@@ -50,14 +54,19 @@ interface CompetitionData {
     curatedRank?: { current: number };
     seed?: string;
     team: {
+      id?: string;
+      color?: string;
+      abbreviation?: string;
       displayName: string;
-      logo: string;
+      logo?: string;
+      logos?: Array<{ href: string }>;
     };
   }>;
+  situation?: { possession?: string | number };
   notes?: Array<{ text: string }>;
 }
 
-interface EventData {
+export interface EventData {
   id: string;
   name: string;
   shortName: string;
@@ -90,6 +99,8 @@ export interface Game {
     home: TeamData;
     away: TeamData;
   };
+  possessionId?: string;
+  notes?: Array<{ text: string }>;
   round?: number;
   bracketPosition?: number;
 }
@@ -158,23 +169,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
       const data = await response.json();
 
-      const processedGames: Game[] = (data.events || []).map((event: EventData, index: number) => {
-        const competition = event.competitions[0];
-        const home = competition.competitors.find(c => c.homeAway === "home");
-        const away = competition.competitors.find(c => c.homeAway === "away");
-        return {
-          id: event.id,
-          name: event.name,
-          shortName: event.shortName,
-          date: event.date,
-          bracketPosition: competition.bracketPosition || index,
-          status: event.status,
-          competitors: {
-            home: { displayName: home?.team.displayName || "TBD", logo: home?.team.logo || "/placeholder.svg", score: home?.score || "0" },
-            away: { displayName: away?.team.displayName || "TBD", logo: away?.team.logo || "/placeholder.svg", score: away?.score || "0" },
-          },
-        };
-      });
+      const processedGames: Game[] = (data.events || []).map(mapEspnEvent);
 
       setGames(processedGames);
       setLastUpdated(new Date().toLocaleTimeString());
