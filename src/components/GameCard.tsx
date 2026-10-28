@@ -38,14 +38,15 @@ const formatScheduledDate = (dateString: string): string => {
 
 interface GameCardProps {
   game: Game;
-  isFavorited: boolean;
-  onToggleFavorite: (gameId: string) => void;
+  isFavorited?: boolean;
+  onToggleFavorite?: (gameId: string) => void;
   sport: 'nfl' | 'nba';
   halftimeStartTime: number | undefined;
+  lastUpdated?: string | null;
   detailed?: boolean;
 }
 
-const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport, halftimeStartTime, detailed = false }) => {
+const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite, sport, halftimeStartTime, lastUpdated, detailed = false }) => {
   const [halftimeRemainingSeconds, setHalftimeRemainingSeconds] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -95,8 +96,10 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
 
   const handleShare = async (event: React.MouseEvent) => {
     event.stopPropagation();
+    const shareUrl = new URL(gamePath(sport, game.id), window.location.origin).href;
+    const shareText = `Tune into The Halftimer to see exactly how much halftime is left in the ${game.competitors.away.displayName} vs ${game.competitors.home.displayName} game. ${shareUrl}`;
     try {
-      await navigator.clipboard.writeText(new URL(gamePath(sport, game.id), window.location.origin).href);
+      await navigator.clipboard.writeText(shareText);
       toast.success("Game link copied to clipboard!");
     } catch {
       toast.error("Couldn't copy the link. Please copy the game URL from your address bar.");
@@ -128,14 +131,12 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
     <Card
       className={cn(
         "text-gray-800 shadow-lg rounded-xl overflow-hidden transform transition-all duration-300 relative mx-auto",
-        detailed ? "w-full max-w-3xl" : "w-[340px] hover:shadow-xl",
-        "border-[3px]",
-        borderColorClass
+        detailed ? "w-full max-w-3xl border-0 shadow-xl shadow-slate-200/60" : cn("w-[340px] hover:shadow-xl border-[3px]", borderColorClass)
       )}
     >
       {!detailed && <Link
         to={gamePath(sport, game.id)}
-        state={{ game, halftimeStartTime }}
+        state={{ game, halftimeStartTime, lastUpdated }}
         className="absolute inset-0 z-10 rounded-lg focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-blue-500 focus-visible:ring-inset"
         aria-label={`Open ${game.competitors.away.displayName} vs ${game.competitors.home.displayName}`}
       />}
@@ -143,7 +144,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       <CardContent className={cn(
         "flex flex-col justify-between",
         detailed ? "p-4 pb-16 sm:p-6 sm:pb-16" : receiver ? "p-6 h-[282px]" : "p-6 h-[250px]",
-        isFinal ? "bg-gray-200" : detailed && isHalftime ? "bg-amber-50" : "bg-gray-100"
+        detailed ? "bg-gradient-to-b from-white to-slate-50" : isFinal ? "bg-gray-200" : "bg-gray-100"
       )}>
         {!detailed && <>
         <div className="flex justify-between items-center mb-4">
@@ -166,7 +167,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
         </>}
 
         <div className={cn("text-center font-semibold mb-4", detailed ? "text-2xl sm:text-3xl font-extrabold" : "text-lg")}>
-          {detailed && isHalftime && <p className="mb-2 text-sm font-extrabold uppercase tracking-widest text-amber-800">Halftime countdown</p>}
+          {detailed && isHalftime && <p className="mb-2 text-sm font-extrabold uppercase tracking-widest text-blue-800">Halftime countdown</p>}
           {isScheduled ? (
             <>
               <p className="text-gray-800">Scheduled: {formatScheduledTime(game.date)}</p>
@@ -179,7 +180,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
                   <p className={cn("mb-2", detailed ? "text-[clamp(4rem,18vw,8rem)] leading-none font-black tracking-tight tabular-nums text-gray-900" : "text-gray-700")}>
                     {!detailed && "Halftime: "}{formatCountdown(halftimeRemainingSeconds)}
                   </p>
-                  <ProgressWithIndicator value={halftimeProgress} className="w-full max-w-xs h-2 bg-gray-200" indicatorClassName="bg-amber-500" />
+                  <ProgressWithIndicator value={halftimeProgress} className="w-full max-w-xs h-2 bg-gray-200" indicatorClassName={detailed ? "bg-gradient-to-r from-blue-500 to-cyan-500" : "bg-amber-500"} />
                 </div>
               ) : (halftimeRemainingSeconds !== null && halftimeRemainingSeconds <= 0) ? (
                 <p className="text-red-700 animate-pulse">2nd Half Starting Soon</p>
@@ -211,19 +212,19 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
           >
             <Share2 className={cn("text-blue-500", detailed ? "h-5 w-5" : "h-3.5 w-3.5")} />
           </button>
-          <button
+          {!detailed && onToggleFavorite && <button
             onClick={(event) => { event.stopPropagation(); onToggleFavorite(game.id); }}
-            className={cn("rounded-full bg-white/70 backdrop-blur-sm shadow-md hover:scale-110 transition-transform duration-200", detailed ? "p-3" : "p-1.5")}
+            className="p-1.5 rounded-full bg-white/70 backdrop-blur-sm shadow-md hover:scale-110 transition-transform duration-200"
             aria-label={isFavorited ? "Unfavorite game" : "Favorite game"}
             aria-pressed={isFavorited}
           >
             <Star
               className={cn(
-                detailed ? "h-5 w-5" : "h-3.5 w-3.5",
+                "h-3.5 w-3.5",
                 isFavorited ? "fill-yellow-500 text-yellow-500" : "text-gray-400"
               )}
             />
-          </button>
+          </button>}
         </div>
       </CardContent>
     </Card>

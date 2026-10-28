@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Loader2 } from "lucide-react";
@@ -21,7 +20,8 @@ function scoreboardDate(date: string) {
 const GamePage = ({ sport }: { sport: Sport }) => {
   const { gameId = "" } = useParams();
   const location = useLocation();
-  const state = location.state as { game?: Game; halftimeStartTime?: number } | null;
+  const homePath = sport === "nba" ? "/nba" : "/";
+  const state = location.state as { game?: Game; halftimeStartTime?: number; lastUpdated?: string | null } | null;
   const seed = state?.game?.id === gameId ? state.game : undefined;
   const validId = /^\d+$/.test(gameId);
   const summary = useGameSummary(sport, gameId);
@@ -54,19 +54,8 @@ const GamePage = ({ sport }: { sport: Sport }) => {
     placeholderData: seed && state?.halftimeStartTime ? { [gameId]: state.halftimeStartTime } : undefined,
   });
 
-  const favoritesKey = `favoriteGameIds_${sport}`;
-  const [favorites, setFavorites] = useState<Set<string>>(() => new Set(JSON.parse(localStorage.getItem(favoritesKey) || "[]")));
-  useEffect(() => {
-    setFavorites(new Set(JSON.parse(localStorage.getItem(favoritesKey) || "[]")));
-  }, [favoritesKey]);
-  const toggleFavorite = (id: string) => {
-    const next = new Set<string>(JSON.parse(localStorage.getItem(favoritesKey) || "[]"));
-    if (next.has(id)) next.delete(id);
-    else next.add(id);
-    localStorage.setItem(favoritesKey, JSON.stringify([...next]));
-    setFavorites(next);
-  };
-
+  const updatedAt = event ? scoreboard.dataUpdatedAt : summary.dataUpdatedAt;
+  const lastUpdated = updatedAt ? new Date(updatedAt).toLocaleTimeString() : seed ? state?.lastUpdated : undefined;
   const matchupName = game ? `${game.competitors.away.displayName} vs ${game.competitors.home.displayName}` : "Game";
   // A failed or missing scoreboard response must not leave a stale possession icon.
   const displayGame = game && !event ? { ...game, possessionId: undefined } :
@@ -79,9 +68,9 @@ const GamePage = ({ sport }: { sport: Sport }) => {
         canonicalUrl={`https://thehalftimer.com${gamePath(sport, gameId)}`} />
       <nav className="flex w-full items-center justify-between px-4 py-3 sm:px-6" aria-label="Game navigation">
         <Button asChild variant="ghost" className="-ml-2 gap-2 font-bold">
-          <Link to="/"><ArrowLeft className="h-5 w-5" /> Home</Link>
+          <Link to={homePath}><ArrowLeft className="h-5 w-5" /> Home</Link>
         </Button>
-        <Link to="/" className="text-lg font-extrabold tracking-tight">HalfTimer</Link>
+        <Link to={homePath} className="text-lg font-extrabold tracking-tight">HalfTimer</Link>
       </nav>
       <main className="mx-auto w-full max-w-3xl flex-1 px-3 pb-8 pt-1 sm:px-6 sm:pt-4">
         <h1 className="sr-only">{matchupName}</h1>
@@ -96,10 +85,13 @@ const GamePage = ({ sport }: { sport: Sport }) => {
         ) : (
           <>
             <GameCard key={`${sport}-${gameId}`} game={displayGame} sport={sport} detailed
-              halftimeStartTime={timers.data?.[gameId]} isFavorited={favorites.has(gameId)} onToggleFavorite={toggleFavorite} />
+              halftimeStartTime={timers.data?.[gameId]} />
             <p className="mt-4 text-center text-xs text-gray-500">
-              {scoreboard.isError ? "Score updates temporarily unavailable. Retrying automatically." : "Scores refresh every 20 seconds."}
+              Last updated: {lastUpdated || "—"}
             </p>
+            {scoreboard.isError && <p className="mt-1 text-center text-xs text-gray-500">
+              Score updates temporarily unavailable. Retrying automatically.
+            </p>}
           </>
         )}
       </main>

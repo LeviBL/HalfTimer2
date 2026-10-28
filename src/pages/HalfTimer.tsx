@@ -333,6 +333,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
                         onToggleFavorite={toggleFavorite}
                         sport={activeSport}
                         halftimeStartTime={halftimeStartTimes[game.id]}
+                        lastUpdated={lastUpdated}
                       />
                       {SHOW_SPONSOR_AD && activeSport === 'nfl' && index === 1 && (
                         <div className="min-[1100px]:hidden my-4">
