@@ -62,7 +62,7 @@ const GamePage = ({ sport }: { sport: Sport }) => {
     game && scoreboard.isError ? { ...game, possessionId: undefined } : game;
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-200 text-gray-900">
+    <div className="flex min-h-screen flex-col bg-gray-50 text-gray-900">
       <SEO title={`${matchupName} · ${sport.toUpperCase()} Live Score & Halftime Timer`}
         description={`Follow ${matchupName} on HalfTimer with live scores and the synchronized halftime countdown.`}
         canonicalUrl={`https://thehalftimer.com${gamePath(sport, gameId)}`} />
