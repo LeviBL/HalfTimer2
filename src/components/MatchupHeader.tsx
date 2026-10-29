@@ -7,10 +7,10 @@ const MatchupHeader = ({ game, sport }: { game: Game; sport: Sport }) => {
   const isHalftime = game.status.type.description === "Halftime" || game.status.type.shortDetail === "HT";
   const showPossession = sport === "nfl" && game.status.type.state === "in" && !isHalftime;
   return (
-    <header className="relative overflow-hidden bg-gradient-to-br from-blue-50 via-white to-cyan-50">
+    <header className="relative overflow-hidden bg-gradient-to-br from-slate-200 via-slate-100 to-blue-100">
       <div className="pointer-events-none absolute inset-0" aria-hidden="true">
-        <div className="absolute -left-16 -top-24 h-64 w-64 rounded-full bg-blue-200/40 blur-3xl" />
-        <div className="absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-cyan-200/40 blur-3xl" />
+        <div className="absolute -left-16 -top-24 h-64 w-64 rounded-full bg-blue-200/20 blur-3xl" />
+        <div className="absolute -bottom-24 -right-16 h-64 w-64 rounded-full bg-slate-300/20 blur-3xl" />
         <div className="absolute bottom-0 left-1/4 right-1/4 h-px bg-gradient-to-r from-transparent via-blue-200 to-transparent" />
       </div>
       <div className="relative px-3 py-4 sm:px-6 sm:py-5">

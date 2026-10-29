@@ -144,7 +144,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       <CardContent className={cn(
         "flex flex-col justify-between",
         detailed ? "p-4 pb-16 sm:p-6 sm:pb-16" : receiver ? "p-6 h-[282px]" : "p-6 h-[250px]",
-        detailed ? "bg-gradient-to-b from-white to-slate-50" : isFinal ? "bg-gray-200" : "bg-gray-100"
+        detailed ? "bg-slate-100" : isFinal ? "bg-gray-200" : "bg-gray-100"
       )}>
         {!detailed && <>
         <div className="flex justify-between items-center mb-4">
