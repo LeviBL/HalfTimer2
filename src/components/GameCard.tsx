@@ -131,7 +131,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
     <Card
       className={cn(
         "text-gray-800 shadow-lg rounded-xl overflow-hidden transform transition-all duration-300 relative mx-auto",
-        detailed ? "w-full max-w-3xl border-0 shadow-xl shadow-slate-200/60" : cn("w-[340px] flex flex-col hover:shadow-xl border-[3px]", borderColorClass)
+        detailed ? "w-full max-w-3xl border-0 shadow-xl shadow-slate-200/60" : cn("w-[340px] hover:shadow-xl border-[3px]", borderColorClass)
       )}
     >
       {!detailed && <Link
@@ -143,7 +143,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
       {detailed && <MatchupHeader game={game} sport={sport} />}
       <CardContent className={cn(
         "flex flex-col justify-between",
-        detailed ? "p-4 pb-16 sm:p-6 sm:pb-16" : receiver ? "p-6 flex-1 min-h-[282px]" : "p-6 flex-1 min-h-[250px]",
+        detailed ? "p-4 pb-16 sm:p-6 sm:pb-16" : receiver ? "p-6 h-[282px]" : "p-6 h-[250px]",
         detailed ? "bg-slate-100" : isFinal ? "bg-gray-200" : "bg-gray-100"
       )}>
         {!detailed && <>
