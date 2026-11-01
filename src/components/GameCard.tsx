@@ -131,7 +131,7 @@ const GameCard: React.FC<GameCardProps> = ({ game, isFavorited, onToggleFavorite
     <Card
       className={cn(
         "text-gray-800 shadow-lg rounded-xl overflow-hidden transform transition-all duration-300 relative mx-auto",
-        detailed ? "w-full max-w-3xl border-0 shadow-xl shadow-slate-200/60" : cn("w-[340px] hover:shadow-xl border-[3px]", borderColorClass)
+        detailed ? "w-full max-w-3xl border-0 shadow-xl shadow-slate-200/60" : cn("w-[340px] self-start hover:shadow-xl border-[3px]", borderColorClass)
       )}
     >
       {!detailed && <Link
