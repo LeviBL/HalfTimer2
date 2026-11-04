@@ -17,3 +17,10 @@ Available packages and libraries:
 - You ALREADY have ALL the shadcn/ui components and their dependencies installed. So you don't need to install them again.
 - You have ALL the necessary Radix UI components installed.
 - Use prebuilt components from the shadcn/ui library after importing them. Note that these files shouldn't be edited, so make new components if you need to change them.
+
+# Sponsor Placement Template
+
+- TrophySmack is hidden via `SHOW_SPONSOR_AD = false` in `src/pages/HalfTimer.tsx`; keep its component, asset and destination for potential reuse. Do not re-enable without user approval.
+- Reuse `src/components/TrophySmackAdCard.tsx` as the template for future approved sponsors.
+- Existing placement is NFL-only: sticky 340px right sidebar at widths >=1100px; below that, inline after the second game card. No NBA placement unless requested.
+- Without an ad, keep the centered two-column game grid (single column on mobile); do not reserve an empty ad column.

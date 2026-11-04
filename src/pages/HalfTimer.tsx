@@ -16,7 +16,7 @@ import TrophySmackAdCard from '@/components/TrophySmackAdCard';
 import { supabase } from "@/integrations/supabase/client";
 import { mapEspnEvent } from "@/utils/gameData";
 
-const SHOW_SPONSOR_AD = true;
+const SHOW_SPONSOR_AD = false;
 
 const API_ENDPOINTS = {
   nfl: "https://site.api.espn.com/apis/site/v2/sports/football/nfl/scoreboard",
