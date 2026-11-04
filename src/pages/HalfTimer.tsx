@@ -288,13 +288,13 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
           </div>
         )}
 
-        <div className="w-full max-w-[1100px] mx-auto px-4">
+        <div className="w-full max-w-[1100px] mx-auto sm:px-4">
           <div className="flex flex-row gap-8 justify-center">
-            <div className="w-full max-w-[720px]">
+            <div className="w-full min-w-0 max-w-[720px]">
             {loading ? (
-              <div className="grid grid-cols-1 min-[720px]:grid-cols-2 gap-2 w-full max-w-[720px] mx-auto">
+              <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center gap-2 w-full max-w-[720px] mx-auto">
                 {[...Array(6)].map((_, i) => (
-                  <Card key={i} className="w-[340px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden mx-auto">
+                  <Card key={i} className="w-full max-w-[340px] bg-gradient-to-br from-gray-200 to-gray-300 text-gray-800 shadow-lg rounded-xl overflow-hidden mx-auto">
                     <CardContent className="p-6 flex flex-col justify-between h-[250px]">
                       <div className="flex justify-between items-center mb-4">
                         <div className="flex items-center space-x-3">
@@ -322,7 +322,7 @@ const HalfTimer: React.FC<HalfTimerProps> = ({ defaultSport = 'nfl' }) => {
             ) : (
               <div className={cn(
                 "w-full max-w-[720px] mx-auto",
-                sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 min-[720px]:grid-cols-2 gap-2"
+                sortedGames.length === 1 ? "flex justify-center" : "grid grid-cols-1 md:grid-cols-2 justify-items-center gap-2"
               )}>
                 {sortedGames.length > 0 ? (
                   sortedGames.map((game, index) => (
